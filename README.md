@@ -49,6 +49,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
     nvm install 11
     sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
     
+    sudo apt install -y git
     git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
     cd LD-ToyPad-Emulator
     npm install
