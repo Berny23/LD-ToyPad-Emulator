@@ -1,0 +1,15 @@
+{
+  "name": "ld-toypad-emulator",
+  "version": "1.0.0",
+  "description": "Lego Dimensions ToyPad Emulator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Berny23",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-ld": "^1.1.6"
+  }
+}

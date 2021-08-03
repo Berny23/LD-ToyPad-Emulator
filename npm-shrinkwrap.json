@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "node-ld": {
+      "version": "1.1.6",
+      "from": "node-ld@^1.1.6",
+      "dependencies": {
+        "serialport": {
+          "version": "9.2.0",
+          "from": "serialport@^2.0.2"
+        },
+        "node-hid": {
+          "version": "2.1.1",
+          "from": "node-hid@^0.5.1"
+        }
+      }
+    }
+  }
+}

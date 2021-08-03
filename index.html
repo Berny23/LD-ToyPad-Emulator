@@ -1,0 +1,217 @@
+<!--
+
+	Copyright © 2021 Berny23
+	
+	This file is part of "ToyPad Emulator for Lego Dimensions" which is released under the "MIT" license.
+	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
+
+-->
+
+<html>
+<header>
+	<style>
+	html {
+		text-align: center;
+	}
+	input {
+		margin-bottom: 1em;
+		font-size: 1.2em;
+	}
+	button {
+		margin-top: 1em;
+		padding: 1em;
+    	font-weight: bold;
+	}
+	.container {
+		width: fit-content;
+    	margin: auto;
+    	background-color: aliceblue;
+    	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    	padding: 2em;
+    	margin-bottom: 1.5em;
+	}
+	#active-tokens>div {
+		padding: 1em;
+    	margin: auto;
+    	width: fit-content;
+    	margin-bottom: 0.5em;
+    	background-color: blanchedalmond;
+	}
+	#active-tokens>div:hover {
+		background-color: burlywood;
+	}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</header>
+<body>
+	<div>
+		<h1>LD ToyPad Emulator</h1>
+	
+		<form id="character-select" class="container">
+			<label>
+				Choose a character:
+				<input list="character-list" id="character-name" />
+				<datalist id="character-list"></datalist>
+			</label>
+			<br>
+			Position:
+			<input type="radio" id="character_pos1" name="position" value="2" checked />
+			<label for="character_pos1">Left</label>
+			<input type="radio" id="character_pos2" name="position" value="1" />
+			<label for="character_pos2">Middle</label>
+			<input type="radio" id="character_pos3" name="position" value="3" />
+			<label for="character_pos3">Right</label>
+			<br>
+			<button type="submit">Place Character</button>
+		</form>
+	
+		<form id="vehicle-select" class="container">
+			<label>
+				Choose a vehicle:
+				<input list="vehicle-list" id="vehicle-name" />
+			</label>
+			<datalist id="vehicle-list"></datalist>
+			<br>
+			Position:
+			<input type="radio" id="vehicle_pos1" name="position" value="2" checked />
+			<label for="vehicle_pos1">Left</label>
+			<input type="radio" id="vehicle_pos2" name="position" value="1" />
+			<label for="vehicle_pos2">Middle</label>
+			<input type="radio" id="vehicle_pos3" name="position" value="3" />
+			<label for="vehicle_pos3">Right</label>
+			<datalist id="character-list"></datalist>
+			<br>
+			<button type="submit">Place Vehicle</button>
+		</form>
+		
+		<div class="container">
+			<h2>Currently Placed</h2>
+			<p>Click an entry to remove it from the ToyPad.</p>
+			<div id="active-tokens">
+			</div>
+			<button id="remove-all">Remove all</button>
+		</div>
+	</div>
+	
+	<script>
+		$(function() {
+			const index_max = 7;
+			var availableIndices = [0, 1, 2, 3, 4, 5, 6];
+			
+			function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
+			function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
+			function nameValid(jsonObject, name) {
+				var found = false;
+				$.each(jsonObject, function(i, item) {
+					if (item.name == name) {
+						found = true;
+						return;
+					}
+				});
+				return found;
+			}
+			
+			var characters;
+			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/charactermap.json', function(data) {
+				characters = data;
+			}).done(function() {
+				$.each(characters, function(i, item) {
+					if(item.name != 'Unknown') $('#character-list').append('<option value="' + item.name + '">');
+				});
+			});
+			
+			var vehicles;
+			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/tokenmap.json', function(data) {
+				vehicles = data;
+			}).done(function() {
+				$.each(vehicles, function(i, item) {
+					if(item.name != 'unknown') $('#vehicle-list').append('<option value="' + item.name + '">');
+				});
+			});
+			
+			$('#character-select').submit(function(e) {
+				e.preventDefault();
+				
+				var name = $('#character-name').val();
+				var position = $('input[name="position"]:checked', '#character-select').val();
+				var positionLabel = ($('label[for="' + $('input[name="position"]:checked', '#character-select').attr('id') + '"]').text());
+				var index = availableIndices[0];
+				
+				if (nameValid(characters, name)) {
+					if (availableIndices.length > 0) {
+						$.ajax({
+							method: 'POST',
+							contentType: 'application/json',
+							url: '/character',
+							data: JSON.stringify({ id: filterByName(characters, name).id, position: position, index: index })
+						});
+						
+						$('#active-tokens').append('<div class="removeable" data-index="' + index + '">' + name + ' - ' + positionLabel + '</div>');
+						
+						availableIndices.shift();
+					}
+					else {
+						alert("The ToyPad is full, please remove some items!");
+					}
+				}
+			});
+			
+			$('#vehicle-select').submit(function(e) {
+				e.preventDefault();
+				
+				var name = $('#vehicle-name').val();
+				var position = $('input[name="position"]:checked', '#vehicle-select').val();
+				var positionLabel = ($('label[for="' + $('input[name="position"]:checked', '#vehicle-select').attr('id') + '"]').text());
+				var index = availableIndices[0];
+				
+				if (nameValid(vehicles, name)) {
+					if (availableIndices.length > 0) {
+						$.ajax({
+							method: 'POST',
+							contentType: 'application/json',
+							url: '/vehicle',
+							data: JSON.stringify({ id: filterByName(vehicles, name).id, position: position, index: index })
+						});
+						
+						$('#active-tokens').append('<div class="removeable" data-index="' + index + '">' + name + ' - ' + positionLabel + '</div>');
+						
+						availableIndices.shift();
+					}
+					else {
+						alert("The ToyPad is full, please remove some items!");
+					}
+				}
+			});
+			
+			$('#remove-all').click(function() {
+				for (let i = 0; i < index_max; i++) {
+					$.ajax({
+						method: 'DELETE',
+						contentType: 'application/json',
+						url: '/remove',
+						data: JSON.stringify({ index: i })
+					});
+				}
+				
+				availableIndices = [0, 1, 2, 3, 4, 5, 6];
+				$('.removeable').remove();
+			});
+			
+			$('#active-tokens').on('click', '.removeable', function() {
+				var index = parseInt($(this).attr('data-index'));
+				
+				$.ajax({
+					method: 'DELETE',
+					contentType: 'application/json',
+					url: '/remove',
+					data: JSON.stringify({ index: index })
+				});
+				
+				availableIndices.push(index);
+				$(this).remove();
+			});
+		});
+	</script>
+</body>
+</html>
