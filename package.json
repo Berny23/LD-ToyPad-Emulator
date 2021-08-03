@@ -1,7 +1,8 @@
 {
   "name": "ld-toypad-emulator",
   "version": "1.0.0",
-  "description": "Lego Dimensions ToyPad Emulator",
+  "description": "ToyPad Emulator for Lego Dimensions",
+  "repository": "https://github.com/Berny23/LD-ToyPad-Emulator",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
