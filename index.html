@@ -43,6 +43,11 @@
 	#active-tokens>.removeable:hover {
 		background-color: burlywood;
 	}
+	#warnings {
+		color: ghostwhite;
+		background-color: darkslateblue;
+		padding: 0.5em;
+	}
 	</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -50,7 +55,12 @@
 <body>
 	<div>
 		<h1>LD ToyPad Emulator</h1>
-		<p>Please don't spam click, or things may break and you'll have to restart the server!</p>
+		<p id="warnings">
+			→ Please don't spam click, or things may break and you'll have to restart the server! ←<br>
+			After changing a position, you have to wait for about 2 seconds, otherwise the game can't keep up.<br>
+			If there are too many characters, reload the page, add 7 characters and click "Remove all".<br>
+			Make sure not to exceed the item limit on each position when switching or placing objects (left/right: 3, middle: 1)!!!
+		</p>
 		<form id="character-select" class="container">
 			<label>
 				Choose a character:
@@ -98,8 +108,10 @@
 	
 	<script>
 		$(function() {
-			const index_max = 7;
-			var availableIndices = [0, 1, 2, 3, 4, 5, 6];
+			//const index_max = 7;
+			//var availableIndices = [0, 1, 2, 3, 4, 5, 6];
+			const index_max = 8;
+			var availableIndices = [1, 2, 3, 4, 5, 6, 7];
 			
 			function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
 			function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
@@ -192,7 +204,13 @@
 				var uid = $(this).attr('name');
 				var position = $(this).val();
 				var index = parseInt($('#active-tokens').find('#' + uid).attr('data-index'));
+				console.log(index);
 				var name = $('#active-tokens').find('#' + uid).text();
+				
+				$('html').find("input").prop('disabled', true);
+				setTimeout(function() {
+						$('html').find("input").prop('disabled', false);
+				}, 2000);
 				
 				$.ajax({
 					method: 'DELETE',
@@ -200,25 +218,28 @@
 					url: '/remove',
 					data: JSON.stringify({ index: index })
 				}).done(function() {
-					switch($('#active-tokens').find('#' + uid).attr('data-type')) {
-						case "character":
-							console.log('test2');
-							$.ajax({
-								method: 'PUT',
-								contentType: 'application/json',
-								url: '/character',
-								data: JSON.stringify({ id: filterByName(characters, name).id, position: position, index: index, uid: uid })
-							});
-							break;
-						case "vehicle":
-							$.ajax({
-								method: 'PUT',
-								contentType: 'application/json',
-								url: '/vehicle',
-								data: JSON.stringify({ id: filterByName(vehicles, name).id, position: position, index: index, uid: uid })
-							});
-							break;
-					}
+					setTimeout(function() {
+						console.log(index);
+						switch($('#active-tokens').find('#' + uid).attr('data-type')) {
+							case "character":
+								$.ajax({
+									method: 'PUT',
+									contentType: 'application/json',
+									url: '/character',
+									data: JSON.stringify({ id: filterByName(characters, name).id, position: position, index: index, uid: uid })
+								});
+								console.log(index);
+								break;
+							case "vehicle":
+								$.ajax({
+									method: 'PUT',
+									contentType: 'application/json',
+									url: '/vehicle',
+									data: JSON.stringify({ id: filterByName(vehicles, name).id, position: position, index: index, uid: uid })
+								});
+								break;
+						}
+					}, 500);
 				});
 			});
 			
@@ -232,7 +253,8 @@
 					});
 				}
 				
-				availableIndices = [0, 1, 2, 3, 4, 5, 6];
+				//availableIndices = [0, 1, 2, 3, 4, 5, 6];
+				availableIndices = [1, 2, 3, 4, 5, 6, 7];
 				$('.removeable').next().remove();
 				$('.removeable').remove();
 			});

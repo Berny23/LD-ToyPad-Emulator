@@ -60,17 +60,17 @@ app.post('/vehicle', (request, response) => {
 });
 
 app.put('/character', (request, response) => {
-	console.log('Changing character: "' + request.body.uid + '" to position ' + request.body.position);
+	console.log('Changing character: "' + request.body.uid + '" to position ' + request.body.position + ', index ' + request.body.index);
 	var character = createCharacter(request.body.id, request.body.uid);
 	tp.place(character, request.body.position, request.body.index, character.uid);
-	console.log('Character changed: "' + request.body.uid + '" to position ' + request.body.position);
+	console.log('Character changed: "' + request.body.uid + '" to position ' + request.body.position + ', index ' + request.body.index);
 });
 
 app.put('/vehicle', (request, response) => {
-	console.log('Changing vehicle: "' + request.body.uid + '" to position ' + request.body.position);
+	console.log('Changing vehicle: "' + request.body.uid + '" to position ' + request.body.position + ', index ' + request.body.index);
 	var vehicle = createVehicle(request.body.id, [0xEFFFFFFF, 0xEFFFFFFF], request.body.uid);
 	tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
-	console.log('Vehicle changed: "' + request.body.uid + '" to position ' + request.body.position);
+	console.log('Vehicle changed: "' + request.body.uid + '" to position ' + request.body.position + ', index ' + request.body.index);
 });
 
 app.delete('/remove', (request, response) => {
