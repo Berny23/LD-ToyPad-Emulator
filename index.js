@@ -15,23 +15,23 @@ const app = express();
 var tp = new ld.ToyPadEmu()
 tp.registerDefaults()
 
-function createVehicle(id,upgrades){
-	upgrades = upgrades || [0,0]
-	var token = new Buffer(180)
-	token.fill(0)
-	token.uid = tp.randomUID()
-	token.writeUInt32LE(upgrades[0],0x23*4)
-	token.writeUInt16LE(id,0x24*4)
-	token.writeUInt32LE(upgrades[1],0x25*4)
-	token.writeUInt16BE(1,0x26*4)
+function createVehicle(id, upgrades, uid){
+	upgrades = upgrades || [0,0];
+	var token = new Buffer(180);
+	token.fill(0);
+	token.uid = uid;
+	token.writeUInt32LE(upgrades[0],0x23*4);
+	token.writeUInt16LE(id,0x24*4);
+	token.writeUInt32LE(upgrades[1],0x25*4);
+	token.writeUInt16BE(1,0x26*4);
 	return token;
 }
 
-function createCharacter(id){
+function createCharacter(id, uid){
 	var token = new Buffer(180)
-	token.fill(0) // Game really only cares about 0x26 being 0 and D4 returning an ID
-	token.uid = tp.randomUID()
-	token.id = id
+	token.fill(0); // Game really only cares about 0x26 being 0 and D4 returning an ID
+	token.uid = uid;
+	token.id = id;
 	return token;
 }
 
@@ -42,20 +42,42 @@ app.get('/', (request, response) => {
 });
 
 app.post('/character', (request, response) => {
-	console.log('Character placed: ' + request.body.id);
-	var character = createCharacter(request.body.id);
+	console.log('Placing character: ' + request.body.id);
+	var uid = tp.randomUID();
+	var character = createCharacter(request.body.id, uid);
 	tp.place(character, request.body.position, request.body.index, character.uid);
+	console.log('Character placed: ' + request.body.id);
+	response.send(uid);
 });
 
 app.post('/vehicle', (request, response) => {
-	console.log('Vehicle placed: ' + request.body.id);
-	var vehicle = createVehicle(request.body.id, [0xEFFFFFFF, 0xEFFFFFFF]);
+	console.log('Placing vehicle: ' + request.body.id);
+	var uid = tp.randomUID();
+	var vehicle = createVehicle(request.body.id, [0xEFFFFFFF, 0xEFFFFFFF], uid);
 	tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
+	console.log('Vehicle placed: ' + request.body.id);
+	response.send(uid);
+});
+
+app.put('/character', (request, response) => {
+	console.log('Changing character: "' + request.body.uid + '" to position ' + request.body.position);
+	var character = createCharacter(request.body.id, request.body.uid);
+	tp.place(character, request.body.position, request.body.index, character.uid);
+	console.log('Character changed: "' + request.body.uid + '" to position ' + request.body.position);
+});
+
+app.put('/vehicle', (request, response) => {
+	console.log('Changing vehicle: "' + request.body.uid + '" to position ' + request.body.position);
+	var vehicle = createVehicle(request.body.id, [0xEFFFFFFF, 0xEFFFFFFF], request.body.uid);
+	tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
+	console.log('Vehicle changed: "' + request.body.uid + '" to position ' + request.body.position);
 });
 
 app.delete('/remove', (request, response) => {
-	console.log('Item removed: ' + request.body.index);
+	console.log('Removing item: ' + request.body.index);
 	tp.remove(request.body.index);
+	console.log('Item removed: ' + request.body.index);
+	response.send(true);
 });
 
 app.listen(80, () => console.log('Server running on port 80'));
