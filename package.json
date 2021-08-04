@@ -1,6 +1,6 @@
 {
   "name": "ld-toypad-emulator",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "ToyPad Emulator for Lego Dimensions",
   "repository": "https://github.com/Berny23/LD-ToyPad-Emulator",
   "main": "index.js",
