@@ -8,7 +8,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 - Mobile-friendly web interface
 
 ## Demo
-![](https://i.imgur.com/oRAWufB.jpg)
+![](https://i.imgur.com/Hg12EDL.jpg)
 
 ## Prerequisites
 * **Raspberry Pi Zero W** or similar single board computer with OTG and Network support
