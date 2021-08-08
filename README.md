@@ -4,6 +4,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 ## Features
 - Supports all available characters and vehicles
 - Supports most if not all of the consoles the game is available for
+- Confirmed working on Cemu and real Wii U
 - Can be configured easily by following the instructions below
 - Mobile-friendly web interface
 
@@ -13,7 +14,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 ## Prerequisites
-* **Raspberry Pi Zero W** or similar single board computer with OTG and Network support
+* **Raspberry Pi Zero W** ($10) or similar single board computer with Network support
 * USB A to micro USB A cable that supports data transmission (e. g. your phone's charging cable)
 * 2 GB+ Micro SD card
 * Internet connection on your PC and single board computer
