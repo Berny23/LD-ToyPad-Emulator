@@ -36,6 +36,10 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
     echo "libcomposite" | sudo tee -a /etc/modules
     echo "usb_f_rndis" | sudo tee -a /etc/modules
     
+    sudo apt install -y git
+    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
+    cd LD-ToyPad-Emulator
+    
     sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
     sudo chmod +x /usr/local/bin/toypad_usb_setup.sh
     (sudo crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | sudo crontab -
@@ -56,8 +60,6 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
     nvm install 11
     sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
     
-    sudo apt install -y git
-    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
     cd LD-ToyPad-Emulator
     npm install
    ```
