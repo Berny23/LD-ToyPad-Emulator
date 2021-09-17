@@ -40,6 +40,7 @@ function createCharacter(id, uid){
 tp._hook(tp.CMD_WRITE, (req, res) => {
 	var ind = req.payload[0];
 	var page = req.payload[1];
+	console.log('REQUEST (CMD_WRITE): index:', ind, 'page', page);
 	res.payload = new Buffer('00', 'hex');
 	var token = tp._tokens.find(t => t.index == ind);
 	if (token)
