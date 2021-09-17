@@ -35,6 +35,17 @@ function createCharacter(id, uid){
 	return token;
 }
 
+
+//When the game calls 'CMD_WRITE', writes the given data to the toytag in the top position.
+tp._hook(tp.CMD_WRITE, (req, res) => {
+	var ind = req.payload[0];
+	var page = req.payload[1];
+	res.payload = new Buffer('00', 'hex');
+	var token = tp._tokens.find(t => t.index == ind);
+	if (token)
+		req.payload.copy(token.token, 4 * page, 2, 6);
+});
+
 app.use(express.json());
 
 app.get('/', (request, response) => {
