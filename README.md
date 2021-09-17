@@ -31,51 +31,59 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 4. Use SSH to run the following commands:<br>
    ```bash
-    echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
-    echo "dwc2" | sudo tee -a /etc/modules
-    echo "libcomposite" | sudo tee -a /etc/modules
-    echo "usb_f_rndis" | sudo tee -a /etc/modules
-    
-    sudo apt install -y git
-    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
-    cd LD-ToyPad-Emulator
-    
-    sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
-    sudo chmod +x /usr/local/bin/toypad_usb_setup.sh
-    (sudo crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | sudo crontab -
+   echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
+   echo "dwc2" | sudo tee -a /etc/modules
+   echo "libcomposite" | sudo tee -a /etc/modules
+   echo "usb_f_rndis" | sudo tee -a /etc/modules
+   
+   sudo apt install -y git
+   git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
+   cd LD-ToyPad-Emulator
+   
+   sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
+   sudo chmod +x /usr/local/bin/toypad_usb_setup.sh
+   (sudo crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | sudo crontab -
    ```
    
 5. Reboot you device with this command:
    ```bash
-    sudo shutdown -r now
+   sudo shutdown -r now
    ```
    
 6. Connect via SSH again and run the following commands:
    ```bash
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-    
-    nvm install 11
-    sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
-    
-    cd LD-ToyPad-Emulator
-    npm install
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+   
+   nvm install 11
+   sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
+   
+   cd LD-ToyPad-Emulator
+   npm install
    ```
    
 7. Run the emulator server with this command:
    ```bash
-    node index.js
+   node index.js
    ```
 
 ## Usage
 Type your single board computer's IP address in a browser to use the emulator. If you want to turn it off, just use the command from earlier (without -r) to shut the device down via SSH.
 
-## Acknowledgements
-Shoutout to ags131 for writing one of the main NodeJS libraries I'm using: https://www.npmjs.com/package/node-ld
+## Update
+To update this software, just pull the latest changes by running the following commands:
+````bash
+cd LD-ToyPad-Emulator
+git pull
+````
 
-My project would've been impossible to create without this guy's research.
+## Acknowledgements
+* **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
+
+* **cort1237** for implementing writing of toy tags, therefore eliminating the need for a workaround when building vehicles.
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
