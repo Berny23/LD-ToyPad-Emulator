@@ -1,0 +1,224 @@
+{
+	"speed":["Model Boost A"]	
+}
+
+"Speed":[{
+	"name":"Model Boost Ability",
+	"desc":"Inital model speed has a boost for a short time.",
+	"cost":"cost":15000
+},{
+	"name":"Boost Buff 1",
+	"desc":"Increased boost speed",
+	"cost":"15,000",
+},{
+	"name":"Movement Speed Buff 1",
+	"desc":"Increased model movement",
+	"cost":"15,000",
+},{
+	"name":"Jump Ability",
+	"desc":"Model can Jump	",
+	"cost":"20,000",
+},{
+	"name":"Boost Buff 2",
+	"desc":"Increased boost speed",
+	"cost":"20,000 Studs",
+},{
+	"name":"Movement Speed Buff 2",
+	"desc":"Increased model movement.",
+	"cost":"20,000 Studs",
+}]
+
+"Power":[{
+	"name":"Color Changing Bolts Ability",
+	"desc":"Gives the ability to fire tintable bolts",
+	"cost":"15,000",
+},{
+	"name":"Fire Speed Buff 1",
+	"desc":"Increased weapon fire rate",
+	"cost":"15,000 Studs",
+},{
+	"name":"Armor Buff",
+	"desc":"Model upgraded to have5 Armor Hearts	",
+	"cost":"15,000",
+},{
+	"name":"Instant Tow Bar",
+	"desc":"Tow Bars complete instantnly with vehicles that have them	",
+	"cost":"20,000",
+},{
+	"name":"Fire Speed Buff 2",
+	"desc":"Increased weapon fire rate",
+	"cost":"20,000 Studs",
+},{
+	"name":"Armor Buff",
+	"desc":"Model upgraded to have 6 armor hearts.",
+	"cost":"20,000 Studs",
+}]
+"Weapons":[{
+	"name":"Mine Weapon",
+	"desc":"Mines are deployed",
+	"cost":"15,000 Studs",
+},{
+	"name":"Explode Ability",
+	"desc":"Model explodes after a count down (toggle off/on)",
+	"cost":"15,000 Studs",
+}]
+"Extras":[{
+	"name":"Bolt Color Chooser",
+	"desc":"Allows you to tint bolt colors",
+	"cost":"15,000 Studs",
+},{
+	"name":"Enemy Hearts Ability",
+	"desc":"Enemy characters now drop hearts	",
+	"cost":"15,000",
+},{
+	"name":"Regenerate Armor Ability",
+	"desc":"Hearts on the model regenerate",
+	"cost":"15,000 Studs",
+}]
+"Colors":[{
+	"name":"Skin 1",
+	"desc":"Changes the appearance of the model",
+	"cost":"15,000 Studs",
+},{
+	"name":"Tire Color Chooser",
+	"desc":"Allows you to pick tire colors",
+	"cost":"15,000 Studs",
+},{
+	"name":"Flame Color Choser",
+	"desc":"Choose exhaust flame color.",
+	"cost":"15,000 Studs",
+}],
+"Weapons",
+{
+	"name":"Spinning Weapon",
+	"desc":"Spinning objects are now fired to destroy distant threats	",
+	"cost":"20,000",
+},
+"Weapons",
+{
+	"name":"Electric Shield",
+	"desc":"An electric field surrounds the model",
+	"cost":"20,000 Studs",
+},
+"Extras 1",
+{
+	"name":"",
+	"desc":"",
+	"cost":"15,000 Studs",
+},
+"Extras",
+{
+	"name":"Guardian Ability",
+	"desc":"Model will protect you by attacking enemies (needs an active weapon selected).",
+	"cost":"20,000 Studs",
+},
+"Extras",
+{
+	"name":"Character Studs Ability",
+	"desc":"Enemies now give off lots of studs when they are defeated.",
+	"cost":"20,000 Studs",
+},
+"Colors 1",
+{
+	"name":"",
+	"desc":"	",
+	"cost":"15,000 Studs",
+}
+"",
+"Colors 2",
+{
+	"name":"",
+	"desc":"",
+	"cost":"50,000",
+},
+"Colors 3",
+{
+	"name":"",
+	"desc":"",
+	"cost":"50,000",
+},
+"Speed 1",
+{
+	"name":"Instant Accelerator Switch Ability",
+	"desc":"Accelerator Switches complete instantly when driven on.",
+	"cost":"50,000 Studs",
+},
+"Speed 2",
+{
+	"name":"Boost Buff 3",
+	"desc":"Increased boost speed",
+	"cost":"50,000 Studs",
+},
+"Speed 3",
+{
+	"name":"Movement Speed Buff 3",
+	"desc":"Increased model movement.",
+	"cost":"50,000 Studs",
+},
+"Power 1",
+{
+	"name":"Instant Sonar Smash",
+	"desc":"Sonar smashes complete instantly rather than shaking.",
+	"cost":"50,000",
+},
+"Power 2",
+"",
+{
+	"name":"",
+	"desc":"",
+	"cost":"50,000",
+},
+"Power 3",
+{
+	"name":"",
+	"desc":"",
+	"cost":"50,000",
+},
+"Weapons 1",
+{
+	"name":"Swarm Weapon",
+	"desc":"Objects swarm around the model.",
+	"cost":"50,000 Studs",
+},
+"Weapons 3",
+{
+	"name":"Speaker Attack Ability",
+	"desc":"Music makes nearby enemies dance for a set time.",
+	"cost":"50,000 Studs",
+},
+"Extras 1",
+{
+	"name":"Engine Sound Chooser",
+	"desc":"Change the engine sounds.",
+	"cost":"50,000 Studs",
+},
+"Extras 2",
+{
+	"name":"Armor Hearts Multiplier",
+	"desc":"Heart multiplier for player's health.",
+	"cost":"50,000 Studs",
+},
+"Extras 3",
+{
+	"name":"Stud Magnet Ability",
+	"desc":"Studs are attracted to the vehicle",
+	"cost":"50,000 Studs",
+},
+"Colors 1",
+{
+	"name":"Skin 3",
+	"desc":"Changes the appearance of the model.",
+	"cost":"50,000 Studs",
+},
+"Colors 2",
+{
+	"name":"Model Color Chooser",
+	"desc":"Allows you to pick model color.",
+	"cost":"50,000 Studs",
+},
+"Colors 3",
+{
+	"name":"",
+	"desc":"",
+	"cost":"50,000",
+}
