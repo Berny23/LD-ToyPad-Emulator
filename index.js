@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { DH_CHECK_P_NOT_PRIME } = require('constants');
 
+//Setup Webserver
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -17,26 +18,36 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+//File where tag info will be saved
 const toytagFileName = './server/json/toytags.json';
 
 var tp = new ld.ToyPadEmu()
 tp.registerDefaults()
 
-initalizeToyTagsJSON();
+initalizeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
 
+//Create a token JSON object from provided vehicle data
+/* Vehicle Data Explained:
+ * All data is transfered through a series of buffers. The data from these buffers needs to written to specific points (pages) in the token's
+ * buffer for it to be read properly.
+ *
+ * For vehicles:
+ * Page 24 is the ID of the vehicle
+ * Pages 23 & 25 are the upgrade data
+ */
 function createVehicle(id, upgrades, uid){
 	upgrades = upgrades || [0,0];
 	var token = new Buffer(180);
 	token.fill(0);
 	token.uid = uid;
-	console.log(upgrades);
 	token.writeUInt32LE(upgrades[0],0x23*4);
 	token.writeUInt16LE(id,0x24*4);
 	token.writeUInt32LE(upgrades[1],0x25*4);
-	token.writeUInt16BE(1,0x26*4);
+	token.writeUInt16BE(1,0x26*4); //Page 26 is used for verification of somekind.
 	return token;
 }
 
+//Create a token JSON object from provided character data
 function createCharacter(id, uid){
 	var token = new Buffer(180)
 	token.fill(0); // Game really only cares about 0x26 being 0 and D4 returning an ID
@@ -45,6 +56,7 @@ function createCharacter(id, uid){
 	return token;
 }
 
+//This finds a character or vehicles name from the ID provided.
 function getNameFromID(id){
 	if(id < 1000)
 		dbfilename = './server/json/charactermap.json';
@@ -62,6 +74,7 @@ function getNameFromID(id){
 	return name;
 }
 
+//This finds and returns an JSON entry from toytags.json with the matching uid.
 function getJSONFromUID(uid){
 	const data = fs.readFileSync(toytagFileName, 'utf8');
 	const databases = JSON.parse(data);
@@ -73,6 +86,7 @@ function getJSONFromUID(uid){
 	return entry;
 }
 
+//This updates the pad index of a tag in toytags.json, so that info can be accessed locally.
 function updatePadIndex(uid, index){
 	console.log('Planning to set UID: ' + uid + ' to index ' + index);
 	const data = fs.readFileSync(toytagFileName, 'utf8');
@@ -87,6 +101,7 @@ function updatePadIndex(uid, index){
 	})
 }
 
+//This searches toytags.json and returns to UID of the entry with the matching index.
 function getUIDFromIndex(index){
 	const data = fs.readFileSync(toytagFileName, 'utf8');
 	const databases = JSON.parse(data);
@@ -99,6 +114,7 @@ function getUIDFromIndex(index){
 	return uid;
 }
 
+//This updates the provided datatype, of the entry with the matching uid, with the provided data.
 function writeJSONData(uid, datatype, data){
 	console.log('Planning to set '+  datatype + ' of ' + uid + ' to ' + data);
 	const tags = fs.readFileSync(toytagFileName, 'utf8');
@@ -114,6 +130,8 @@ function writeJSONData(uid, datatype, data){
 	})
 }
 
+
+//This sets all saved index values to '-1' (meaning unplaced).
 function initalizeToyTagsJSON(){
 	const data = fs.readFileSync(toytagFileName, 'utf8');
 	const databases = JSON.parse(data);
@@ -126,6 +144,21 @@ function initalizeToyTagsJSON(){
 }
 
 //When the game calls 'CMD_WRITE', writes the given data to the toytag in the top position.
+/* Writing Tags Explained:
+ * A write occurs in three seperate function calls, and will repreat until either the write is canceled in game,
+ * or all three calls successfully write data.
+ * 
+ * To appease the game all data is passed through and copied to the token in the top pad. But during this we can intercept what is being written
+ * and save the data locally as well. This lets us call that data back when we want to use that tag again.
+ *
+ * payload[1] tells what page is being written, and everything after is the data.
+ * page 24 - ID
+ * page 23 - Vehicle Upgrade Pt 1
+ * page 26 - Vehicle Upgrades Pt 2
+ * **When writing the pages requested for the write are sometimes ofset by 12, not sure why.
+ *
+ * This data is copied to the JSON for future use.
+ */
 tp.hook(tp.CMD_WRITE, (req, res) => {
 	var ind = req.payload[0];
 	var page = req.payload[1];
@@ -133,18 +166,18 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
 	var uid = getUIDFromIndex('2');
 	console.log('REQUEST (CMD_WRITE): index:', ind, 'page', page, 'data', data);
 
+	//The ID is stored in page
 	if(page == 24 || page == 36){
 		writeJSONData(uid,"id",data.readInt16LE(0));
 		var name = getNameFromID(data.readInt16LE(0));
 		writeJSONData(uid,"name",name);
 		writeJSONData(uid,"type","vehicle");
-		//writeVehicleData(uid, "uid", tp.randomUID())
 	}
 	else if(page == 23 || page == 35)
 		writeJSONData(uid, "vehicleUpgradesP23", data.readUInt32LE(0));
 	else if (page == 25 || page == 37){
 		writeJSONData(uid, "vehicleUpgradesP25", data.readUInt32LE(0));
-		io.emit("refreshTokens");
+		io.emit("refreshTokens"); //Refreshes the html's tag gui.
 	}
 
 	res.payload = new Buffer('00', 'hex');
@@ -155,14 +188,18 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
 		
 });
 
+
+
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'server')))
 
+//**Website requests**
 app.get('/', (request, response) => {
 	response.sendFile(path.join(__dirname, 'server/index.html'));
 });
 
+//Create a new Character and save that data to toytags.json
 app.post('/character', (request, response) => {
 	console.log('Creating character: ' + request.body.id);
 	var uid = tp.randomUID();
@@ -202,6 +239,7 @@ app.post('/character', (request, response) => {
 	response.send();
 });
 
+//This is called when a token is placed or move onto a position on the toypad.
 app.post('/characterPlace', (request, response) => {
 	console.log('Placing tag: ' + request.body.id);
 	var entry = getJSONFromUID(request.body.uid);
@@ -224,6 +262,7 @@ app.post('/characterPlace', (request, response) => {
 	}
 })
 
+//Create a new vehicle and save that data to toytags.json
 app.post('/vehicle', (request, response) => {
 	console.log('Placing vehicle: ' + request.body.id);
 	var uid = tp.randomUID();
@@ -264,6 +303,7 @@ app.post('/vehicle', (request, response) => {
 	response.send(uid);
 });
 
+//This is called when a tag is removed from the board or needs to be moved.
 app.delete('/remove', (request, response) => {
 	console.log('Removing item: ' + request.body.index);
 	console.log('DEBUG: pad-from-token: ', tp._tokens.filter(v => v.index == request.body.index)[0].pad);
@@ -273,7 +313,9 @@ app.delete('/remove', (request, response) => {
 	response.send(true);
 });
 
+//IO calls
 io.on('connection', (socket) => {
+	//Removes a entry from toytags.json
 	socket.on('deleteToken', (uid) => {
 		console.log('IO Recieved: Deleting entry '+  uid + ' from JSON');
 		const tags = fs.readFileSync(toytagFileName, 'utf8');
