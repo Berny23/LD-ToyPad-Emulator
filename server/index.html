@@ -1,0 +1,374 @@
+<!--
+
+	Copyright © 2021 Berny23
+	
+	This file is part of "ToyPad Emulator for Lego Dimensions" which is released under the "MIT" license.
+	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
+
+-->
+
+<html>
+<header>
+	<style>
+		html {
+			text-align: center;
+		}
+
+		input {
+			margin-bottom: 1em;
+			font-size: 1.2em;
+		}
+
+		button {
+			margin-top: 1em;
+			padding: 1em;
+			font-weight: bold;
+		}
+
+		.container {
+			width: fit-content;
+			margin: auto;
+			background-color: aliceblue;
+			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+			padding: 2em;
+			margin-bottom: 1.5em;
+		}
+		.flex-container {
+			width: fit-content;
+			margin: auto;
+			background-color: aliceblue;
+			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+			padding: 2em;
+			margin-bottom: 1.5em;
+			display:inline-flex;
+			flex-direction:row;
+			min-height: 100px;
+
+		}
+
+		.box {
+			border: solid 3px #ccc;
+			margin: 0;
+			list-style-type: none;
+			padding: 10px;
+			
+
+			/* align items in the box */
+		}
+
+		.drop-targets {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+
+			margin: 20px 0;
+		}
+
+		.drop-targets>.box{
+			height: 150px;
+			width: 150px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.item {
+			width: 100px;
+			height: 100px;
+			background-color: rgb(99, 187, 245);
+			border: 10px solid rgba(131, 27, 230, 0.5);
+		}
+		
+		#overlay {
+			position: fixed; /* Sit on top of the page content */
+			display: none; /* Hidden by default */
+			width: 100%; /* Full width (cover the whole page) */
+			height: 100%; /* Full height (cover the whole page) */
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+			z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+			cursor: pointer; /* Add a pointer on hover */
+		}
+
+		#active-tokens>div {
+			padding: 0.5em;
+			margin: auto;
+			margin-bottom: 0.5em;
+			background-color: blanchedalmond;
+		}
+
+		#active-tokens>.removeable {
+			margin-bottom: -0.5em;
+			padding: 1em;
+		}
+
+		#active-tokens>.removeable:hover {
+			background-color: burlywood;
+		}
+
+		#warnings {
+			color: ghostwhite;
+			background-color: darkslateblue;
+			padding: 0.5em;
+		}
+
+		#token-box {
+			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0%), 0 6px 20px 0 rgb(0 0 0 / 0%);
+		}
+
+		#remove-tokens{
+			height: 150px;
+			width: 150px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#remove-tokens>.item{
+			background-color: rgb(247, 89, 89);
+			border: 10px solid rgba(255, 0, 0, 0.5);
+		}
+		#remove-tokens>.placeholder{
+			width:0px;
+			height:0px;
+		}
+		#toybox-tokens { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+  		#toybox-tokens li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; text-align: center; }
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</header>
+
+<body>
+	<div id = "overlay"></div>
+	<div>
+		<h1>LD ToyPad Emulator</h1>
+		<p id="warnings">
+			→ Please don't spam click, or things may break and you'll have to restart the server! ←<br>
+			After changing a position, you have to wait for about 2 seconds, otherwise the game can't keep up.<br>
+			If there are too many characters, reload the page, add 7 characters and click "Remove all".<br>
+			Make sure not to exceed the item limit on each position when switching or placing objects (left/right: 3,
+			middle: 1)!!!
+		</p>
+		<form id="character-select" class="container">
+			<label>
+				Choose a character:
+				<input list="character-list" id="character-name" />
+				<datalist id="character-list"></datalist>
+			</label>
+			<br>
+			<button type="submit">Create Character</button>
+		</form>
+
+		<form id="vehicle-select" class="container">
+			<label>
+				Choose a vehicle:
+				<input list="vehicle-list" id="vehicle-name" />
+				<datalist id="vehicle-list"></datalist>
+			</label>
+			<br>
+			<button type="submit">Create Vehicle</button>
+		</form>
+		<div class="flex-container" style = "width: 1200px; height: fit-content;flex-direction:column">
+			<h2>Toy Box</h2>
+			<p>Drag an entry to move it to the pad</p>
+			<div id="token-box" class="flex-container" style = "width: 1050px; height: fit-content;">
+				<ul id="toybox-tokens" class="box" style="width: 900px; height: max-content;" padNum=-1></ul>
+				<ul id="remove-tokens" class="box" style="width: 150px; height: 150px;" padNum=-2>
+					<li class="item drag-disabled" draggable=false id=deleteToken>
+						<h3>Drag here to delete</h3>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<h1>The Toypad</h1>
+			<div class="drop-targets">
+				<div id = "toypad1" class="box" padNum='2' padIndex = '1'></div>
+				<div class="box" style="visibility: hidden"></div>
+				<div id = "toypad2" class="box" padNum='1' padIndex = '2'></div>
+				<div class="box" style="visibility: hidden"></div>
+				<div id = "toypad3" class="box" padNum='3' padIndex = '3'></div>
+			</div>
+			<div class="drop-targets">
+				<div id = "toypad4" class="box" padNum='2' padIndex = '4'></div>
+				<div id = "toypad5" class="box" padNum='2' padIndex = '5'></div>
+				<div class="box" style="visibility: hidden"></div>
+				<div id = "toypad6" class="box" padNum='3' padIndex = '6'></div>
+				<div id = "toypad7" class="box" padNum='3' padIndex = '7'></div>
+			</div>
+		</div>
+
+	</div>
+
+
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		$(function () {
+			
+			var socket = io();
+			refreshToyBox();
+
+
+			$( "#remove-tokens" ).sortable({
+				cancel: ".drag-disabled"
+				});
+
+			$(".box").sortable({
+				connectWith: ".box",
+				receive: function(event, ui) {
+				var $this = $(this);
+				console.log()
+				
+				if($this.attr('id') == "remove-tokens"){
+					socket.emit('deleteToken', ui.item.attr('data-uid'));
+					setTimeout(function(){refreshToyBox();}, 500)
+				}
+				else if ($this.attr('padNum') == undefined || ($this.children('li').length > 1 && $this.attr('id') != "toybox-tokens"))
+					$(ui.sender).sortable('cancel');
+				//If moving to the ToyPox, remove tag from the game.
+				else if ($this.attr('id') == "toybox-tokens"){
+					$.ajax({
+					method: 'DELETE',
+					contentType: 'application/json',
+					url: '/remove',
+					data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
+					})
+				}
+				//If moving from the ToyBox, place tag in the game.
+				else if (ui.sender.attr('padNum') == -1){
+					var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
+					console.log(content)
+					$.ajax({
+							method: 'POST',
+							contentType: 'application/json',
+							url: '/characterPlace',
+							data: JSON.stringify(content)
+						});
+					}
+					//If moving between spaces on the ToyPad, remove from previous space and place in new one.
+				else{
+					var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
+					console.log(ui.sender.attr('padIndex'))
+					$.ajax({
+					method: 'DELETE',
+					contentType: 'application/json',
+					url: '/remove',
+					data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
+					}).done( function(){
+						setTimeout(function() {
+							$.ajax({
+									method: 'POST',
+									contentType: 'application/json',
+									url: '/characterPlace',
+									data: JSON.stringify(content)
+								})
+						}, 500);
+					})
+				
+					
+			}}})
+
+			socket.on('refreshTokens', function() {
+				document.getElementById("overlay").style.display = "block";
+				console.log("IO Recieved: Refresh Tokens")
+				setTimeout(function(){refreshToyBox();}, 1000)
+				document.getElementById("overlay").style.display = "none";
+			})
+
+			function filterById(jsonObject, id) { return jsonObject.filter(function (jsonObject) { return (jsonObject['id'] == id); })[0]; }
+
+			function filterByName(jsonObject, name) { return jsonObject.filter(function (jsonObject) { return (jsonObject['name'] == name); })[0]; }
+
+			function refreshToyBox(){
+				//Remove All Current Tokens
+				var boxes = document.querySelectorAll('.box')
+
+				boxes.forEach(function(toybox){
+					while (toybox.lastChild && toybox.lastChild.id != "deleteToken") {
+						toybox.removeChild(toybox.lastChild);
+					}
+				})
+
+				//Reread JSON file
+				$.getJSON('./json/toytags.json', function (data) {
+				tags = data;
+				}).done(function () {
+					$.each(tags, function (i, item) {
+						console.log("ID: " + item.id +" UID: " + item.uid)
+						if (item.name != 'test' && item.index == '-1') 
+							$('#toybox-tokens').append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+						else if(item.index != '-1')
+							$('#toypad'+item.index).append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+					});
+				});
+			}
+
+			var characters;
+			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/charactermap.json', function (data) {
+				characters = data;
+			}).done(function () {
+				$.each(characters, function (i, item) {
+					if (item.name != 'Unknown') $('#character-list').append('<option value="' + item.name + '">');
+				});
+			});
+
+			var vehicles;
+			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/tokenmap.json', function (data) {
+				vehicles = data;
+				}).done(function () {
+					$.each(vehicles, function (i, item) {
+						if (item.name != 'unknown') $('#vehicle-list').append('<option value="' + item.name + '">');
+					});
+				});
+
+
+			$('#character-select').submit(function (e) {
+				e.preventDefault();
+
+				var name = $('#character-name').val();
+				$.ajax({
+							method: 'POST',
+							contentType: 'application/json',
+							url: '/character',
+							data: JSON.stringify({ id: filterByName(characters, name).id,})
+						}).done(function(){
+							var now = Date.now();
+							var end = now + 150;
+							while (now < end) { now = Date.now(); }
+							refreshToyBox();
+						});
+			});
+
+			$('#vehicle-select').submit(function (e) {
+				e.preventDefault();
+
+				var name = $('#vehicle-name').val();
+				console.log(name);
+				var id = filterByName(vehicles, name).id;
+				$.ajax({
+						method: 'POST',
+						contentType: 'application/json',
+						url: '/vehicle',
+						data: JSON.stringify({ id: id})
+					}).done(function(){
+						var now = Date.now();
+						var end = now + 150;
+						while (now < end) { now = Date.now(); }
+						refreshToyBox();
+					});
+			});
+		});
+	</script>
+</body>
+
+</html>
