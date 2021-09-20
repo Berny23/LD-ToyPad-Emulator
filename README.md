@@ -10,7 +10,6 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 - Supports most if not all of the consoles the game is available for
 - Confirmed working on Cemu and real Wii U
 - Can be configured easily by following the instructions below
-- Mobile-friendly web interface
 
 ## Demo
 ![](https://i.imgur.com/iyWVObT.png)
