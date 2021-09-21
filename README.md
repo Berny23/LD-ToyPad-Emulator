@@ -1,6 +1,6 @@
 # ToyPad Emulator for Lego Dimensions
 
-Big thanks to Berny23, without their work I wouldn't have had any idea how to start a project like this. Consider donating to them below:
+Big thanks to Berny23, I could have never even have started a project like this, without their work this would not exist. Consider donating to them below:
 <a href="https://www.buymeacoffee.com/Berny23" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
 </span>
 
