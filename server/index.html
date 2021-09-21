@@ -1,6 +1,6 @@
 <!--
 
-	Copyright © 2021 Berny23
+	Copyright © 2021 Berny23 & Cort1237
 	
 	This file is part of "ToyPad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
@@ -94,22 +94,6 @@
 			cursor: pointer; /* Add a pointer on hover */
 		}
 
-		#active-tokens>div {
-			padding: 0.5em;
-			margin: auto;
-			margin-bottom: 0.5em;
-			background-color: blanchedalmond;
-		}
-
-		#active-tokens>.removeable {
-			margin-bottom: -0.5em;
-			padding: 1em;
-		}
-
-		#active-tokens>.removeable:hover {
-			background-color: burlywood;
-		}
-
 		#warnings {
 			color: ghostwhite;
 			background-color: darkslateblue;
@@ -149,11 +133,9 @@
 	<div>
 		<h1>LD ToyPad Emulator</h1>
 		<p id="warnings">
-			→ Please don't spam click, or things may break and you'll have to restart the server! ←<br>
-			After changing a position, you have to wait for about 2 seconds, otherwise the game can't keep up.<br>
-			If there are too many characters, reload the page, add 7 characters and click "Remove all".<br>
-			Make sure not to exceed the item limit on each position when switching or placing objects (left/right: 3,
-			middle: 1)!!!
+			→ If you encounter a token that is not responsing, move to the toybox and then back to the toypad ←<br>
+			<br>
+			Create characters and vehicles with boxes at the top then drag them to the toy pad.<br>
 		</p>
 		<form id="character-select" class="container">
 			<label>
@@ -289,6 +271,7 @@
 
 			function filterByName(jsonObject, name) { return jsonObject.filter(function (jsonObject) { return (jsonObject['name'] == name); })[0]; }
 
+			//Remove all token items from the lists and reread toytags.json and repopulate the lists.
 			function refreshToyBox(){
 				//Remove All Current Tokens
 				var boxes = document.querySelectorAll('.box')
