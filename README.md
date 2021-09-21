@@ -72,7 +72,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 ## Usage
 Type your single board computer's IP address in a browser to use the emulator. If you want to turn it off, just use the command from earlier (without -r) to shut the device down via SSH.
 
-Note: Not currently usable mobile.
+Note: Not currently usable on mobile devices.
 
 ## Acknowledgements
 Shoutout to ags131 for writing one of the main NodeJS libraries I'm using: https://www.npmjs.com/package/node-ld
