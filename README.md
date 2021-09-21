@@ -7,7 +7,8 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 
 ## Features
 - Supports all available characters and vehicles
-- Supports most if not all of the consoles the game is available for
+- Save vehicle upgrades
+- Supports most if not all of the consoles the game is available for (please test if you're able)
 - Confirmed working on Cemu and real Wii U
 - Can be configured easily by following the instructions below
 
@@ -36,7 +37,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
     echo "usb_f_rndis" | sudo tee -a /etc/modules
     
     sudo apt install -y git
-    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
+    git clone https://github.com/Cort1237/LD-ToyPad-Emulator.git
     cd LD-ToyPad-Emulator
     
     sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
@@ -70,6 +71,8 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 ## Usage
 Type your single board computer's IP address in a browser to use the emulator. If you want to turn it off, just use the command from earlier (without -r) to shut the device down via SSH.
+
+Note: Not currently usable mobile.
 
 ## Acknowledgements
 Shoutout to ags131 for writing one of the main NodeJS libraries I'm using: https://www.npmjs.com/package/node-ld
