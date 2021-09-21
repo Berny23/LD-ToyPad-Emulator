@@ -88,7 +88,7 @@ function getJSONFromUID(uid){
 
 //This updates the pad index of a tag in toytags.json, so that info can be accessed locally.
 function updatePadIndex(uid, index){
-	console.log('Planning to set UID: ' + uid + ' to index ' + index);
+	//console.log('Planning to set UID: ' + uid + ' to index ' + index);
 	const data = fs.readFileSync(toytagFileName, 'utf8');
 	const databases = JSON.parse(data);
 	databases.forEach(db => {
@@ -116,7 +116,7 @@ function getUIDFromIndex(index){
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
 function writeJSONData(uid, datatype, data){
-	console.log('Planning to set '+  datatype + ' of ' + uid + ' to ' + data);
+	//console.log('Planning to set '+  datatype + ' of ' + uid + ' to ' + data);
 	const tags = fs.readFileSync(toytagFileName, 'utf8');
 	const databases = JSON.parse(tags);
 	databases.forEach(db => {
@@ -206,7 +206,7 @@ app.post('/character', (request, response) => {
 	var character = createCharacter(request.body.id, uid);
 	var name = getNameFromID(request.body.id, "character");
 
-	console.log("name: " + name, " uid: " + character.uid, " id: " + character.id)
+	//console.log("name: " + name, " uid: " + character.uid, " id: " + character.id)
 
 	fs.readFile(toytagFileName, 'utf8', (err, data) => {
 		if(err){
@@ -244,19 +244,19 @@ app.post('/characterPlace', (request, response) => {
 	console.log('Placing tag: ' + request.body.id);
 	var entry = getJSONFromUID(request.body.uid);
 
-	console.log(entry.type);
+	//console.log(entry.type);
 
 	if(entry.type == "character"){
 		var character = createCharacter(request.body.id, request.body.uid);
 		tp.place(character, request.body.position, request.body.index, character.uid);
-		console.log('Character tag: ' + request.body.id);
+		console.log('Placed character tag: ' + request.body.id);
 		updatePadIndex(character.uid, request.body.index);
 		response.send();
 	}
 	else{
 		var vehicle = createVehicle(request.body.id,[entry.vehicleUpgradesP23, entry.vehicleUpgradesP25],request.body.uid);
 		tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
-		console.log('Vehicle tag: ' + request.body.id);
+		console.log('Placed vehicle tag: ' + request.body.id);
 		updatePadIndex(vehicle.uid, request.body.index);
 		response.send();
 	}
@@ -269,7 +269,7 @@ app.post('/vehicle', (request, response) => {
 	var vehicle = createVehicle(request.body.id, [0xEFFFFFFF, 0xEFFFFFFF], uid);
 	var name = getNameFromID(request.body.id, "vehicle");
 
-	console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id)
+	//console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id)
 
 	fs.readFile(toytagFileName, 'utf8', (err, data) => {
 		if(err){
@@ -287,7 +287,7 @@ app.post('/vehicle', (request, response) => {
 				vehicleUpgradesP25: 0xEFFFFFFF
 			}
 
-			console.log(entry)
+			//console.log(entry)
 			tags.push(entry);
 
 			fs.writeFile(toytagFileName, JSON.stringify(tags, null, 4), 'utf8', (err) => {
