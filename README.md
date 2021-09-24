@@ -8,7 +8,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 ## Features
 - Supports all available characters and vehicles
 - Supports most if not all of the consoles the game is available for
-- Confirmed working on Cemu and real Wii U
+- Confirmed working on Cemu, real Wii U and real PS4
 - Can be configured easily by following the instructions below
 - Mobile-friendly web interface
 
