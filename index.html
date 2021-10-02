@@ -232,6 +232,7 @@
 				$('html').find("input").not('#remove-all').prop('disabled', true);
 				setTimeout(function() {
 						$('html').find("input").not('#remove-all').prop('disabled', false);
+						checkPositionLimits();
 				}, 2000);
 				
 				$.ajax({
@@ -248,7 +249,7 @@
 									contentType: 'application/json',
 									url: '/character',
 									data: JSON.stringify({ id: filterByName(characters, name).id, position: position, index: index, uid: uid })
-								}).done(function() { checkPositionLimits(); });
+								});
 								break;
 							case "vehicle":
 								$.ajax({
@@ -256,7 +257,7 @@
 									contentType: 'application/json',
 									url: '/vehicle',
 									data: JSON.stringify({ id: filterByName(vehicles, name).id, position: position, index: index, uid: uid })
-								}).done(function() { checkPositionLimits(); });
+								});
 								break;
 						}
 					}, 500);
