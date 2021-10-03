@@ -1,108 +1,3 @@
-<style>
-span.tooltip {
-    font-weight: bold;
-}
-[data-tooltip] {
-  position: relative;
-  cursor: pointer;
-}
-[data-tooltip]:before,
-[data-tooltip]:after {
-  line-height: 1;
-  font-size: .9em;
-  pointer-events: none;
-  position: absolute;
-  box-sizing: border-box;
-  display: none;
-  opacity: 0;
-}
-[data-tooltip]:before {
-  content: "";
-  border: 5px solid transparent;
-  z-index: 100;
-}
-[data-tooltip]:after {
-  content: attr(data-tooltip);
-  text-align: center;
-  min-width: 3em;
-  max-width: 21em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 6px 8px;
-  border-radius: 3px;
-  background: #bdbdbd;
-  color: #000000;
-  z-index: 99;
-}
-[data-tooltip]:hover:before,
-[data-tooltip]:hover:after {
-  display: block;
-  opacity: 1;
-}
-[data-tooltip]:not([data-flow])::before,
-[data-tooltip][data-flow="top"]::before {
-  bottom: 100%;
-  border-bottom-width: 0;
-  border-top-color: #4621FF;
-}
-[data-tooltip]:not([data-flow])::after,
-[data-tooltip][data-flow="top"]::after {
-  bottom: calc(100% + 5px);
-}
-[data-tooltip]:not([data-flow])::before, [tooltip]:not([data-flow])::after,
-[data-tooltip][data-flow="top"]::before,
-[data-tooltip][data-flow="top"]::after {
-  left: 50%;
-  -webkit-transform: translate(-50%, -4px);
-          transform: translate(-50%, -4px);
-}
-[data-tooltip][data-flow="bottom"]::before {
-  top: 100%;
-  border-top-width: 0;
-  border-bottom-color: #4621FF;
-}
-[data-tooltip][data-flow="bottom"]::after {
-  top: calc(100% + 5px);
-}
-[data-tooltip][data-flow="bottom"]::before, [data-tooltip][data-flow="bottom"]::after {
-  left: 50%;
-  -webkit-transform: translate(-50%, 8px);
-          transform: translate(-50%, 8px);
-}
-[data-tooltip][data-flow="left"]::before {
-  top: 50%;
-  border-right-width: 0;
-  border-left-color: #4621FF;
-  left: calc(0em - 5px);
-  -webkit-transform: translate(-8px, -50%);
-          transform: translate(-8px, -50%);
-}
-[data-tooltip][data-flow="left"]::after {
-  top: 50%;
-  right: calc(100% + 5px);
-  -webkit-transform: translate(-8px, -50%);
-          transform: translate(-8px, -50%);
-}
-[data-tooltip][data-flow="right"]::before {
-  top: 50%;
-  border-left-width: 0;
-  border-right-color: #4621FF;
-  right: calc(0em - 5px);
-  -webkit-transform: translate(8px, -50%);
-          transform: translate(8px, -50%);
-}
-[data-tooltip][data-flow="right"]::after {
-  top: 50%;
-  left: calc(100% + 5px);
-  -webkit-transform: translate(8px, -50%);
-          transform: translate(8px, -50%);
-}
-[data-tooltip=""]::after, [data-tooltip=""]::before {
-  display: none !important;
-}
-</style>
-
 # ToyPad Emulator for Lego Dimensions
 
 <a href="https://www.buymeacoffee.com/Berny23" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
@@ -134,7 +29,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 2. Connect your device to your PC via USB cable (don't use the port on the edge of the Pi Zero!).
 
-4. <span class="tooltip" data-tooltip="like 'ssh pi@192.168.0.165'" data-flow="top">Use SSH</span> to run the following commands:<br>
+4. Use SSH to run the following commands:<br>
    ```bash
    echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
    echo "dwc2" | sudo tee -a /etc/modules
