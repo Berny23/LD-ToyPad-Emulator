@@ -70,16 +70,23 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
    ```
 
 ## Usage
-Type your single board computer's IP address in a browser to use the emulator. If you want to turn it off, just use the command from earlier (without -r) to shut the device down via SSH.
+Type your single board computer's IP address in a browser to use the emulator.
+
+If you want to turn it off, just press `Ctrl + C` in the cmd window, then use the command `sudo shutdown now` to safely power off the device.
 
 Note: Not currently usable on mobile devices.
 
 ## Update
-To update this software, just pull the latest changes by running the following commands:
+To update this software, just pull the latest changes by running the following 3 commands:
 ````bash
 cd LD-ToyPad-Emulator
 git pull
 npm install
+````
+
+**Only use the following command if you get an error**, then run the last two lines from above again:
+````bash
+git reset --hard
 ````
 
 ## Acknowledgements
