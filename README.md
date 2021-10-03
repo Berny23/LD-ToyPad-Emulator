@@ -7,13 +7,13 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 
 ## Features
 - Supports all available characters and vehicles
-- Supports most if not all of the consoles the game is available for
+- Save vehicle upgrades
+- Supports most if not all of the consoles the game is available for (please test if you're able)
 - Confirmed working on Cemu, real Wii U and real PS4
 - Can be configured easily by following the instructions below
-- Mobile-friendly web interface
 
 ## Demo
-![](https://i.imgur.com/Hg12EDL.jpg)
+![](https://i.imgur.com/iyWVObT.png)
 
 Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
@@ -72,17 +72,20 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 ## Usage
 Type your single board computer's IP address in a browser to use the emulator. If you want to turn it off, just use the command from earlier (without -r) to shut the device down via SSH.
 
+Note: Not currently usable on mobile devices.
+
 ## Update
 To update this software, just pull the latest changes by running the following commands:
 ````bash
 cd LD-ToyPad-Emulator
 git pull
+npm install
 ````
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
 
-* **cort1237** for implementing writing of toy tags, therefore eliminating the need for a workaround when building vehicles.
+* **cort1237** for implementing writing to toy tags as well as several UI updates and support for saving toy tags locally.
 
 
 ## License
