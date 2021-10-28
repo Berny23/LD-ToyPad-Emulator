@@ -138,8 +138,7 @@
 		</p>
 		<form id="character-select" class="container">
 			<label>
-				Choose a character:
-				<input list="character-list" id="character-name" />
+				<input list="character-list" id="character-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a character" />
 				<datalist id="character-list"></datalist>
 			</label>
 			<br>
@@ -148,9 +147,8 @@
 
 		<form id="vehicle-select" class="container">
 			<label>
-				Choose a vehicle:
-				<input list="vehicle-list" id="vehicle-name" />
-				<datalist id="vehicle-list"></datalist>
+			<input list="vehicle-list" id="vehicle-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a vehicle" />
+			<datalist id="vehicle-list"></datalist>
 			</label>
 			<br>
 			<button type="submit">Create Vehicle</button>
@@ -412,6 +410,7 @@
 							var end = now + 150;
 							while (now < end) { now = Date.now(); }
 							refreshToyBox();
+							$('#character-select')[0].reset();
 						});
 			});
 
@@ -431,6 +430,7 @@
 						var end = now + 150;
 						while (now < end) { now = Date.now(); }
 						refreshToyBox();
+						$('#vehicle-select')[0].reset();
 					});
 			});
 		});
