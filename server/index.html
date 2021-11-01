@@ -378,7 +378,7 @@
 			}
 
 			var characters;
-			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/charactermap.json', function (data) {
+			$.getJSON('json/charactermap.json', function (data) {
 				characters = data;
 			}).done(function () {
 				$.each(characters, function (i, item) {
@@ -387,7 +387,7 @@
 			});
 
 			var vehicles;
-			$.getJSON('https://raw.githubusercontent.com/Berny23/node-ld/master/data/tokenmap.json', function (data) {
+			$.getJSON('json/tokenmap.json', function (data) {
 				vehicles = data;
 				}).done(function () {
 					$.each(vehicles, function (i, item) {
