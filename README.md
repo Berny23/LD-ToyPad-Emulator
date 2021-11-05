@@ -81,6 +81,7 @@ If you want to turn it off, just press `Ctrl + C` in the cmd window, then use th
 To update this software, just pull the latest changes by running the following 3 commands:
 ````bash
 cd LD-ToyPad-Emulator
+rm package-lock.json
 git pull
 npm install
 ````
