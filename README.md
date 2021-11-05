@@ -9,6 +9,8 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 - Supports all available characters and vehicles
 - Save vehicle upgrades
 - Supports most if not all of the consoles the game is available for (please test if you're able)
+- Displays the toypad's light effects
+- Can be used from mobile devices
 - Confirmed working on [Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y), real Wii U, [real PS3](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [real PS4](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
 - Can be configured easily by following the instructions below
 
@@ -74,8 +76,6 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 Type your single board computer's IP address in a browser to use the emulator.
 
 If you want to turn it off, just press `Ctrl + C` in the cmd window, then use the command `sudo shutdown now` to safely power off the device.
-
-Note: Not currently usable on mobile devices.
 
 ## Update
 To update this software, just pull the latest changes by running the following 3 commands:
