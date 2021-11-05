@@ -12,6 +12,11 @@
 		<meta name="viewport" content="width=device-width"/>
 		<title>Lego Dimensions ToyPad Emulator | v1.3.3</title>
 		<style>
+			html {
+				display: table;
+				margin: auto;
+				text-align: center;
+			}
 			body {
 				display: table-cell;
 				vertical-align: middle;
@@ -59,7 +64,7 @@
 				margin: 0;
 				list-style-type: none;
 				padding: 10px;
-				transition: background-color 0.25s ease-out
+				transition: background-color 0.25s ease-out;
 				border-radius: 0.50rem;
 	
 				/* align items in the box */
@@ -182,7 +187,7 @@
 				</form>
 			</div>
 			
-			<div class="flex-container" style = "width: fit-content; height: fit-content;flex-direction:column">
+			<div class="flex-container" style = "display:list-item; width: fit-content; height: fit-content;flex-direction:column">
 				<h2>Toy Box</h2>
 				<p>Drag an entry to move it to the pad</p>
 				<div id="token-box" class="flex-container">
