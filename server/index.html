@@ -8,433 +8,466 @@
 -->
 
 <html>
-<header>
-	<meta name="viewport" content="width=device-width"/>
-	<style>
-		html {
-			display: table;
-			margin: auto;
-			text-align: center;
-		}
-
-		body {
-			display: table-cell;
-			vertical-align: middle;
-		}
-
-		input {
-			margin-bottom: 1em;
-			font-size: 1.2em;
-		}
-
-		button {
-			margin-top: 1em;
-			padding: 1em;
-			font-weight: bold;
-		}
-
-		.container {
-			width: fit-content;
-			margin: auto;
-			background-color: aliceblue;
-			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-			padding: 2em;
-			margin-bottom: 1.5em;
-		}
-		.flex-container {
-			width: fit-content;
-			margin: auto;
-			background-color: aliceblue;
-			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-			padding: 2em;
-			margin-bottom: 1.5em;
-			display:inline-flex;
-			flex-direction:row;
-			min-height: 100px;
-
-		}
-
-		.box {
-			border: solid 3px #ccc;
-			margin: 0;
-			list-style-type: none;
-			padding: 10px;
-			transition: background-color 0.25s ease-out
-			
-
-			/* align items in the box */
-		}
-
-		.drop-targets {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-around;
-			align-items: center;
-			position: relative;
-
-			margin: 20px 0;
-		}
-
-		.drop-targets>.box{
-			height: 150px;
-			width: 150px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: white;
-			background-blend-mode:soft-light;
-		}
-
-		.item {
-			width: 100px;
-			height: 100px;
-			background-color: rgb(99, 187, 245);
-			border: 10px solid rgba(131, 27, 230, 0.5);
-		}
-
-
-		#warnings {
-			color: ghostwhite;
-			background-color: darkslateblue;
-			padding: 0.5em;
-		}
-
-		#token-box {
-			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0%), 0 6px 20px 0 rgb(0 0 0 / 0%);
-		}
-
-		#remove-tokens{
-			height: 150px;
-			width: 150px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		#remove-tokens>.item{
-			background-color: rgb(247, 89, 89);
-			border: 10px solid rgba(255, 0, 0, 0.5);
-		}
-		#remove-tokens>.placeholder{
-			width:0px;
-			height:0px;
-		}
-		#toybox-tokens { list-style-type: none; margin: 0; padding: 0; width: 450px; }
-  		#toybox-tokens li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; text-align: center; }
-
-	</style>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-</header>
-
-<body>
-
-	<div>
-		<h1>LD ToyPad Emulator</h1>
-		<p id="warnings">
-			→ If you encounter a token that is not responsing, move to the toybox and then back to the toypad ←<br>
-			<br>
-			Create characters and vehicles with boxes at the top then drag them to the toy pad.<br>
-		</p>
-		<form id="character-select" class="container">
-			<label>
-				<input list="character-list" id="character-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a character" />
-				<datalist id="character-list"></datalist>
-			</label>
-			<br>
-			<button type="submit">Create Character</button>
-		</form>
-
-		<form id="vehicle-select" class="container">
-			<label>
-			<input list="vehicle-list" id="vehicle-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a vehicle" />
-			<datalist id="vehicle-list"></datalist>
-			</label>
-			<br>
-			<button type="submit">Create Vehicle</button>
-		</form>
-		<div class="flex-container" style = "width: fit-content; height: fit-content;flex-direction:column">
-			<h2>Toy Box</h2>
-			<p>Drag an entry to move it to the pad</p>
-			<div id="token-box" class="flex-container" style = "width: fit-content; height: fit-content;">
-				<ul id="toybox-tokens" class="box" style="width: 760px; height: max-content;" padNum=-1></ul>
-				<ul id="remove-tokens" class="box" style="width: 150px; height: 150px;" padNum=-2>
-					<li class="item drag-disabled" draggable=false id=deleteToken>
-						<h3>Drag here to delete</h3>
-					</li>
-				</ul>
-			</div>
-		</div>
-
-		<div class="container">
-			<h1>The Toypad</h1>
-			<div>
-				<div class="drop-targets">
-					<div id = "toypad1" class="box" padNum='2' padIndex = '1' color = "white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id = "toypad2" class="box" padNum='1' padIndex = '2' color = "white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id = "toypad3" class="box" padNum='3' padIndex = '3' color = "white"></div>
-				</div>
-				<div class="drop-targets">
-					<div id = "toypad4" class="box" padNum='2' padIndex = '4' color = "white"></div>
-					<div id = "toypad5" class="box" padNum='2' padIndex = '5' color = "white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id = "toypad6" class="box" padNum='3' padIndex = '6' color = "white"></div>
-					<div id = "toypad7" class="box" padNum='3' padIndex = '7' color = "white"></div>
-				</div>
-			</div>
-		</div>
-
-	</div>
-
-
+	<head>
+		<meta name="viewport" content="width=device-width"/>
+		<title>Lego Dimensions ToyPad Emulator | v1.3.3</title>
+		<style>
+			body {
+				display: table-cell;
+				vertical-align: middle;
+				margin: auto;
+				text-align: center;
+				font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+			}
 	
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="jquery.ui.touch-punch.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://code.jquery.com/color/jquery.color-2.2.0.min.js" integrity="sha256-aSe2ZC5QeunlL/w/7PsVKmV+fa0eDbmybn/ptsKHR6I=" crossorigin="anonymous"></script>
-	<script>
-		$(function () {
+			input {
+				margin-bottom: 1em;
+				font-size: 1.2em;
+			}
+	
+			button {
+				margin-top: 1em;
+				padding: 1em;
+				font-weight: bold;
+			}
+	
+			.container {
+				width: fit-content;
+				margin: auto;
+				background-color: #efefef;
+				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+				padding: 2em;
+				margin-bottom: 1.5em;
+				border-radius: 0.50rem;
+			}
 			
-			var socket = io();
-			refreshToyBox();
-
-			//**Drag & Drop Functions**
-			$( "#remove-tokens" ).sortable({
-				cancel: ".drag-disabled"
+			.flex-container {
+				flex-direction: column;
+				width: fit-content;
+				margin: auto;
+				background-color: #efefef;
+				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+				padding: 2em;
+				margin-bottom: 1.5em;
+				display:inline-flex;
+				min-height: 100px;
+				border-radius: 0.50rem;
+			}
+	
+			.box {
+				border: solid 3px #bdbdbd;
+				margin: 0;
+				list-style-type: none;
+				padding: 10px;
+				transition: background-color 0.25s ease-out
+				border-radius: 0.50rem;
+	
+				/* align items in the box */
+			}
+	
+			.drop-targets {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				align-items: center;
+				position: relative;
+				margin: 1em 0;
+			}
+	
+			.drop-targets>.box{
+				height: 9em;
+				width: 9em;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: white;
+				background-blend-mode:soft-light;
+				margin: 0 0.5em;
+			}
+	
+			.item {
+				width: 7em;
+				height: 7em;
+				background-color: #42a5f5;
+				border: 1px solid transparent;
+				border-radius: 0.50rem;
+				color: #000;
+				box-sizing: border-box;
+				cursor: pointer;
+				box-shadow: rgb(0 0 0 / 20%) 0 4px 12px;
+			}
+			
+			.item:hover, .item:focus, .item:active {
+				color: #fff;
+				background-color: #0077c1;
+				transition: background-color 250ms;
+			}
+	
+			#warnings {
+				color: ghostwhite;
+				background-color: #5c6bc0;
+				padding: 0.5em;
+			}
+	
+			#token-box {
+				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0%), 0 6px 20px 0 rgb(0 0 0 / 0%);
+			}
+	
+			#remove-tokens{
+				height: 8em;
+				width: 8em;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 0.50rem;
+			}
+	
+			#remove-tokens>.item{
+				background-color: #b61827;
+				box-shadow: none;
+				color: #fff;
+			}
+			
+			#remove-tokens>.placeholder{
+				width:0px;
+				height:0px;
+			}
+			
+			#toybox-tokens {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				width: 50em;
+				margin-right: 1em;
+				border-radius: 0.50rem;
+			}
+			
+			#toybox-tokens li {
+				margin: 0.5em;
+				float: left;
+			}
+	
+		</style>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	</head>
+	
+	<body>
+	
+		<div>
+			<h1>Lego Dimensions ToyPad Emulator</h1>
+			<p id="warnings" class="container">
+				→ If you encounter a token that is not responsing, move to the toybox and then back to the toypad ←<br>
+				<br>
+				Create characters and vehicles with boxes at the top then drag them to the toy pad.<br>
+			</p>
+			
+			<div style="display: inline-flex;">
+				<form id="character-select" class="container" style="margin-right: 2em;">
+					<label>
+						<input list="character-list" id="character-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a character" />
+						<datalist id="character-list"></datalist>
+					</label>
+					<br>
+					<button type="submit">Create Character</button>
+				</form>
+		
+				<form id="vehicle-select" class="container">
+					<label>
+					<input list="vehicle-list" id="vehicle-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a vehicle" />
+					<datalist id="vehicle-list"></datalist>
+					</label>
+					<br>
+					<button type="submit">Create Vehicle</button>
+				</form>
+			</div>
+			
+			<div class="flex-container" style = "width: fit-content; height: fit-content;flex-direction:column">
+				<h2>Toy Box</h2>
+				<p>Drag an entry to move it to the pad</p>
+				<div id="token-box" class="flex-container">
+					<ul id="toybox-tokens" class="box" padNum=-1></ul>
+					<ul id="remove-tokens" class="box" padNum=-2>
+						<li class="item drag-disabled" draggable=false id=deleteToken>
+							<h3>Drag to<br>this side<br>to delete<br>→</h3>
+						</li>
+					</ul>
+				</div>
+			</div>
+	
+			<div class="container">
+				<h1>The Toypad</h1>
+				<div>
+					<div class="drop-targets">
+						<div id = "toypad1" class="box" padNum='2' padIndex = '1' color = "white"></div>
+						<div class="box" style="visibility: hidden"></div>
+						<div id = "toypad2" class="box" padNum='1' padIndex = '2' color = "white"></div>
+						<div class="box" style="visibility: hidden"></div>
+						<div id = "toypad3" class="box" padNum='3' padIndex = '3' color = "white"></div>
+					</div>
+					<div class="drop-targets">
+						<div id = "toypad4" class="box" padNum='2' padIndex = '4' color = "white"></div>
+						<div id = "toypad5" class="box" padNum='2' padIndex = '5' color = "white"></div>
+						<div class="box" style="visibility: hidden"></div>
+						<div id = "toypad6" class="box" padNum='3' padIndex = '6' color = "white"></div>
+						<div id = "toypad7" class="box" padNum='3' padIndex = '7' color = "white"></div>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+	
+	
+		
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="jquery.ui.touch-punch.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/color/jquery.color-2.2.0.min.js" integrity="sha256-aSe2ZC5QeunlL/w/7PsVKmV+fa0eDbmybn/ptsKHR6I=" crossorigin="anonymous"></script>
+		<script>
+			$(function () {
+				
+				var socket = io();
+				refreshToyBox();
+	
+				//**Drag & Drop Functions**
+				$( "#remove-tokens" ).sortable({
+					cancel: ".drag-disabled"
+					});
+	
+				$(".box").sortable({
+					connectWith: ".box",
+					scroll: true,
+					scrollSensitivity: 100,
+					receive: function(event, ui) {
+						var $this = $(this);
+						console.log()
+						
+						if($this.attr('id') == "remove-tokens"){
+							socket.emit('deleteToken', ui.item.attr('data-uid'));
+							setTimeout(function(){refreshToyBox();}, 500)
+						}
+						else if ($this.attr('padNum') == undefined || ($this.children('li').length > 1 && $this.attr('id') != "toybox-tokens"))
+							$(ui.sender).sortable('cancel');
+						//If moving to the ToyPox, remove tag from the game.
+						else if ($this.attr('id') == "toybox-tokens"){
+							$.ajax({
+							method: 'DELETE',
+							contentType: 'application/json',
+							url: '/remove',
+							data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
+							})
+						}
+						//If moving from the ToyBox, place tag in the game.
+						else if (ui.sender.attr('padNum') == -1){
+							var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
+							console.log(content)
+							$.ajax({
+									method: 'POST',
+									contentType: 'application/json',
+									url: '/characterPlace',
+									data: JSON.stringify(content)
+								});
+							}
+						//If moving between spaces on the ToyPad, remove from previous space and place in new one.
+						else{
+							var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
+							console.log(ui.sender.attr('padIndex'))
+							$.ajax({
+							method: 'DELETE',
+							contentType: 'application/json',
+							url: '/remove',
+							data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
+							}).done( function(){
+								setTimeout(function() {
+									$.ajax({
+											method: 'POST',
+											contentType: 'application/json',
+											url: '/characterPlace',
+											data: JSON.stringify(content)
+										})
+								}, 500);
+							})
+						}
+					}});
+	
+				$(".box").disableSelection();
+				
+	
+				//**IO Functions**
+				socket.on('refreshTokens', function() {
+					console.log("IO Recieved: Refresh Tokens")
+					setTimeout(function(){refreshToyBox();}, 1000)
+				})
+	
+	
+				socket.on('Fade One', function(e) {
+					console.log("IO Recieved: Fade One")
+					padindexs = [[2],[1,4,5],[3,6,7]];
+					pad = e[0];
+					speed = e[1];
+					cycles = e[2];
+					color = e[3] + '80';
+					console.log('FADE ONE: ', e);
+					pads = padindexs[pad-1]
+					pads.forEach(element => {
+						pad = document.getElementById('toypad'+element);
+	
+						console.log('#toypad' + element + ' Color: ' + color);
+						$('#toypad' + element).animate().css({backgroundColor: color});
+						setTimeout(() => {
+							$('#toypad' + element).animate().css({backgroundColor: pad.color});
+						}, speed*100);
+					});
+				})
+	
+				socket.on('Fade All', function(e) {
+					console.log("IO Recieved: Fade All")
+					padindexs = [1,2,3,4,5,6,7]
+					speed = e[0];
+					cycles = e[1];
+					padindexs.forEach(element => {
+						pad = document.getElementById('toypad'+element);
+						if(element == 2)
+							var color = e[2];
+						else if (element == 1 || element == 4 || element == 5)
+							var color = e[5];
+						else if(element == 3 || element == 6 || element == 7)
+							var color = e[8];
+						console.log('#toypad' + element + ' Color: ' + color);
+						color = color + '80'
+						$('#toypad' + element).animate().css({backgroundColor: color});
+						setTimeout(() => {
+							$('#toypad' + element).animate().css({backgroundColor: pad.color});
+						}, speed*100);
+					});
+				})
+	
+				socket.on('Color One', function(e) {
+					console.log("IO Recieved: Color One");
+					padindexs = [[2],[1,4,5],[3,6,7]];
+					pad = e[0];
+					color = e[1] + '80';
+					pads = padindexs[pad-1];
+					pads.forEach(element => {
+						pad = document.getElementById('toypad'+element);
+						pad.setAttribute('color', e[1]);
+						$('#toypad' + element).css({backgroundColor:color});
+					});
+				})
+	
+				socket.on('Color All', function(e) {
+					console.log("IO Recieved: Color All");
+					padindexs = [1,2,3,4,5,6,7];
+					padindexs.forEach(element => {
+						pad = document.getElementById('toypad'+element);
+						padnum = pad.padNum;
+						if(element == 2)
+							var color = e[0];
+						else if (element == 1 || element == 4 || element == 5)
+							var color = e[1];
+						else if(element == 3 || element == 6 || element == 7)
+							var color = e[2];
+						pad.setAttribute('color', color);
+						console.log(pad);
+						color = color + '80'
+						$('#toypad' + element).css({backgroundColor:color});
+					})
+				})
+	
+				//**Script Functions**
+	
+				function filterById(jsonObject, id) { return jsonObject.filter(function (jsonObject) { return (jsonObject['id'] == id); })[0]; }
+	
+				function filterByName(jsonObject, name) { return jsonObject.filter(function (jsonObject) { return (jsonObject['name'] == name); })[0]; }
+	
+				//Remove all token items from the lists and reread toytags.json and repopulate the lists.
+				function refreshToyBox(){
+					//Remove All Current Tokens
+					var boxes = document.querySelectorAll('.box')
+	
+					boxes.forEach(function(toybox){
+						while (toybox.lastChild && toybox.lastChild.id != "deleteToken") {
+							toybox.removeChild(toybox.lastChild);
+						}
+					})
+	
+					//Reread JSON file
+					$.getJSON('./json/toytags.json', function (data) {
+					tags = data;
+					}).done(function () {
+						$.each(tags, function (i, item) {
+							console.log("ID: " + item.id +" UID: " + item.uid)
+							if (item.name != 'test' && item.index == '-1') 
+								$('#toybox-tokens').append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+							else if(item.index != '-1')
+								$('#toypad'+item.index).append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+						});
+					});
+				}
+	
+				var characters;
+				$.getJSON('json/charactermap.json', function (data) {
+					characters = data;
+				}).done(function () {
+					$.each(characters, function (i, item) {
+						if (item.name != 'Unknown') $('#character-list').append('<option value="' + item.name + '">');
+					});
 				});
-
-			$(".box").sortable({
-				connectWith: ".box",
-				scroll: true,
-				scrollSensitivity: 500,
-				receive: function(event, ui) {
-					var $this = $(this);
-					console.log()
-					
-					if($this.attr('id') == "remove-tokens"){
-						socket.emit('deleteToken', ui.item.attr('data-uid'));
-						setTimeout(function(){refreshToyBox();}, 500)
-					}
-					else if ($this.attr('padNum') == undefined || ($this.children('li').length > 1 && $this.attr('id') != "toybox-tokens"))
-						$(ui.sender).sortable('cancel');
-					//If moving to the ToyPox, remove tag from the game.
-					else if ($this.attr('id') == "toybox-tokens"){
-						$.ajax({
-						method: 'DELETE',
-						contentType: 'application/json',
-						url: '/remove',
-						data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
-						})
-					}
-					//If moving from the ToyBox, place tag in the game.
-					else if (ui.sender.attr('padNum') == -1){
-						var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
-						console.log(content)
-						$.ajax({
+	
+				var vehicles;
+				$.getJSON('json/tokenmap.json', function (data) {
+					vehicles = data;
+					}).done(function () {
+						$.each(vehicles, function (i, item) {
+							if (item.name != 'unknown') $('#vehicle-list').append('<option value="' + item.name + '">');
+						});
+					});
+	
+	
+				$('#character-select').submit(function (e) {
+					e.preventDefault();
+	
+					var name = $('#character-name').val();
+					$.ajax({
 								method: 'POST',
 								contentType: 'application/json',
-								url: '/characterPlace',
-								data: JSON.stringify(content)
+								url: '/character',
+								data: JSON.stringify({ id: filterByName(characters, name).id,})
+							}).done(function(){
+								var now = Date.now();
+								var end = now + 150;
+								while (now < end) { now = Date.now(); }
+								refreshToyBox();
+								$('#character-select')[0].reset();
 							});
-						}
-					//If moving between spaces on the ToyPad, remove from previous space and place in new one.
-					else{
-						var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
-						console.log(ui.sender.attr('padIndex'))
-						$.ajax({
-						method: 'DELETE',
-						contentType: 'application/json',
-						url: '/remove',
-						data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
-						}).done( function(){
-							setTimeout(function() {
-								$.ajax({
-										method: 'POST',
-										contentType: 'application/json',
-										url: '/characterPlace',
-										data: JSON.stringify(content)
-									})
-							}, 500);
-						})
-					}
-				}});
-
-			$(".box").disableSelection();
-			
-
-			//**IO Functions**
-			socket.on('refreshTokens', function() {
-				console.log("IO Recieved: Refresh Tokens")
-				setTimeout(function(){refreshToyBox();}, 1000)
-			})
-
-
-			socket.on('Fade One', function(e) {
-				console.log("IO Recieved: Fade One")
-				padindexs = [[2],[1,4,5],[3,6,7]];
-				pad = e[0];
-				speed = e[1];
-				cycles = e[2];
-				color = e[3] + '80';
-				console.log('FADE ONE: ', e);
-				pads = padindexs[pad-1]
-				pads.forEach(element => {
-					pad = document.getElementById('toypad'+element);
-
-					console.log('#toypad' + element + ' Color: ' + color);
-					$('#toypad' + element).animate().css({backgroundColor: color});
-					setTimeout(() => {
-						$('#toypad' + element).animate().css({backgroundColor: pad.color});
-					}, speed*100);
 				});
-			})
-
-			socket.on('Fade All', function(e) {
-				console.log("IO Recieved: Fade All")
-				padindexs = [1,2,3,4,5,6,7]
-				speed = e[0];
-				cycles = e[1];
-				padindexs.forEach(element => {
-					pad = document.getElementById('toypad'+element);
-					if(element == 2)
-						var color = e[2];
-					else if (element == 1 || element == 4 || element == 5)
-						var color = e[5];
-					else if(element == 3 || element == 6 || element == 7)
-						var color = e[8];
-					console.log('#toypad' + element + ' Color: ' + color);
-					color = color + '80'
-					$('#toypad' + element).animate().css({backgroundColor: color});
-					setTimeout(() => {
-						$('#toypad' + element).animate().css({backgroundColor: pad.color});
-					}, speed*100);
-				});
-			})
-
-			socket.on('Color One', function(e) {
-				console.log("IO Recieved: Color One");
-				padindexs = [[2],[1,4,5],[3,6,7]];
-				pad = e[0];
-				color = e[1] + '80';
-				pads = padindexs[pad-1];
-				pads.forEach(element => {
-					pad = document.getElementById('toypad'+element);
-					pad.setAttribute('color', e[1]);
-					$('#toypad' + element).css({backgroundColor:color});
-				});
-			})
-
-			socket.on('Color All', function(e) {
-				console.log("IO Recieved: Color All");
-				padindexs = [1,2,3,4,5,6,7];
-				padindexs.forEach(element => {
-					pad = document.getElementById('toypad'+element);
-					padnum = pad.padNum;
-					if(element == 2)
-						var color = e[0];
-					else if (element == 1 || element == 4 || element == 5)
-						var color = e[1];
-					else if(element == 3 || element == 6 || element == 7)
-						var color = e[2];
-					pad.setAttribute('color', color);
-					console.log(pad);
-					color = color + '80'
-					$('#toypad' + element).css({backgroundColor:color});
-				})
-			})
-
-			//**Script Functions**
-
-			function filterById(jsonObject, id) { return jsonObject.filter(function (jsonObject) { return (jsonObject['id'] == id); })[0]; }
-
-			function filterByName(jsonObject, name) { return jsonObject.filter(function (jsonObject) { return (jsonObject['name'] == name); })[0]; }
-
-			//Remove all token items from the lists and reread toytags.json and repopulate the lists.
-			function refreshToyBox(){
-				//Remove All Current Tokens
-				var boxes = document.querySelectorAll('.box')
-
-				boxes.forEach(function(toybox){
-					while (toybox.lastChild && toybox.lastChild.id != "deleteToken") {
-						toybox.removeChild(toybox.lastChild);
-					}
-				})
-
-				//Reread JSON file
-				$.getJSON('./json/toytags.json', function (data) {
-				tags = data;
-				}).done(function () {
-					$.each(tags, function (i, item) {
-						console.log("ID: " + item.id +" UID: " + item.uid)
-						if (item.name != 'test' && item.index == '-1') 
-							$('#toybox-tokens').append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
-						else if(item.index != '-1')
-							$('#toypad'+item.index).append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
-					});
-				});
-			}
-
-			var characters;
-			$.getJSON('json/charactermap.json', function (data) {
-				characters = data;
-			}).done(function () {
-				$.each(characters, function (i, item) {
-					if (item.name != 'Unknown') $('#character-list').append('<option value="' + item.name + '">');
-				});
-			});
-
-			var vehicles;
-			$.getJSON('json/tokenmap.json', function (data) {
-				vehicles = data;
-				}).done(function () {
-					$.each(vehicles, function (i, item) {
-						if (item.name != 'unknown') $('#vehicle-list').append('<option value="' + item.name + '">');
-					});
-				});
-
-
-			$('#character-select').submit(function (e) {
-				e.preventDefault();
-
-				var name = $('#character-name').val();
-				$.ajax({
+	
+				$('#vehicle-select').submit(function (e) {
+					e.preventDefault();
+	
+					var name = $('#vehicle-name').val();
+					console.log(name);
+					var id = filterByName(vehicles, name).id;
+					$.ajax({
 							method: 'POST',
 							contentType: 'application/json',
-							url: '/character',
-							data: JSON.stringify({ id: filterByName(characters, name).id,})
+							url: '/vehicle',
+							data: JSON.stringify({ id: id})
 						}).done(function(){
 							var now = Date.now();
 							var end = now + 150;
 							while (now < end) { now = Date.now(); }
 							refreshToyBox();
-							$('#character-select')[0].reset();
+							$('#vehicle-select')[0].reset();
 						});
+				});
 			});
-
-			$('#vehicle-select').submit(function (e) {
-				e.preventDefault();
-
-				var name = $('#vehicle-name').val();
-				console.log(name);
-				var id = filterByName(vehicles, name).id;
-				$.ajax({
-						method: 'POST',
-						contentType: 'application/json',
-						url: '/vehicle',
-						data: JSON.stringify({ id: id})
-					}).done(function(){
-						var now = Date.now();
-						var end = now + 150;
-						while (now < end) { now = Date.now(); }
-						refreshToyBox();
-						$('#vehicle-select')[0].reset();
-					});
-			});
-		});
-	</script>
-</body>
-
+		</script>
+		<p>
+			Copyright © 2021 Berny23 & Cort1237<br>
+			GitHub: <a href="https://github.com/Berny23/LD-ToyPad-Emulator">https://github.com/Berny23/LD-ToyPad-Emulator</a><br>
+			This software is licensed under the <a href="https://choosealicense.com/licenses/mit">MIT license</a>.
+		</p>
+	</body>
 </html>
