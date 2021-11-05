@@ -13,7 +13,8 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 - Can be configured easily by following the instructions below
 
 ## Demo
-![](https://i.imgur.com/iyWVObT.png)
+![image](https://user-images.githubusercontent.com/59704055/140558356-6e876aac-b2fc-4f6c-83d8-78398b755a75.png)
+
 
 Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
