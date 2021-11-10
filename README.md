@@ -6,25 +6,32 @@
 Allows you to connect an emulated ToyPad to your PC or video-game console.
 
 ## Features
-- Supports all available characters and vehicles
-- Save vehicle upgrades
-- Supports most if not all of the consoles the game is available for (please test if you're able)
-- Displays the toypad's light effects
-- Can be used from mobile devices
-- Confirmed working on [Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y), real Wii U, [real PS3](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [real PS4](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
+
+- Supports **all available characters and vehicles**
+- Saves **vehicle upgrades**
+- Displays the toypad's **light effects**
+- Can be used from **mobile devices**
+- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
+- Can be run in a **virtual machine** on Windows, macOS and Linux
 - Can be configured easily by following the instructions below
 
 ## Demo
+
 ![image](https://user-images.githubusercontent.com/59704055/140558356-6e876aac-b2fc-4f6c-83d8-78398b755a75.png)
 
+## Videos
 
-Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
+- First demo video on Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
+
+- Installation tutorial on a virtual machine: https://www.youtube.com/watch?v=5PARAnrt1jU
 
 ## Installation
 
 **There are two options.** Please choose the installation method that suits your needs best.
 
-### Virtual Machine (only for emulators)
+<hr>
+
+### Option 1: Virtual Machine (only for emulators)
 
 #### Prerequisites
 
@@ -100,7 +107,9 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 #
 
-### Single Board Computer
+<hr>
+
+### Option 2: Single Board Computer
 
 #### Prerequisites
 * **Raspberry Pi Zero W** ($10) or similar single board computer with Network support
