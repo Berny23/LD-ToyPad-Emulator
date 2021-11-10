@@ -98,6 +98,8 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
    
 4. Finally, start your console emulator and the game itself (e.g. Cemu).
 
+#
+
 ### Single Board Computer
 
 #### Prerequisites
