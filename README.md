@@ -36,7 +36,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 1. Make a new virtual machine with Debian in your software of choice. You can leave the default values in VMware.
 
-2. When first booting the Debian VM, select "Graphical install". In the configuration, leave everything on default. Only change your language, your password, partition to "yes" and "/dev/sda" for the GRUB bootloader.
+2. When first booting the Debian VM, select "Graphical install". In the configuration, leave everything on default. Only change your language, don't set a root password, choose an account name and password, partition to "yes" and "/dev/sda" for the GRUB bootloader.
 
 3. After rebooting, log in with your password. Then click the menu on the upper left corner, search for "Terminal" and open it.
 
@@ -56,7 +56,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
-   printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r debian -b usbip-vudc.0' >> usb_setup_script.sh
+   printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r debian -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh
    sudo curl https://raw.githubusercontent.com/virtualhere/script/main/install_server | sudo sh
    
    sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
@@ -115,7 +115,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
 
 2. Connect your device to your PC via USB cable (don't use the port on the edge of the Pi Zero!).
 
-4. Use SSH to run the following commands (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).):<br>
+4. Use SSH to run the following commands (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).):
    ```bash
    echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
    echo "dwc2" | sudo tee -a /etc/modules
@@ -126,7 +126,7 @@ Video for Cemu emulator: https://www.youtube.com/watch?v=7CBa9u2ip-Y
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
-   printf '\necho "$UDC" > UDC' >> usb_setup_script.sh
+   printf '\necho "$UDC" > UDC\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh
    
    sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
    sudo chmod +x /usr/local/bin/toypad_usb_setup.sh

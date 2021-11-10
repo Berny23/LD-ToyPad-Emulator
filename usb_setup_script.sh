@@ -28,4 +28,3 @@ ln -s functions/hid.g0/ configs/c.1/
 UDC=$(ls /sys/class/udc)
 #rmmod libcomposite g_ether u_ether usb_f_rndis
 sleep 3;
-chmod a+rw /dev/hidg0
