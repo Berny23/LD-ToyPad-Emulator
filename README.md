@@ -190,7 +190,7 @@ git reset --hard
 - **Error: listen EADDRINUSE: address already in use :::80**
   - Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`). If you did this, you may need to append your selected port to the address in the browser (like `http://debian:500` or `http://192.168.0.165:500` if your port is 500).
 - **VirtualHere USB Client doesn't show LEGO READER V2.10**
-  - When installing the virtual machine, you have to set the hostname to `debian`. Alternatively, change YOUR_IP_ADDRESS to your own virtual machine's IP address in the following command and then run it `rm usb_setup_script.sh ; git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh`.
+  - When installing the virtual machine, you have to set the hostname to `debian`. Alternatively, change YOUR_IP_ADDRESS to your own virtual machine's IP address in the following command and then run it `git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh`
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
