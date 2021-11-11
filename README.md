@@ -43,7 +43,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 
 1. Make a new virtual machine with Debian in your software of choice. You can leave the default values in VMware.
 
-2. When first booting the Debian VM, select "Graphical install". In the configuration, leave everything on default. Only change your language, don't set a root password, choose an account name and password, partition to "yes" and "/dev/sda" for the GRUB bootloader.
+2. When first booting the Debian VM, select `Graphical install`. In the configuration, leave everything on default. Only change your language, set `debian` as hostname, don't set a root password, choose an account name and password, set partition to "yes" and `/dev/sda` for the GRUB bootloader.
 
 3. After rebooting, log in with your password. Then click the menu on the upper left corner, search for "Terminal" and open it.
 
@@ -184,6 +184,13 @@ npm install
 ````bash
 git reset --hard
 ````
+
+## Troubleshooting
+
+- **Error: listen EADDRINUSE: address already in use :::80**
+  - Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`). If you did this, you may need to append your selected port to the address in the browser (like `http://debian:500` or `http://192.168.0.165:500` if your port is 500).
+- **VirtualHere USB Client doesn't show LEGO READER V2.10**
+  - When installing the virtual machine, you have to set the hostname to `debian`. Alternatively, change YOUR_IP_ADDRESS to your own virtual machine's IP address in the following command and then run it `rm usb_setup_script.sh ; git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh`.
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
