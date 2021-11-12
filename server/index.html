@@ -113,6 +113,12 @@
 				background-color: #5c6bc0;
 				padding: 0.5em;
 			}
+
+			#status {
+				color: ghostwhite;
+				background-color: #c05c5c;
+				padding: 0.5em;
+			}
 	
 			#token-box {
 				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0%), 0 6px 20px 0 rgb(0 0 0 / 0%);
@@ -199,6 +205,12 @@
 					</ul>
 				</div>
 			</div>
+
+			<p id="status" class="container">
+				WARNING: Do not place any characters, I have not communicated with the game.<br>
+			   	Placing characters now will cause me to crash. <br>
+			   	This message will disappear when I can see the game.
+	   </p>
 	
 			<div class="container">
 				<h1>The Toypad</h1>
@@ -234,6 +246,7 @@
 				
 				var socket = io();
 				refreshToyBox();
+				socket.emit("connectionStatus");
 	
 				//**Drag & Drop Functions**
 				$( "#remove-tokens" ).sortable({
@@ -377,9 +390,14 @@
 						console.log(pad);
 						color = color + '80'
 						$('#toypad' + element).css({backgroundColor:color});
-					})
+					});
 				})
-	
+					
+				socket.on('Connection True', function(e) {
+					console.log("Connection Success Recieved");
+					$('#status').css({visibility: "hidden"})
+				})
+					
 				//**Script Functions**
 	
 				function filterById(jsonObject, id) { return jsonObject.filter(function (jsonObject) { return (jsonObject['id'] == id); })[0]; }
