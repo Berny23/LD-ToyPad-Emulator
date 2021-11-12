@@ -26,6 +26,8 @@ tp.registerDefaults()
 
 initalizeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
 
+var connection = false;
+
 //Create a token JSON object from provided vehicle data
 /* Vehicle Data Explained:
  * All data is transfered through a series of buffers. The data from these buffers needs to written to specific points (pages) in the token's
@@ -305,6 +307,10 @@ tp.hook(tp.CMD_GETCOL, (req, res) => {
 	console.log('    => pad:', req.payload[0])
 })
 
+tp.hook(tp.CMD_WAKE, (req, res) => {
+	connection = true;
+	io.emit("Connection True");
+})
 
 
 app.use(express.json());
@@ -457,6 +463,12 @@ io.on('connection', (socket) => {
 				console.log('Deleted ', uid, ' from JSON');
 		})
 		io.emit("refreshTokens");
+	});
+
+	socket.on('connectionStatus', () => {
+		if(connection == true){
+			io.emit("Connection True");
+		}
 	});
 });
 
