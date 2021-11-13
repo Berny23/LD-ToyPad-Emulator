@@ -192,7 +192,7 @@ git reset --hard
 - **VirtualHere USB Client doesn't show LEGO READER V2.10**
   - When installing the virtual machine, you have to set the hostname to `debian`. Alternatively, change YOUR_IP_ADDRESS to your own virtual machine's IP address in the following command and then run it `git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh`
 - **I can't connect to the webpage from outside the VM (Oracle VirtualBox)**
-  - Oracle VirtualBox's default network settings do not allow it to be detected by other devices on the network. A work around at this time is to switch to **'Bridged Adapter'** Mode. In VirtualBox's manager click your image and open *'Settings'*. Under *'Network'* change **'Attached to:'** to **'Bridged Adapter'** and click **'ok'**.
+  - Oracle VirtualBox's default network settings do not allow it to be detected by other devices on the network. A workaround at this time is to switch to **'Bridged Adapter'** Mode. In VirtualBox's manager click your image and open *'Settings'*. Under *'Network'* change **'Attached to:'** to **'Bridged Adapter'** and click **'ok'**.
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
