@@ -85,6 +85,8 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
    
    nvm install 11
    sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
+   npm install --global node-gyp@latest
+   npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
    
    cd LD-ToyPad-Emulator
    npm install
@@ -156,6 +158,8 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
    
    nvm install 11
    sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
+   npm install --global node-gyp@latest
+   npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
    
    cd LD-ToyPad-Emulator
    npm install
