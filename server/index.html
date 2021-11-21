@@ -231,6 +231,7 @@
 					</div>
 				</div>
 			</div>
+			<button id = "sync" type = "button" style="background-color:#5c6bc0; color:white; border-radius: 0.50rem;">Things not working? Try syncing.</button>
 	
 		</div>
 	
@@ -245,8 +246,8 @@
 			$(function () {
 				
 				var socket = io();
-				refreshToyBox();
 				socket.emit("connectionStatus");
+				socket.emit("syncToyPad");
 	
 				//**Drag & Drop Functions**
 				$( "#remove-tokens" ).sortable({
@@ -461,7 +462,7 @@
 								var now = Date.now();
 								var end = now + 150;
 								while (now < end) { now = Date.now(); }
-								refreshToyBox();
+								socket.emit("syncToyPad");
 								$('#character-select')[0].reset();
 							});
 				});
@@ -481,9 +482,13 @@
 							var now = Date.now();
 							var end = now + 150;
 							while (now < end) { now = Date.now(); }
-							refreshToyBox();
+							socket.emit("syncToyPad");
 							$('#vehicle-select')[0].reset();
 						});
+				});
+
+				$('#sync').click(function (){
+					socket.emit("syncToyPad");
 				});
 			});
 		</script>

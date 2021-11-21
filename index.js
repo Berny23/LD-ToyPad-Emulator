@@ -143,6 +143,7 @@ function initalizeToyTagsJSON(){
     });
 	fs.writeFileSync(toytagFileName, JSON.stringify(databases, null, 4), function(){
 		console.log("Initalized toytags.JSON");
+		io.emit("refreshTokens");
 	})
 }
 
@@ -160,6 +161,14 @@ function RGBToHex(r,g,b) {
   
 	return "#" + r + g + b;
   }
+
+function getUIDAtPad(index) {
+	token = tp._tokens.find(t => t.index == index);
+	if(token != null)
+		return token.uid;
+	else
+		return -1;
+}
 
 //When the game calls 'CMD_WRITE', writes the given data to the toytag in the top position.
 /* Writing Tags Explained:
@@ -469,6 +478,20 @@ io.on('connection', (socket) => {
 		if(connection == true){
 			io.emit("Connection True");
 		}
+	});
+
+	socket.on('syncToyPad', (pad) => {
+		console.log("<<Syncing tags, one moment...>>");
+		initalizeToyTagsJSON();
+		for (let i = 1; i <= 7; i++) {
+			uid = getUIDAtPad(i);
+			if(uid != -1) {
+				//console.log(uid, "is at pad #", i);
+				writeJSONData(uid,"index",i);
+			}
+		}
+		io.emit("refreshTokens");
+		console.log("<<Tags are synced!>>");
 	});
 });
 
