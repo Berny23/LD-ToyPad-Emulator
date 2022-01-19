@@ -11,7 +11,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 - Saves **vehicle upgrades**
 - Displays the toypad's **light effects**
 - Can be used from **mobile devices**
-- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
+- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**RPCS3**](#rpcs3-cannot-detect-the-toy-pad), [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
 - Can be run in a **virtual machine** on Windows, macOS and Linux
 - Can be configured easily by following the instructions below
 
@@ -191,17 +191,35 @@ git reset --hard
 
 ## Troubleshooting
 
-- **Error: listen EADDRINUSE: address already in use :::80**
-  - Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`). If you did this, you may need to append your selected port to the address in the browser (like `http://debian:500` or `http://192.168.0.165:500` if your port is 500).
-- **VirtualHere USB Client doesn't show LEGO READER V2.10**
-  - When installing the virtual machine, you have to set the hostname to `debian`. Alternatively, change YOUR_IP_ADDRESS to your own virtual machine's IP address in the following command and then run it `git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh`
-- **I can't connect to the webpage from outside the VM (Oracle VirtualBox)**
-  - Oracle VirtualBox's default network settings do not allow it to be detected by other devices on the network. A workaround at this time is to switch to **'Bridged Adapter'** Mode. In VirtualBox's manager click your image and open *'Settings'*. Under *'Network'* change **'Attached to:'** to **'Bridged Adapter'** and click **'ok'**.
+### RPCS3 cannot detect the Toy Pad
+Download and run [Zadig](https://zadig.akeo.ie).
+
+Click on `Options` and tick `List All Devices`. Select `LEGO READER V2.10` in the dropdown menu, then click on the `Replace Driver` button and on `Yes` in the dialog.
+
+After the installation has finished, exit Zadig and restart RPCS3.
+
+### Error: listen EADDRINUSE: address already in use :::80
+Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`).
+
+If you did this, you may need to append your selected port to the address in the browser (like `http://debian:500` or `http://192.168.0.165:500` if your port is 500).
+
+### VirtualHere USB Client doesn't show LEGO READER V2.10
+When installing the virtual machine, you have to set the hostname to `debian`.
+
+Alternatively, copy the following command and replace `YOUR_IP_ADDRESS` with your virtual machine's IP address (it looks like `192.168.X.X`, run `hostname -i` to show it). After you've done this, run the modified command while you're inside the `LD-ToyPad-Emulator` folder.
+````bash
+git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
+````
+
+### I can't connect to the webpage from outside the VM (Oracle VirtualBox)
+Oracle VirtualBox's default network settings do not allow it to be detected by other devices on the network. A workaround at this time is to switch to `Bridged Adapter` mode.
+
+In VirtualBox's manager, click your image and open `Settings`. Under `Network` change `Attached to:` to `Bridged Adapter` and click `ok`.
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
 
-* **cort1237** for implementing writing to toy tags as well as several UI updates and support for saving toy tags locally.
+* **cort1237** for implementing writing to toy tags as well as several UI updates and support for saving toy tags locally. He has made the emulator more user-friendly.
 
 
 ## License
