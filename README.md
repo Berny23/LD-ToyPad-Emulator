@@ -196,7 +196,7 @@ Download and run [Zadig](https://zadig.akeo.ie).
 
 Click on `Options` and tick `List All Devices`. Select `LEGO READER V2.10` in the dropdown menu, then click on the `Replace Driver` button and on `Yes` in the dialog.
 
-After the installation has finished, exit Zadig and restart RPCS3.
+After the installation has finished, exit Zadig and restart RPCS3. If you get stuck on the main menu, just close the game, right-click on it in the RPCS3 games list, select `Change Custom Configuration`, switch to the `Network` tab and choose `Disconnected` in both drop-down menus.
 
 ### Error: listen EADDRINUSE: address already in use :::80
 Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`).
