@@ -1,5 +1,5 @@
 /*
-	Copyright © 2021 Berny23 & Cort1237
+	Copyright © 2022 Berny23 & Cort1237
 	
 	This file is part of "ToyPad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
@@ -201,7 +201,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
 		writeJSONData(uid,"type","vehicle");
 		//writeVehicleData(uid, "uid", tp.randomUID())
 	}
-	//Whicle Uprades are stored in Pages 23 & 25
+	//Vehicle uprades are stored in Pages 23 & 25
 	else if(page == 23 || page == 35)
 		writeJSONData(uid, "vehicleUpgradesP23", data.readUInt32LE(0));
 	else if (page == 25 || page == 37){

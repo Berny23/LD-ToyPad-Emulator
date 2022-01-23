@@ -1,8 +1,8 @@
 <!--
 
-	Copyright © 2021 Berny23 & Cort1237
+	Copyright © 2022 Berny23 & Cort1237
 	
-	This file is part of "ToyPad Emulator for Lego Dimensions" which is released under the "MIT" license.
+	This file is part of "Toy Pad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
 
 -->
@@ -10,7 +10,7 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width"/>
-		<title>Lego Dimensions ToyPad Emulator | v1.3.3</title>
+		<title>Lego Dimensions Toy Pad Emulator | v1.3.4</title>
 		<style>
 			html {
 				display: table;
@@ -22,18 +22,35 @@
 				vertical-align: middle;
 				margin: auto;
 				text-align: center;
-				font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+				font-family: sans-serif;
 			}
 	
 			input {
 				margin-bottom: 1em;
 				font-size: 1.2em;
+				border-radius: 0.5rem;
+				border: 1px solid transparent;
+				cursor: default;
+				text-align: center;
+			}
+
+			input:focus-visible {
+				outline: none;
 			}
 	
 			button {
-				margin-top: 1em;
 				padding: 1em;
 				font-weight: bold;
+				border-radius: 0.5rem;
+				border: 1px solid transparent;
+				cursor: pointer;
+				box-shadow: rgb(0 0 0 / 20%) 0 4px 12px;
+				background-color: #bdbdbd;
+				transition: background-color 250ms;
+			}
+
+			button:hover, button:active {
+				background-color: #8d8d8d;
 			}
 	
 			.container {
@@ -52,11 +69,19 @@
 				margin: auto;
 				background-color: #efefef;
 				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-				padding: 2em;
+				padding: 1em;
 				margin-bottom: 1.5em;
-				display:inline-flex;
+				display: flex;
 				min-height: 100px;
 				border-radius: 0.50rem;
+			}
+
+			#tag-creation-container {
+				display: inline-flex;
+			}
+
+			#character-select {
+				margin-right: 2em;
 			}
 	
 			.box {
@@ -100,12 +125,25 @@
 				box-sizing: border-box;
 				cursor: pointer;
 				box-shadow: rgb(0 0 0 / 20%) 0 4px 12px;
+				cursor: grab;
 			}
 			
 			.item:hover, .item:focus, .item:active {
 				color: #fff;
 				background-color: #0077c1;
 				transition: background-color 250ms;
+			}
+
+			.item[data-type="vehicle"] {
+				background-color: #66bb6a;
+			}
+
+			.item[data-type="vehicle"]:hover, .item[data-type="vehicle"]:focus, .item[data-type="vehicle"]:active {
+				background-color: #338a3e;
+			}
+
+			.item.ui-sortable-helper {
+				cursor: grabbing;
 			}
 	
 			#warnings {
@@ -122,6 +160,7 @@
 	
 			#token-box {
 				box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0%), 0 6px 20px 0 rgb(0 0 0 / 0%);
+				flex-direction: row;
 			}
 	
 			#remove-tokens{
@@ -131,12 +170,15 @@
 				align-items: center;
 				justify-content: center;
 				border-radius: 0.50rem;
+				cursor: default;
+				padding: 0;
 			}
 	
 			#remove-tokens>.item{
 				background-color: #b61827;
 				box-shadow: none;
 				color: #fff;
+				cursor: default;
 			}
 			
 			#remove-tokens>.placeholder{
@@ -149,8 +191,9 @@
 				margin: 0;
 				padding: 0;
 				width: 50em;
-				margin-right: 1em;
 				border-radius: 0.50rem;
+				min-height: 8em;
+				margin-right: 0.5em;
 			}
 			
 			#toybox-tokens li {
@@ -166,15 +209,15 @@
 	<body>
 	
 		<div>
-			<h1>Lego Dimensions ToyPad Emulator</h1>
+			<h1>Lego Dimensions Toy Pad Emulator</h1>
 			<p id="warnings" class="container">
-				→ If you encounter a token that is not responding, move to the toybox and then back to the toypad ←<br>
+				→ If you encounter a token that is not responding, move to the toy box and then back to the Toy Pad ←<br>
 				<br>
-				Create characters and vehicles with boxes at the top then drag them to the toy pad.<br>
+				Create characters and vehicles with boxes at the top then drag them to the Toy Pad.<br>
 			</p>
 			
-			<div style="display: inline-flex;">
-				<form id="character-select" class="container" style="margin-right: 2em;">
+			<div id="tag-creation-container">
+				<form id="character-select" class="container">
 					<label>
 						<input list="character-list" id="character-name" onfocus="this.value=''" onchange="this.blur();" placeholder = "Select a character" />
 						<datalist id="character-list"></datalist>
@@ -193,7 +236,7 @@
 				</form>
 			</div>
 			
-			<div class="flex-container" style = "display:flex; width: fit-content; height: fit-content;flex-direction:column">
+			<div class="flex-container">
 				<h2>Toy Box</h2>
 				<p>Drag an entry to move it to the pad</p>
 				<div id="token-box" class="flex-container">
@@ -212,8 +255,8 @@
 			   	This message will disappear when I can see the game.
 	   </p>
 	
-			<div class="container">
-				<h1>The Toypad</h1>
+			<div id="toypad" class="container">
+				<h1>The Toy Pad</h1>
 				<div>
 					<div class="drop-targets">
 						<div id = "toypad1" class="box" padNum='2' padIndex = '1' color = "white"></div>
@@ -231,7 +274,7 @@
 					</div>
 				</div>
 			</div>
-			<button id = "sync" type = "button" style="background-color:#5c6bc0; color:white; border-radius: 0.50rem;">Things not working? Click here to sync..</button>
+			<button id = "sync" type = "button">Things not working? Click here to sync.</button>
 	
 		</div>
 	
@@ -257,7 +300,14 @@
 				$(".box").sortable({
 					connectWith: ".box",
 					scroll: true,
-					scrollSensitivity: 100,
+					scrollSensitivity: 40,
+					scrollSpeed: 10,
+					start: function(event) {
+						$('html, body').animate({ scrollTop: $(document).height() }, 500);
+					},
+					stop: function (event) {
+						//$('html, body').animate({ scrollTop: 0 }, 500);
+					},
 					receive: function(event, ui) {
 						var $this = $(this);
 						console.log()
@@ -268,7 +318,7 @@
 						}
 						else if ($this.attr('padNum') == undefined || ($this.children('li').length > 1 && $this.attr('id') != "toybox-tokens"))
 							$(ui.sender).sortable('cancel');
-						//If moving to the ToyPox, remove tag from the game.
+						//If moving to the Toy Pox, remove tag from the game.
 						else if ($this.attr('id') == "toybox-tokens"){
 							$.ajax({
 							method: 'DELETE',
@@ -277,7 +327,7 @@
 							data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
 							})
 						}
-						//If moving from the ToyBox, place tag in the game.
+						//If moving from the Toy Box, place tag in the game.
 						else if (ui.sender.attr('padNum') == -1){
 							var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
 							console.log(content)
@@ -288,7 +338,7 @@
 									data: JSON.stringify(content)
 								});
 							}
-						//If moving between spaces on the ToyPad, remove from previous space and place in new one.
+						//If moving between spaces on the Toy Pad, remove from previous space and place in new one.
 						else{
 							var content = { uid: ui.item.attr('data-uid'), id:ui.item.attr('data-id'), position:$this.attr('padNum'), index:$this.attr('padIndex')}
 							console.log(ui.sender.attr('padIndex'))
@@ -396,7 +446,7 @@
 					
 				socket.on('Connection True', function(e) {
 					console.log("Connection Success Recieved");
-					$('#status').css({visibility: "hidden"})
+					$('#status').css({display: "none"})
 				})
 					
 				//**Script Functions**
@@ -423,9 +473,9 @@
 						$.each(tags, function (i, item) {
 							console.log("ID: " + item.id +" UID: " + item.uid)
 							if (item.name != 'test' && item.index == '-1') 
-								$('#toybox-tokens').append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+								$('#toybox-tokens').append('<li class=item draggable=true data-type=' + item.type + ' data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
 							else if(item.index != '-1')
-								$('#toypad'+item.index).append('<li class=item draggable=true data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
+								$('#toypad'+item.index).append('<li class=item draggable=true data-type=' + item.type + ' data-id= ' + item.id + ' data-uid='+ item.uid +' pad=' + item.pad +'><h3>'+ item.name +'</h3></li>');
 						});
 					});
 				}
@@ -493,7 +543,7 @@
 			});
 		</script>
 		<p>
-			Copyright © 2021 Berny23 & Cort1237<br>
+			Copyright © 2022 Berny23 & Cort1237 | v1.3.4<br>
 			GitHub: <a href="https://github.com/Berny23/LD-ToyPad-Emulator">https://github.com/Berny23/LD-ToyPad-Emulator</a><br>
 			This software is licensed under the <a href="https://choosealicense.com/licenses/mit">MIT license</a>.
 		</p>

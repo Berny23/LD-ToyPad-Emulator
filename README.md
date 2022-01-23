@@ -1,17 +1,17 @@
-# ToyPad Emulator for Lego Dimensions
+# Toy Pad Emulator for Lego Dimensions
 
 <a href="https://www.buymeacoffee.com/Berny23" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
 </span>
 
-Allows you to connect an emulated ToyPad to your PC or video-game console.
+Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 ## Features
 
+- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**RPCS3**](#rpcs3-cannot-detect-the-toy-pad), [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
 - Supports **all available characters and vehicles**
 - Saves **vehicle upgrades**
-- Displays the toypad's **light effects**
-- Can be used from **mobile devices**
-- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**RPCS3**](#rpcs3-cannot-detect-the-toy-pad), [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
+- Displays the Toy Pad's **light effects**
+- Supports smart scrolling for **mobile devices**
 - Can be run in a **virtual machine** on Windows, macOS and Linux
 - Can be configured easily by following the instructions below
 
@@ -41,7 +41,7 @@ Allows you to connect an emulated ToyPad to your PC or video-game console.
 
 #### Guide
 
-1. Make a new virtual machine with Debian in your software of choice. You can leave the default values in VMware.
+1. Make a new virtual machine with Debian in your software of choice. Select your ISO file and choose the appropriate operating system (Linux -> Debian 11.x 64-bit) if you're asked. **To make sure your VM is accessible on the network, please follow the instructions in the troubleshooting section on this page (either for [VirtualBox](#webpage-not-reachable-oracle-virtualbox) or [VMware](#webpage-not-reachable-vmware)).**
 
 2. When first booting the Debian VM, select `Graphical install`. In the configuration, leave everything on default. Only change your language, set `debian` as hostname, don't set a root password, choose an account name and password, set partition to "yes" and `/dev/sda` for the GRUB bootloader.
 
@@ -198,6 +198,12 @@ Click on `Options` and tick `List All Devices`. Select `LEGO READER V2.10` in th
 
 After the installation has finished, exit Zadig and restart RPCS3. If you get stuck on the main menu, just close the game, right-click on it in the RPCS3 games list, select `Change Custom Configuration`, switch to the `Network` tab and choose `Disconnected` in both drop-down menus.
 
+### Webpage not reachable (Oracle VirtualBox)
+Shutdown your virtual machine (icon in the upper right corner). In VirtualBox's manager, click your image and open `Settings`. Under `Network` change `Attached to:` to `Bridged Adapter` and click `ok`. Start your virtual machine.
+
+### Webpage not reachable (VMware)
+Shutdown your virtual machine (icon in the upper right corner). Right-click on your virtual machine's name in VMware Workstation or VMware Player and click `Settings...`. Click on `Network Adapter` and select `Bridged`. Click `OK` and start your virtual machine.
+
 ### Error: listen EADDRINUSE: address already in use :::80
 Either close any other software that is using the port 80 or manually edit the last line of index.js (with `nano index.js`, edit the line, then press `Ctrl + O`, `Enter` and `Ctrl + X`).
 
@@ -206,15 +212,10 @@ If you did this, you may need to append your selected port to the address in the
 ### VirtualHere USB Client doesn't show LEGO READER V2.10
 When installing the virtual machine, you have to set the hostname to `debian`.
 
-Alternatively, copy the following command and replace `YOUR_IP_ADDRESS` with your virtual machine's IP address (it looks like `192.168.X.X`, run `hostname -i` to show it). After you've done this, run the modified command while you're inside the `LD-ToyPad-Emulator` folder.
+Alternatively, copy the following command and replace `YOUR_IP_ADDRESS` with your virtual machine's IP address (it looks like `192.168.X.X`, run `hostname -I` to show it). After you've done this, run the modified command while you're inside the `LD-ToyPad-Emulator` folder.
 ````bash
 git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
 ````
-
-### I can't connect to the webpage from outside the VM (Oracle VirtualBox)
-Oracle VirtualBox's default network settings do not allow it to be detected by other devices on the network. A workaround at this time is to switch to `Bridged Adapter` mode.
-
-In VirtualBox's manager, click your image and open `Settings`. Under `Network` change `Attached to:` to `Bridged Adapter` and click `ok`.
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
