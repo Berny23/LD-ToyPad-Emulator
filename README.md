@@ -13,6 +13,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 - Displays the Toy Pad's **light effects**
 - Supports smart scrolling for **mobile devices**
 - Can be run in a **virtual machine** on Windows, macOS and Linux
+- **No copyrighted game files are required**, nor are any included
 - Can be configured easily by following the instructions below
 
 ## Demo
@@ -216,6 +217,11 @@ Alternatively, copy the following command and replace `YOUR_IP_ADDRESS` with you
 ````bash
 git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
 ````
+
+### Webpage not reachable under http://debian/
+If you're using a virtual machine, make sure you've applied the solution specific to your software first ([VirtualBox](#webpage-not-reachable-oracle-virtualbox) or [VMware](#webpage-not-reachable-vmware))!
+
+After that, run the command `hostname -I` in your virtual machine and type the IP address that looks like `192.168.X.X` in your webbrowser.
 
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
