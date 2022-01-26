@@ -7,7 +7,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 ## Features
 
-- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**RPCS3**](#rpcs3-cannot-detect-the-toy-pad), [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554) and [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3)
+- Confirmed working on **[Cemu](https://www.youtube.com/watch?v=7CBa9u2ip-Y)**, **real Wii U**, [**RPCS3**](#rpcs3-cannot-detect-the-toy-pad), [**real PS3**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/10#issuecomment-933027554), [**real PS4**](https://www.reddit.com/r/Legodimensions/comments/pb32zg/comment/hamfj29/?utm_source=share&utm_medium=web2x&context=3) and [**real PS5**](https://github.com/Berny23/LD-ToyPad-Emulator/issues/45)
 - Supports **all available characters and vehicles**
 - Saves **vehicle upgrades**
 - Displays the Toy Pad's **light effects**
