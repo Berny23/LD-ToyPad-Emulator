@@ -18,7 +18,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 ## Demo
 
-![image](https://user-images.githubusercontent.com/59704055/140558356-6e876aac-b2fc-4f6c-83d8-78398b755a75.png)
+![image](https://user-images.githubusercontent.com/36038743/151242123-8dee84e5-6276-4ac2-ba58-c09bff121419.png)
 
 ## Videos
 
