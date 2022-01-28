@@ -193,11 +193,18 @@ git reset --hard
 ## Troubleshooting
 
 ### RPCS3 cannot detect the Toy Pad
+**This solution works only for RPCS3 and will break the Toy Pad detection with every other emulator!**
+
 Download and run [Zadig](https://zadig.akeo.ie).
 
 Click on `Options` and tick `List All Devices`. Select `LEGO READER V2.10` in the dropdown menu, then select `WinUSB` if it's not already selected, click on the `Replace Driver` button and on `Yes` in the dialog.
 
-After the installation has finished, exit Zadig and restart RPCS3. If you get stuck on the main menu, just close the game, right-click on it in the RPCS3 games list, select `Change Custom Configuration`, switch to the `Network` tab and choose `Disconnected` in both drop-down menus.
+After the installation has finished, exit Zadig and restart RPCS3. If you get stuck on the main menu, just close the game, right-click on it in the RPCS3 games list, select `Change Custom Configuration`, switch to the `Network` tab and choose `Disconnected` in both drop-down menus. The game will now correctly detect the Toy Pad.
+
+To undo the changes from Zadig, you have to rollback the driver:
+1. Open `Device Manager`, scroll down to `USB devices` and expand the section.
+2. Double-click `LEGO READER V2.10`.
+3. Switch to the `Driver` tab, click `Previous Driver`, select the first option and click yes.
 
 ### Webpage not reachable (Oracle VirtualBox)
 Shutdown your virtual machine (icon in the upper right corner). In VirtualBox's manager, click your image and open `Settings`. Under `Network` change `Attached to:` to `Bridged Adapter` and click `ok`. Start your virtual machine.
