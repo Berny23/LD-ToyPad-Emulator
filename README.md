@@ -26,6 +26,8 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 - Installation tutorial on a virtual machine: https://www.youtube.com/watch?v=5PARAnrt1jU
 
+- Quick usage showcase on RPCS3: https://www.youtube.com/watch?v=KIKDO0dxYl4
+
 ## Installation
 
 **There are two options.** Please choose the installation method that suits your needs best.
