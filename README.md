@@ -39,7 +39,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 #### Prerequisites
 
 * Either [VMware Player](https://www.vmware.com/products/workstation-player.html) (free), [VMware Workstation Pro](https://www.vmware.com/products/workstation-pro.html) (paid) or [Oracle VirtualBox](https://www.virtualbox.org/wiki/Downloads) (free)
-* [Debian 11.1 ISO](https://soft.uclv.edu.cu/Debian/11.1/debian-11.1.0-amd64-netinst.iso) (newer versions not tested)
+* [Debian 11.1 ISO](https://cdimage.debian.org/mirror/cdimage/archive/11.1.0/amd64/iso-cd/debian-11.1.0-amd64-netinst.iso) (newer versions not tested)
 * [VirtualHere USB Client](https://www.virtualhere.com/usb_client_software) for Windows, Linux or MacOS
 
 #### Guide
