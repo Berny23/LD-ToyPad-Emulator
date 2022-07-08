@@ -338,15 +338,33 @@
 				scroll: true,
 				scrollSensitivity: 40,
 				scrollSpeed: 10,
-				start: function (event) {
+				start: function (event, ui) {
 					$('html, body').animate({ scrollTop: $(document).height() }, 500);
+
+					// Store the starting pad number and index so we can determine when releasing the tag if it was released in the same space
+					ui.item.attr('previousPadNum', ui.item.closest('.box').attr('padNum'));
+					ui.item.attr('previousPadIndex', ui.item.closest('.box').attr('padIndex'));
 				},
-				stop: function (event) {
-					//$('html, body').animate({ scrollTop: 0 }, 500);
+				stop: function (event, ui) {
+					var parentBox = ui.item.closest('.box');
+					var previousPadNum = ui.item.attr('previousPadNum');
+					var newPadNum = parentBox.attr('padNum');
+					var previousPadIndex = ui.item.attr('previousPadIndex');
+					var newPadIndex = parentBox.attr('padIndex');
+
+					// If moving to the same space on the Toy Pad, remove and place in the current space
+					if (previousPadNum != -1 &&
+						previousPadNum != -2 &&
+						previousPadNum == newPadNum &&
+						previousPadIndex == newPadIndex) {
+							updateToyPadPosition(ui.item.attr('data-uid'), ui.item.attr('data-id'), newPadNum, newPadIndex, newPadIndex);
+					}
+
+					ui.item.removeAttr('previousPadNum');
+					ui.item.removeAttr('previousPadIndex');
 				},
 				receive: function (event, ui) {
 					var $this = $(this);
-					console.log()
 
 					if ($this.attr('id') == "remove-tokens") {
 						socket.emit('deleteToken', ui.item.attr('data-uid'));
