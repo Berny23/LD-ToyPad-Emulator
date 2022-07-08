@@ -376,23 +376,7 @@
 					}
 					//If moving between spaces on the Toy Pad, remove from previous space and place in new one.
 					else {
-						var content = { uid: ui.item.attr('data-uid'), id: ui.item.attr('data-id'), position: $this.attr('padNum'), index: $this.attr('padIndex') }
-						console.log(ui.sender.attr('padIndex'))
-						$.ajax({
-							method: 'DELETE',
-							contentType: 'application/json',
-							url: '/remove',
-							data: JSON.stringify({ index: parseInt(ui.sender.attr('padIndex')), uid: ui.item.attr('data-uid') })
-						}).done(function () {
-							setTimeout(function () {
-								$.ajax({
-									method: 'POST',
-									contentType: 'application/json',
-									url: '/characterPlace',
-									data: JSON.stringify(content)
-								})
-							}, 500);
-						})
+						updateToyPadPosition(ui.item.attr('data-uid'), ui.item.attr('data-id'), $this.attr('padNum'), ui.sender.attr('padIndex'), $this.attr('padIndex'));
 					}
 				}
 			});
@@ -514,6 +498,26 @@
 						else if (item.index != '-1')
 							$('#toypad' + item.index).append('<li class=item draggable=true data-type=' + item.type + ' data-id= ' + item.id + ' data-uid=' + item.uid + ' pad=' + item.pad + '><h3>' + item.name + '</h3></li>');
 					});
+				});
+			}
+
+			function updateToyPadPosition(uid, id, position, currentIndex, newIndex)
+			{
+				console.log(currentIndex);
+				$.ajax({
+					method: 'DELETE',
+					contentType: 'application/json',
+					url: '/remove',
+					data: JSON.stringify({ index:  parseInt(currentIndex), uid: uid })
+				}).done(function () {
+					setTimeout(function () {
+						$.ajax({
+							method: 'POST',
+							contentType: 'application/json',
+							url: '/characterPlace',
+							data: JSON.stringify({uid: uid, id: id, position: position, index: newIndex})
+						})
+					}, 500);
 				});
 			}
 
