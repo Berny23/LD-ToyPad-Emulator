@@ -11,24 +11,31 @@
 
 <head>
 	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="jquery-ui-1.13.2/jquery-ui.js">
 	<title>Lego Dimensions Toy Pad Emulator | v1.3.5</title>
 	<style>
 		html {
 			display: table;
-			margin: auto;
+			margin:auto;
 			text-align: center;
 		}
 
 		body {
-			display: table-cell;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
 			vertical-align: middle;
-			margin: auto;
+			margin:0%;
 			text-align: center;
 			font-family: sans-serif;
 		}
 
 		#header {
 			margin-top: 1em;
+		}
+
+		#footer {
+			font-size: 1em;
 		}
 
 		input {
@@ -71,18 +78,22 @@
 		}
 
 		.container {
-			width: fit-content;
+			width: 90%;
 			margin: auto;
 			background-color: #efefef;
 			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-			padding: 2em;
+			padding: 1em;
 			margin-bottom: 1.5em;
 			border-radius: 0.50rem;
+			display: inline-flexbox;
+			position: relative;
+			max-width: 90%;
 		}
 
 		.flex-container {
 			flex-direction: column;
-			width: fit-content;
+			width: 90%;
+			max-width: 90%;
 			margin: auto;
 			background-color: #efefef;
 			box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
@@ -90,7 +101,9 @@
 			margin-bottom: 1.5em;
 			display: flex;
 			min-height: 100px;
+			min-width: 50%;
 			border-radius: 0.50rem;
+			position: relative;
 		}
 
 		#tag-creation-container {
@@ -143,6 +156,7 @@
 			cursor: pointer;
 			box-shadow: rgb(0 0 0 / 20%) 0 4px 12px;
 			cursor: grab;
+			position: relative;
 		}
 
 		.item:hover,
@@ -166,11 +180,18 @@
 			cursor: grabbing;
 		}
 
+		.item[id="deleteToken"],
+		.item[id="colorToken"]{
+			width: 9em;
+			height: 9em;
+		}
+
 		#warnings {
 			color: #e8eaf6;
 			background-color: #26418f;
 			padding: 1em;
 			line-height: 2em;
+			width:fit-content;
 		}
 
 		#status {
@@ -184,7 +205,13 @@
 			flex-direction: row;
 		}
 
-		#remove-tokens {
+		.box.box-edit {
+			border: solid 3px transparent;
+			margin: 0;
+			list-style-type: none;
+			padding: 10px;
+			transition: background-color 0.25s ease-out;
+			border-radius: 0.50rem;
 			height: 8em;
 			width: 8em;
 			display: flex;
@@ -192,12 +219,17 @@
 			justify-content: center;
 			border-radius: 0.50rem;
 			cursor: default;
-			padding: 0;
-			background-color: #ef5350;
+			padding: 10;
+			
 		}
 
-		#remove-tokens>.item {
+		.box-edit>#deleteToken {
 			background-color: #ef5350;
+			box-shadow: none;
+			cursor: default;
+		}
+		.box-edit>#colorToken {
+			background-color: #d450ef;
 			box-shadow: none;
 			cursor: default;
 		}
@@ -211,17 +243,49 @@
 			list-style-type: none;
 			margin: 0;
 			padding: 0;
-			width: 50em;
+			width: 45vw;
 			border-radius: 0.50rem;
-			min-height: 8em;
+			min-height: auto;
 			margin-right: 0.5em;
 			background-color: #bdbdbd;
+			height: 45vh;
+			overflow-y: scroll;
+			position: relative;
+			width: 80%;
 		}
 
 		#toybox-tokens li {
 			margin: 0.5em;
 			float: left;
 		}
+
+		#layout-controller {
+			display:flex; 
+			flex-direction: row;
+			align-items: center;
+		}
+
+		@media screen and (max-width: 900px) {
+			body {
+				overflow-x: hidden;
+			}
+
+			#layout-controller {
+				flex-direction: column;
+				width:98%
+			}
+
+			#toybox-tokens {
+				height: 40vh;
+			}
+
+			.flex-container{
+				min-width: 80vw;
+			}
+		}
+
+		
+
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -229,7 +293,26 @@
 
 <body>
 
-	<div>
+	<div id="dialog-form" title="Create new user">
+		<p class="validateTips">All form fields are required.</p>
+	   
+		<form>
+		  <fieldset>
+			<label for="name">Name</label>
+			<input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+			<label for="email">Email</label>
+			<input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+	   
+			<!-- /* Allow form submission with keyboard without duplicating the dialog button */ -->
+			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+		  </fieldset>
+		</form>
+	  </div>
+
+
+	<div id = "focus">
 		<h1 id="header">Lego Dimensions Toy Pad Emulator</h1>
 		<p id="warnings" class="container">
 			Create characters and vehicles with the boxes at the top, then drag them to the Toy Pad.
@@ -260,57 +343,67 @@
 				<button type="submit">Create Vehicle</button>
 			</form>
 		</div>
-
-		<div class="flex-container">
-			<h2>Toy Box</h2>
-			<div id="token-box" class="flex-container">
-				<ul id="toybox-tokens" class="box" padNum=-1></ul>
-				<ul id="remove-tokens" class="box" padNum=-2>
-					<li class="item drag-disabled" draggable="false" id="deleteToken">
-						<svg viewBox="0 0 80 18">
-							<text x="0" y="15">&nbsp;&nbsp;Drag to</text></svg>
-						<svg viewBox="0 0 80 18">
-							<text x="0" y="15">&nbsp;&nbsp;this side</text></svg>
-						<svg viewBox="0 0 80 18">
-							<text x="0" y="15">&nbsp;&nbsp;to delete</text></svg>
-						<svg viewBox="0 0 70 18">
-							<text x="0" y="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;➜</text></svg>
-					</li>
-				</ul>
+		<br>
+		<div id="layout-controller">
+			<div class="flex-container">
+				<h2>Toy Box</h2>
+				<div id="token-box" class="flex-container">
+					<div class="TokenTools">
+						<ul id="remove-tokens" class="box box-edit" padNum=-2>
+							<li class="item drag-disabled" draggable="false" id="deleteToken">
+								<svg viewBox="0 0 80 18">
+									<text x="0" y="15">&nbsp;&nbsp;Drag to</text></svg>
+								<svg viewBox="0 0 80 18">
+									<text x="0" y="15">&nbsp;&nbsp;this side</text></svg>
+								<svg viewBox="0 0 80 18">
+									<text x="0" y="15">&nbsp;&nbsp;to delete</text></svg>
+								<svg viewBox="0 0 70 18">
+									<text x="0" y="15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;➜</text></svg>
+							</li>
+						</ul>
+					</div>
+					<ul id="toybox-tokens" class="box" padNum=-1></ul>
+				</div>
+				<form><input id="filterbox" type="text" name="search" placeholder="Type here to filter..."></form>
 			</div>
-		</div>
 
-		<p id="status" class="container">
-			WARNING: Do not place any characters, I have not communicated with the game yet.<br>
-			Placing characters now will cause me to crash. <br>
-			This message will disappear when I can see the game.
-		</p>
-
-		<div id="toypad" class="container">
-			<h1>The Toy Pad</h1>
 			<div>
-				<div class="drop-targets">
-					<div id="toypad1" class="box" padNum='2' padIndex='1' color="white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id="toypad2" class="box" padNum='1' padIndex='2' color="white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id="toypad3" class="box" padNum='3' padIndex='3' color="white"></div>
-				</div>
-				<div class="drop-targets">
-					<div id="toypad4" class="box" padNum='2' padIndex='4' color="white"></div>
-					<div id="toypad5" class="box" padNum='2' padIndex='5' color="white"></div>
-					<div class="box" style="visibility: hidden"></div>
-					<div id="toypad6" class="box" padNum='3' padIndex='6' color="white"></div>
-					<div id="toypad7" class="box" padNum='3' padIndex='7' color="white"></div>
+				<p id="status" class="container">
+					WARNING: Do not place any characters, I have not communicated with the game yet.<br>
+					Placing characters now will cause me to crash. <br>
+					This message will disappear when I can see the game.
+				</p>
+
+				<div id="toypad" class="container">
+					<h1>The Toy Pad</h1>
+					<div>
+						<div class="drop-targets">
+							<div id="toypad1" class="box" padNum='2' padIndex='1' color="white"></div>
+							<div class="box" style="visibility: hidden"></div>
+							<div id="toypad2" class="box" padNum='1' padIndex='2' color="white"></div>
+							<div class="box" style="visibility: hidden"></div>
+							<div id="toypad3" class="box" padNum='3' padIndex='3' color="white"></div>
+						</div>
+						<div class="drop-targets">
+							<div id="toypad4" class="box" padNum='2' padIndex='4' color="white"></div>
+							<div id="toypad5" class="box" padNum='2' padIndex='5' color="white"></div>
+							<div class="box" style="visibility: hidden"></div>
+							<div id="toypad6" class="box" padNum='3' padIndex='6' color="white"></div>
+							<div id="toypad7" class="box" padNum='3' padIndex='7' color="white"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		
 
 		<p id="footer">
 			Copyright © 2022 Berny23 &amp; Cort1237 | <b>v1.3.5</b> | This software is licensed under the <a
 				href="https://choosealicense.com/licenses/mit">MIT</a> license. Source Code on <a
 				href="https://github.com/Berny23/LD-ToyPad-Emulator">GitHub</a>.
 		</p>
+
+
 	</div>
 
 
@@ -328,6 +421,12 @@
 			socket.emit("connectionStatus");
 			socket.emit("syncToyPad");
 
+			var currentMousePos = { x: -1, y: -1 };
+			$(document).mousemove(function(event) {
+				currentMousePos.x = event.pageX;
+				currentMousePos.y = event.pageY;
+			});
+
 			//**Drag & Drop Functions**
 			$("#remove-tokens").sortable({
 				cancel: ".drag-disabled"
@@ -338,6 +437,17 @@
 				scroll: true,
 				scrollSensitivity: 40,
 				scrollSpeed: 10,
+
+				helper: "clone",
+				appendTo: document.getElementById('focus'),
+				containment: document.getElementById('focus'),
+				//cursorAt: {left: (-(($(document).width() - $(window).width())/2))},
+				
+				sort: function(event, ui) {
+					ui.helper[0].style.left = currentMousePos.x-20;
+					ui.helper.css({'list-style-type' : 'none'});
+				},
+
 				start: function (event, ui) {
 					$('html, body').animate({ scrollTop: $(document).height() }, 500);
 
@@ -345,6 +455,7 @@
 					ui.item.attr('previousPadNum', ui.item.closest('.box').attr('padNum'));
 					ui.item.attr('previousPadIndex', ui.item.closest('.box').attr('padIndex'));
 				},
+
 				stop: function (event, ui) {
 					var parentBox = ui.item.closest('.box');
 					var previousPadNum = ui.item.attr('previousPadNum');
@@ -362,6 +473,8 @@
 
 					ui.item.removeAttr('previousPadNum');
 					ui.item.removeAttr('previousPadIndex');
+
+					filterToyBox();
 				},
 				receive: function (event, ui) {
 					var $this = $(this);
@@ -370,6 +483,10 @@
 						socket.emit('deleteToken', ui.item.attr('data-uid'));
 						setTimeout(function () { refreshToyBox(); }, 500)
 					}
+					// else if($this.attr('id') == "edit-tokens") {
+					// 	dialog.dialog("open");
+					// 	setTimeout(function () { refreshToyBox(); }, 500)
+					// }
 					else if ($this.attr('padNum') == undefined || ($this.children('li').length > 1 && $this.attr('id') != "toybox-tokens"))
 						$(ui.sender).sortable('cancel');
 					//If moving to the Toy Pox, remove tag from the game.
@@ -401,13 +518,14 @@
 
 			$(".box").disableSelection();
 
-
+			$('form').on('input', function(e) {
+				filterToyBox();
+			})
 			//**IO Functions**
 			socket.on('refreshTokens', function () {
 				console.log("IO Recieved: Refresh Tokens")
 				setTimeout(function () { refreshToyBox(); }, 1000)
 			})
-
 
 			socket.on('Fade One', function (e) {
 				console.log("IO Recieved: Fade One")
@@ -500,7 +618,7 @@
 				var boxes = document.querySelectorAll('.box')
 
 				boxes.forEach(function (toybox) {
-					while (toybox.lastChild && toybox.lastChild.id != "deleteToken") {
+					while (toybox.lastChild && toybox.lastChild.id != "deleteToken" && toybox.lastChild.id != "colorToken") {
 						toybox.removeChild(toybox.lastChild);
 					}
 				})
@@ -537,6 +655,19 @@
 						})
 					}, 500);
 				});
+			}
+
+			function filterToyBox() {
+				var text = $("#filterbox").val().toLowerCase();
+				$("#toybox-tokens").children().each(function(index) {
+					var name = $(this).text().toLowerCase();
+					if(name.includes(text)) {
+						$(this).show();
+					}
+					else {
+						$(this).hide();
+					}
+				})
 			}
 
 			var characters;
@@ -598,6 +729,29 @@
 
 			$('#sync').click(function () {
 				socket.emit("syncToyPad");
+			});
+		
+			//**Customize Token**
+			var dialog;
+			dialog = $( "#dialog-form" ).dialog({
+				autoOpen: false,
+				height: 400,
+				width: 350,
+				modal: true,
+				buttons: {
+					Cancel: function() {
+					dialog.dialog( "close" );
+					}
+				},
+				close: function() {
+					form[ 0 ].reset();
+					allFields.removeClass( "ui-state-error" );
+				}
+			});
+
+			$( ".item" ).click(function() {
+				console.log("click! " + $(this).attr("id"));
+				dialog.dialog( "open" );
 			});
 		});
 	</script>
