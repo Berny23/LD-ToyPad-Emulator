@@ -398,7 +398,7 @@
 		
 
 		<p id="footer">
-			Copyright © 2022 Berny23 &amp; Cort1237 | <b>v1.3.5</b> | This software is licensed under the <a
+			Copyright © 2022 Berny23 &amp; Cort1237 | <b>v1.3.6</b> | This software is licensed under the <a
 				href="https://choosealicense.com/licenses/mit">MIT</a> license. Source Code on <a
 				href="https://github.com/Berny23/LD-ToyPad-Emulator">GitHub</a>.
 		</p>
@@ -474,7 +474,7 @@
 					ui.item.removeAttr('previousPadNum');
 					ui.item.removeAttr('previousPadIndex');
 
-					filterToyBox();
+					filterToyBox(); //Refilter in case anything was in the search bar.
 				},
 				receive: function (event, ui) {
 					var $this = $(this);
@@ -518,6 +518,7 @@
 
 			$(".box").disableSelection();
 
+			//When there is a change in the search bar
 			$('form').on('input', function(e) {
 				filterToyBox();
 			})
@@ -657,6 +658,7 @@
 				});
 			}
 
+			//Filter the toybox to tags matching the current text of the search bar.
 			function filterToyBox() {
 				var text = $("#filterbox").val().toLowerCase();
 				$("#toybox-tokens").children().each(function(index) {
