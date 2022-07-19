@@ -292,26 +292,6 @@
 </head>
 
 <body>
-
-	<div id="dialog-form" title="Create new user">
-		<p class="validateTips">All form fields are required.</p>
-	   
-		<form>
-		  <fieldset>
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
-			<label for="email">Email</label>
-			<input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
-			<label for="password">Password</label>
-			<input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
-	   
-			<!-- /* Allow form submission with keyboard without duplicating the dialog button */ -->
-			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-		  </fieldset>
-		</form>
-	  </div>
-
-
 	<div id = "focus">
 		<h1 id="header">Lego Dimensions Toy Pad Emulator</h1>
 		<p id="warnings" class="container">
@@ -364,7 +344,7 @@
 					</div>
 					<ul id="toybox-tokens" class="box" padNum=-1></ul>
 				</div>
-				<form><input id="filterbox" type="text" name="search" placeholder="Type here to filter..."></form>
+				<form><input id="filterbox" type="search" name="search" placeholder="Type here to filter..."></form>
 			</div>
 
 			<div>
