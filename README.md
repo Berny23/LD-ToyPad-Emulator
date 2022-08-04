@@ -235,8 +235,11 @@ After that, run the command `hostname -I` in your virtual machine (or on your si
 ## Acknowledgements
 * **ags131** for writing one of the main NodeJS libraries I'm using: [https://www.npmjs.com/package/node-ld](https://www.npmjs.com/package/node-ld). My project would've been impossible to create without this guy's research.
 
-* **cort1237** for implementing writing to toy tags as well as several UI updates and support for saving toy tags locally. He has made the emulator more user-friendly.
+* **cort1237** for implementing writing data (like vehicle upgrades) to toy tags, as well as several user interface updates and support for saving toy tags locally.
 
+* **benlucaslaws** for improving the user experience and implementing a complete filtering system for vehicle/character abilities and game worlds.
+
+* **Luigimeansme** and **DaPiMan** for helping with missing or misplaced vehicle IDs.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
