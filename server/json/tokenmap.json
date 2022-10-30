@@ -154,7 +154,7 @@
     {        "id": 1152,        "upgrademap": 0,        "rebuild": 0,        "name": "Unknown",                                 "world": "Unknown",                                     "abilities": "Unknown" },
     {        "id": 1153,        "upgrademap": 0,        "rebuild": 0,        "name": "Unknown",                                 "world": "Unknown",                                     "abilities": "Unknown" },
     {        "id": 1154,        "upgrademap": 0,        "rebuild": 0,        "name": "Unknown",                                 "world": "Unknown",                                     "abilities": "Unknown" },
-    {        "id": 1155,        "upgrademap": 0,        "rebuild": 0,        "name": "Flight White Dragon",                     "world": "Ninjago",                                     "abilities": "Flying" },
+    {        "id": 1155,        "upgrademap": 0,        "rebuild": 0,        "name": "Flying White Dragon",                     "world": "Ninjago",                                     "abilities": "Flying" },
     {        "id": 1156,        "upgrademap": 0,        "rebuild": 1,        "name": "* Golden Fire Dragon",                    "world": "Ninjago",                                     "abilities": "Flying,Special Attack" },
     {        "id": 1157,        "upgrademap": 0,        "rebuild": 2,        "name": "* Ultra Destruction Dragon",              "world": "Ninjago",                                     "abilities": "Flying,Special Weapon" },
     {        "id": 1158,        "upgrademap": 0,        "rebuild": 0,        "name": "Arcade Machine",                          "world": "Midway Arcade",                               "abilities": "Arcade Docks" },
