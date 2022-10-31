@@ -16,7 +16,7 @@
     {        "id": 15,        "name": "The Doctor",                     "world": "Doctor Who",                                  "abilities": "Hacking,Technology,Fix-It,Sonar Smash,Intelligence" },
     {        "id": 16,        "name": "Emmet",                          "world": "The LEGO Movie",                              "abilities": "Drill,Master Build,Fix-It" },
     {        "id": 17,        "name": "Eris",                           "world": "Legends of Chima",                            "abilities": "Super Strength,CHI,Target,Flying" },
-    {        "id": 18,        "name": "Gimli",                          "world": "The Lord of the Rings",                       "abilities": "Cracked LEGO Objects,Mini Access" },
+    {        "id": 18,        "name": "Gimli",                          "world": "The Lord of the Rings",                       "abilities": "Super Strength,Super Strength Handles,Mini Access" },
     {        "id": 19,        "name": "Gollum",                         "world": "The Lord of the Rings",                       "abilities": "Boomerang,Silver LEGO Blowup,Mini Access,Acrobat,Dive" },
     {        "id": 20,        "name": "Harley Quinn",                   "world": "DC Comics",                                   "abilities": "Cracked LEGO Objects,Acrobat" },
     {        "id": 21,        "name": "Homer Simpson",                  "world": "The Simpsons",                                "abilities": "Sonar Smash,Big Transform,Cracked LEGO Objects" },
