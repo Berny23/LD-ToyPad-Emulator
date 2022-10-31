@@ -37,7 +37,7 @@
     {        "id": 36,        "name": "Scooby-Doo",                     "world": "Scooby-Doo!",                                 "abilities": "Tracking,Dig,Dive,Stealth" },
     {        "id": 37,        "name": "Sensei Wu",                      "world": "Ninjago",                                     "abilities": "Spinjitzu,Stealth,Pole Vault,Acrobat" },
     {        "id": 38,        "name": "Shaggy",                         "world": "Scooby-Doo!",                                 "abilities": "Tracking,Illumination,Stealth" },
-    {        "id": 39,        "name": "Stay Puft",                      "world": "Ghostbusters",                                "abilities": "Cracked LEGO Objects,Big Transform,Hazard Protection" },
+    {        "id": 39,        "name": "Stay Puft",                      "world": "Ghostbusters",                                "abilities": "Big Transform,Super Strength,Super Strength Handles,Hazard Protection" },
     {        "id": 40,        "name": "Superman",                       "world": "DC Comics",                                   "abilities": "Flying,Dive,Invulnerability,Cracked LEGO Objects,Freeze Breath,Laser,X-Ray Vision" },
     {        "id": 41,        "name": "Unikitty",                       "world": "The LEGO Movie",                              "abilities": "Rainbow LEGO Objects,Master Build,Big Transform" },
     {        "id": 42,        "name": "Wicked Witch of the West",       "world": "The Wizard of Oz",                            "abilities": "Silver LEGO Blowup,Flying,Magic,Illumination,Mind Control,Magical Shield" },
