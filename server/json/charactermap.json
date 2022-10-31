@@ -18,7 +18,7 @@
     {        "id": 17,        "name": "Eris",                           "world": "Legends of Chima",                            "abilities": "Super Strength,CHI,Target,Flying" },
     {        "id": 18,        "name": "Gimli",                          "world": "The Lord of the Rings",                       "abilities": "Super Strength,Super Strength Handles,Mini Access" },
     {        "id": 19,        "name": "Gollum",                         "world": "The Lord of the Rings",                       "abilities": "Boomerang,Silver LEGO Blowup,Mini Access,Acrobat,Dive" },
-    {        "id": 20,        "name": "Harley Quinn",                   "world": "DC Comics",                                   "abilities": "Cracked LEGO Objects,Acrobat" },
+    {        "id": 20,        "name": "Harley Quinn",                   "world": "DC Comics",                                   "abilities": "Acrobat,Super Strength" },
     {        "id": 21,        "name": "Homer Simpson",                  "world": "The Simpsons",                                "abilities": "Sonar Smash,Big Transform,Cracked LEGO Objects" },
     {        "id": 22,        "name": "Jay",                            "world": "Ninjago",                                     "abilities": "Spinjitzu,Fix-It,Acrobat,Stealth,Electricity,Intelligence" },
     {        "id": 23,        "name": "Joker",                          "world": "DC Comics",                                   "abilities": "Electricity,Target,Grapple,Hazard Protection" },
