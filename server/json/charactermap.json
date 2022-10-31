@@ -26,7 +26,7 @@
     {        "id": 25,        "name": "ACU Trooper",                    "world": "Jurassic World",                              "abilities": "Electricity,Illumination" },
     {        "id": 26,        "name": "Gamer Kid",                      "world": "Midway Arcade",                               "abilities": "Super Strength,Super Strength Handles,Laser,Invulnerability,Stealth,Speed" },
     {        "id": 27,        "name": "Krusty the Clown",               "world": "The Simpsons",                                "abilities": "Growth,Hazard Cleaner" },
-    {        "id": 28,        "name": "Laval",                          "world": "Legends of Chima",                            "abilities": "CHI,Cracked LEGO Objects,Acrobat,Laser Deflector,Sonar Smash" },
+    {        "id": 28,        "name": "Laval",                          "world": "Legends of Chima",                            "abilities": "CHI,Super Strength,Acrobat,Laser Deflector,Sonar Smash" },
     {        "id": 29,        "name": "Legolas",                        "world": "The Lord of the Rings",                       "abilities": "Pole Vault,Target,Acrobat,Grind Rails" },
     {        "id": 30,        "name": "Lloyd",                          "world": "Ninjago",                                     "abilities": "Spinjitzu,Acrobat,Stealth,Laser Deflector,Illumination" },
     {        "id": 31,        "name": "Marty McFly",                    "world": "Back to the Future",                          "abilities": "Sonar Smash" },
