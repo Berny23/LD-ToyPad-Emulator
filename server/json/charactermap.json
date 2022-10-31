@@ -83,6 +83,6 @@
     {        "id": 82,        "name": "World 19 (unreleased)",          "world":"19",                                           "abilities": "Unknown" },
     {        "id": 83,        "name": "World 20 (unreleased)",          "world":"20",                                           "abilities": "Unknown" },
     {        "id": 768,       "name": "Unknown",                        "world":"Unknown",                                      "abilities": "Unknown" },
-    {        "id": 769,       "name": "Supergirl Red Lantern",          "world":"DC Comics",                                    "abilities": "Flying,Dive,Invulnerability,Cracked LEGO Objects,Laser,X-Ray Vision,Lantern Constructs,Dig,Grapple,Freeze Breath" },
+    {        "id": 769,       "name": "Supergirl Red Lantern",          "world":"DC Comics",                                    "abilities": "Flying,Dive,Invulnerability,Super Strength,Laser,X-Ray Vision,Lantern Constructs,Dig,Grapple,Freeze Breath" },
     {        "id": 770,       "name": "Unknown",                        "world":"Unknown",                                      "abilities": "Unknown" }
 ]
