@@ -4,7 +4,7 @@
     {        "id": 3,         "name": "Wyldstyle",                      "world": "The LEGO Movie",                              "abilities": "Relic Detector,Acrobat,Master Build" },
     {        "id": 4,         "name": "Aquaman",                        "world": "DC Comics",                                   "abilities": "Atlantis,Dive,Hazard Cleaner,Growth" },
     {        "id": 5,         "name": "Bad Cop",                        "world": "The LEGO Movie",                              "abilities": "Laser,Relic Detector,Target" },
-    {        "id": 6,         "name": "Bane",                           "world": "DC Comics",                                   "abilities": "Cracked LEGO Objects,Big Transform,Hazard Protection" },
+    {        "id": 6,         "name": "Bane",                           "world": "DC Comics",                                   "abilities": "Big Transform,Super Strength,Super Strength Handles,Hazard Protection" },
     {        "id": 7,         "name": "Bart Simpson",                   "world": "The Simpsons",                                "abilities": "Target,Mini Access" },
     {        "id": 8,         "name": "Benny",                          "world": "The LEGO Movie",                              "abilities": "Hacking,Sonar Smash,Target,Master Build,Technology" },
     {        "id": 9,         "name": "Chell",                          "world": "Portal 2",                                    "abilities": "Acrobat,Portal Gun" },
