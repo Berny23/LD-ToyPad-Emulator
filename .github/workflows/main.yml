@@ -1,0 +1,31 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    # runs-on: ubuntu-latest # node 11 fails with Python 2 exception for print
+    runs-on: ubuntu-20.04 
+
+    strategy:
+      matrix:
+        node-version: [11.x, 12.x, 14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install --global node-gyp@8.4.1
+      - run: npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
+      - run: npm install
+      - run: npm ci
+      # - run: npm run build --if-present
+      # - run: npm test
+
