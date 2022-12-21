@@ -1,0 +1,38 @@
+{
+    "type": "array",
+    "title": "Root Schema",
+    "minItems": 1,
+    "uniqueItems": true,
+    "items": {
+        "type": "object",
+        "title": "A Schema",
+        "minProperties": 6,
+        "additionalProperties": false,
+        "properties": {
+            "id": {
+                "type": "integer",
+                "title": "The id Schema"
+            },
+            "upgrademap": {
+                "type": "integer",
+                "title": "The upgrademap Schema"
+            },
+            "rebuild": {
+                "type": "integer",
+                "title": "The rebuild Schema"
+            },
+            "name": {
+                "type": "string",
+                "title": "The name Schema"
+            },
+            "world": {
+                "type": "string",
+                "title": "The world Schema"
+            },
+            "abilities": {
+                "type": "string",
+                "title": "The abilities Schema"
+            }
+        }
+    }
+}
