@@ -29,3 +29,18 @@ jobs:
       # - run: npm run build --if-present
       # - run: npm test
 
+  verify-json-validation:
+    
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        file-name: [charactermap, tokenmap]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate JSON ${{ matrix.file-name }}.json
+        uses: docker://orrosenblatt/validate-json-action:latest
+        env:
+          INPUT_SCHEMA: /test/${{ matrix.file-name }}_schema.json
+          INPUT_JSONS: /server/json/${{ matrix.file-name }}.json
