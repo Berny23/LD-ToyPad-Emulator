@@ -52,7 +52,8 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 4. Run the following commands (you can copy and paste with right click):
    ```bash
-   sudo apt install usbip hwdata curl python build-essential -y
+   sudo apt update
+   sudo apt install -y git usbip hwdata curl python build-essential libusb-1.0-0-dev libudev-dev
    echo "usbip-core" | sudo tee -a /etc/modules
    echo "usbip-vudc" | sudo tee -a /etc/modules
    echo "vhci-hcd" | sudo tee -a /etc/modules
@@ -62,7 +63,6 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    echo "libcomposite" | sudo tee -a /etc/modules
    echo "usb_f_rndis" | sudo tee -a /etc/modules
    
-   sudo apt install -y git
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
@@ -131,12 +131,13 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 4. Use SSH to run the following commands (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).):
    ```bash
+   sudo apt update
+   sudo apt install -y git libusb-1.0-0-dev libudev-dev
    echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
    echo "dwc2" | sudo tee -a /etc/modules
    echo "libcomposite" | sudo tee -a /etc/modules
    echo "usb_f_rndis" | sudo tee -a /etc/modules
    
-   sudo apt install -y git
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
@@ -182,7 +183,6 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 To update this software, just pull the latest changes by running the following 3 commands:
 ````bash
 cd LD-ToyPad-Emulator
-rm package-lock.json
 git pull
 npm install
 ````
@@ -239,7 +239,11 @@ After that, run the command `hostname -I` in your virtual machine (or on your si
 
 * **benlucaslaws** for improving the user experience and implementing a complete filtering system for vehicle/character abilities and game worlds.
 
-* **Luigimeansme** and **DaPiMan** for helping with missing or misplaced vehicle IDs.
+* **DaPiMan** for helping with missing or misplaced vehicle IDs and other improvements.
+
+* **Luigimeansme** for adding/fixing character and vehicle abilities and other data improvements.
+
+* **VladimirKuletski** for creating/updating CI workflows for automated testing via GitHub Actions.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

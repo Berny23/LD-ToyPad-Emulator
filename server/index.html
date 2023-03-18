@@ -1,6 +1,6 @@
 <!--
 
-	Copyright © 2022 Berny23 & Cort1237
+	Copyright © 2023 Berny23, Cort1237 and many more
 	
 	This file is part of "Toy Pad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
@@ -11,11 +11,11 @@
 
 <head>
 	<meta name="viewport" content="width=device-width" />
-	<title>Lego Dimensions Toy Pad Emulator | v1.3.5</title>
+	<title>Toy Pad Emulator for Lego Dimensions | v1.4.1</title>
 	<style>
 		html {
 			display: table;
-			margin:auto;
+			margin: auto;
 			text-align: center;
 		}
 
@@ -24,7 +24,7 @@
 			align-items: center;
 			flex-direction: column;
 			vertical-align: middle;
-			margin:0%;
+			margin: 0%;
 			text-align: center;
 			font-family: sans-serif;
 		}
@@ -117,18 +117,15 @@
 			position: relative;
 		}
 
-		.layout-column
-		{
+		.layout-column {
 			margin: 1.5em 0.75em;
 		}
 
-		.layout-column:first-child
-		{
+		.layout-column:first-child {
 			margin-left: 1.5em;
 		}
 
-		.layout-column:last-child
-		{
+		.layout-column:last-child {
 			margin-right: 1.5em;
 		}
 
@@ -193,7 +190,7 @@
 		#toybox-tokens .item.filtered {
 			display: none !important;
 		}
-		
+
 		.item:hover,
 		.item:focus,
 		.item:active,
@@ -226,7 +223,7 @@
 		}
 
 		.item[id="deleteToken"],
-		.item[id="colorToken"]{
+		.item[id="colorToken"] {
 			width: 9em;
 			height: 9em;
 		}
@@ -236,7 +233,7 @@
 			background-color: #26418f;
 			padding: 1em;
 			line-height: 2em;
-			width:fit-content;
+			width: fit-content;
 		}
 
 		#status {
@@ -267,7 +264,7 @@
 			border-radius: 0.50rem;
 			cursor: default;
 			padding: 10;
-			
+
 		}
 
 		.box-edit>#deleteToken {
@@ -275,6 +272,7 @@
 			box-shadow: none;
 			cursor: default;
 		}
+
 		.box-edit>#colorToken {
 			background-color: #d450ef;
 			box-shadow: none;
@@ -305,7 +303,7 @@
 		}
 
 		#layout-controller {
-			display:flex; 
+			display: flex;
 			flex-direction: row;
 			align-items: center;
 		}
@@ -315,7 +313,8 @@
 			margin: 10px;
 		}
 
-		.filter label, .filter input {
+		.filter label,
+		.filter input {
 			display: block;
 		}
 
@@ -332,7 +331,7 @@
 				height: 40vh;
 			}
 
-			.flex-container{
+			.flex-container {
 				min-width: 80vw;
 			}
 
@@ -350,15 +349,14 @@
 				width: calc(100% - 80px);
 			}
 		}
-
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<div id = "focus">
-		<h1 id="header">Lego Dimensions Toy Pad Emulator</h1>
+	<div id="focus">
+		<h1 id="header">Toy Pad Emulator for Lego Dimensions</h1>
 		<p id="warnings" class="container">
 			Create characters and vehicles with the boxes at the top, then drag them to the Toy Pad.
 			<br>
@@ -413,11 +411,13 @@
 						<input id="name-filter" type="search" name="name-filter" placeholder="Filter by name...">
 					</div>
 					<div class="filter">
-						<input list="world-list" id="tag-world-filter" type="search" name="tag-world-filter" class="filter-input" placeholder="Filter by world..." />
+						<input list="world-list" id="tag-world-filter" type="search" name="tag-world-filter"
+							class="filter-input" placeholder="Filter by world..." />
 						<datalist id="world-list"></datalist>
 					</div>
 					<div class="filter">
-						<input list="ability-list" id="tag-ability-filter" type="search" name="tag-ability-filter" class="filter-input" placeholder="Filter by ability..." />
+						<input list="ability-list" id="tag-ability-filter" type="search" name="tag-ability-filter"
+							class="filter-input" placeholder="Filter by ability..." />
 						<datalist id="ability-list"></datalist>
 					</div>
 					<br>
@@ -453,11 +453,11 @@
 				</div>
 			</div>
 		</div>
-		
+
 
 		<p id="footer">
-			Copyright © 2022 Berny23 &amp; Cort1237 | <b>v1.3.6</b> | This software is licensed under the <a
-				href="https://choosealicense.com/licenses/mit">MIT</a> license. Source Code on <a
+			Copyright © 2023 Berny23, Cort1237 and many more | <b>v1.4.1</b> | This software is licensed under the <a
+				href="https://choosealicense.com/licenses/mit">MIT</a> license. The source code is available on <a
 				href="https://github.com/Berny23/LD-ToyPad-Emulator">GitHub</a>.
 		</p>
 
@@ -504,7 +504,7 @@
 			socket.emit("syncToyPad");
 
 			var currentMousePos = { x: -1, y: -1 };
-			$(document).mousemove(function(event) {
+			$(document).mousemove(function (event) {
 				currentMousePos.x = event.pageX;
 				currentMousePos.y = event.pageY;
 			});
@@ -524,10 +524,10 @@
 				appendTo: document.getElementById('focus'),
 				containment: document.getElementById('focus'),
 				//cursorAt: {left: (-(($(document).width() - $(window).width())/2))},
-				
-				sort: function(event, ui) {
-					ui.helper[0].style.left = currentMousePos.x-20;
-					ui.helper.css({'list-style-type' : 'none'});
+
+				sort: function (event, ui) {
+					ui.helper[0].style.left = currentMousePos.x - 20;
+					ui.helper.css({ 'list-style-type': 'none' });
 				},
 
 				start: function (event, ui) {
@@ -550,7 +550,7 @@
 						previousPadNum != -2 &&
 						previousPadNum == newPadNum &&
 						previousPadIndex == newPadIndex) {
-							updateToyPadPosition(ui.item.attr('data-uid'), ui.item.attr('data-id'), newPadNum, newPadIndex, newPadIndex);
+						updateToyPadPosition(ui.item.attr('data-uid'), ui.item.attr('data-id'), newPadNum, newPadIndex, newPadIndex);
 					}
 
 					ui.item.removeAttr('previousPadNum');
@@ -601,7 +601,7 @@
 			$(".box").disableSelection();
 
 			//When there is a change in the search bar
-			$('#name-filter').on('input', function(e) {
+			$('#name-filter').on('input', function (e) {
 				applyFilters();
 			})
 			//**IO Functions**
@@ -723,16 +723,13 @@
 				});
 			}
 
-			function createItemHtml(item)
-			{
+			function createItemHtml(item) {
 				var itemData;
 
-				if (item.type == 'character')
-				{
+				if (item.type == 'character') {
 					itemData = filterById(characters, item.id);
 				}
-				else
-				{
+				else {
 					itemData = filterById(vehicles, item.id);
 				}
 
@@ -740,21 +737,20 @@
 					' data-world="' + itemData.world + '" data-abilities="' + itemData.abilities + '"><h3>' + item.name + '</h3></li>';
 			}
 
-			function updateToyPadPosition(uid, id, position, currentIndex, newIndex)
-			{
+			function updateToyPadPosition(uid, id, position, currentIndex, newIndex) {
 				console.log(currentIndex);
 				$.ajax({
 					method: 'DELETE',
 					contentType: 'application/json',
 					url: '/remove',
-					data: JSON.stringify({ index:  parseInt(currentIndex), uid: uid })
+					data: JSON.stringify({ index: parseInt(currentIndex), uid: uid })
 				}).done(function () {
 					setTimeout(function () {
 						$.ajax({
 							method: 'POST',
 							contentType: 'application/json',
 							url: '/characterPlace',
-							data: JSON.stringify({uid: uid, id: id, position: position, index: newIndex})
+							data: JSON.stringify({ uid: uid, id: id, position: position, index: newIndex })
 						})
 					}, 500);
 				});
@@ -763,16 +759,15 @@
 			//Filter the toybox to tags matching the current text of the search bar.
 			function applyNameFilter() {
 				var text = $("#name-filter").val().toLowerCase();
-				$(".item").each(function(index, item) {
+				$(".item").each(function (index, item) {
 					var name = $(item).text().toLowerCase();
-					if(!name.includes(text)) {
+					if (!name.includes(text)) {
 						$(item).addClass('filtered');
 					}
 				});
 			}
 
-			function setupFilterInputs()
-			{
+			function setupFilterInputs() {
 				$.each(characters, function (i, item) {
 					if (item.name != 'Unknown' || item.name.includes("(unreleased)")) $('#character-list').append('<option value="' + item.name + '" data-world="' + item.world + '" data-abilities="' + item.abilities + '">');
 				});
@@ -782,7 +777,7 @@
 				});
 
 				var worlds = [];
-				var ignoredWorlds = [ "15", "16", "17", "18", "19", "20", "N/A", "Unknown" ];
+				var ignoredWorlds = ["15", "16", "17", "18", "19", "20", "N/A", "Unknown"];
 				worlds = worlds.concat(characters.map(function (character) { return character.world; }));
 				worlds = worlds.concat(vehicles.map(function (vehicle) { return vehicle.world; }));
 				worlds = getUniqueSortedValues(worlds);
@@ -844,8 +839,7 @@
 				}
 			}
 
-			function clearFilterInputs()
-			{
+			function clearFilterInputs() {
 				$('#tag-world-filter, #tag-ability-filter, #name-filter').val("");
 			}
 
@@ -860,11 +854,10 @@
 				}).sort(compareWithoutArticles);
 			}
 
-			function compareWithoutArticles(a, b)
-			{
+			function compareWithoutArticles(a, b) {
 				var aWithoutArticles = removeArticles(a);
 				var bWithoutArticles = removeArticles(b);
-				
+
 				if (aWithoutArticles > bWithoutArticles) {
 					return 1;
 				}
@@ -876,16 +869,13 @@
 				return 0;
 			}
 
-			function removeArticles(string)
-			{
+			function removeArticles(string) {
 				words = string.split(" ");
-				if(words.length <= 1) 
-				{
+				if (words.length <= 1) {
 					return string;
 				}
 
-				if(words[0] == 'The')
-				{
+				if (words[0] == 'The') {
 					return words.splice(1).join(" ");
 				}
 
@@ -933,28 +923,28 @@
 			$('#sync').click(function () {
 				socket.emit("syncToyPad");
 			});
-		
+
 			//**Customize Token**
 			var dialog;
-			dialog = $( "#dialog-form" ).dialog({
+			dialog = $("#dialog-form").dialog({
 				autoOpen: false,
 				height: 400,
 				width: 350,
 				modal: true,
 				buttons: {
-					Cancel: function() {
-					dialog.dialog( "close" );
+					Cancel: function () {
+						dialog.dialog("close");
 					}
 				},
-				close: function() {
-					form[ 0 ].reset();
-					allFields.removeClass( "ui-state-error" );
+				close: function () {
+					form[0].reset();
+					allFields.removeClass("ui-state-error");
 				}
 			});
 
-			$( ".item" ).click(function() {
+			$(".item").click(function () {
 				console.log("click! " + $(this).attr("id"));
-				dialog.dialog( "open" );
+				dialog.dialog("open");
 			});
 
 			$('.filter-input').change(function () {
