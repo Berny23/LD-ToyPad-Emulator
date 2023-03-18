@@ -63,6 +63,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    echo "libcomposite" | sudo tee -a /etc/modules
    echo "usb_f_rndis" | sudo tee -a /etc/modules
    
+   git config pull.rebase false
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
@@ -138,6 +139,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    echo "libcomposite" | sudo tee -a /etc/modules
    echo "usb_f_rndis" | sudo tee -a /etc/modules
    
+   git config pull.rebase false
    git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
    cd LD-ToyPad-Emulator
    
@@ -180,16 +182,11 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    If you want to turn it off, just press `Ctrl + C` in the cmd window, then use the command `sudo shutdown now` to safely power off the device.
 
 ## Update
-To update this software, just pull the latest changes by running the following 3 commands:
+To update this software, just get the latest changes by running the following commands while inside the `LD-ToyPad-Emulator` folder:
 ````bash
-cd LD-ToyPad-Emulator
-git pull
+git fetch
+git checkout origin/HEAD && git checkout origin/HEAD package-lock.json
 npm install
-````
-
-**Only use the following command if you get an error**, then run the last two lines from above again:
-````bash
-git reset --hard
 ````
 
 ## Troubleshooting
