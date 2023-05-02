@@ -224,6 +224,14 @@ Alternatively, copy the following command and replace `YOUR_IP_ADDRESS` with you
 git reset --hard ; printf '\necho "usbip-vudc.0" > UDC\nusbipd -D --device\nsleep 2;\nusbip attach -r YOUR_IP_ADDRESS -b usbip-vudc.0\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh ; sudo cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
 ````
 
+### VirtualHere shows LEGO READER V2.10, but fails with "Operation not permitted"
+When double clicking on "LEGO READER V2.10", if it returns `Error "Operation not permitted" (-1) trying to use this device.`. Try these steps:
+
+1. Right click the device in the VirtualHere Client and select "Custom Event Handler..."
+2. Add `onReset.$VENDOR_ID$.$PRODUCT_ID$=` 
+
+Then try using the device again. 
+
 ### Webpage not reachable under http://debian/
 If you're using a virtual machine, make sure you've applied the solution specific to your software first ([VirtualBox](#webpage-not-reachable-oracle-virtualbox) or [VMware](#webpage-not-reachable-vmware))!
 
