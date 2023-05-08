@@ -120,7 +120,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 #### Prerequisites
 * **Raspberry Pi Zero W** ($10) or similar single board computer with Network support
   * **NOTE**: Will NOT work with Rapsberry Pi: 2, 3, 3A, 3A+, 3B, 3B+. These models lack the ability to become a usb gadget.
-* **USB A to micro USB A cable** that supports data transmission (e. g. your phone's charging cable)
+* **USB Type-A to micro-USB 2.0 Type-B cable** that supports data transmission (e. g. your phone's charging cable)
 * 2 GB+ Micro SD card
 * Internet connection on your PC and single board computer
 
