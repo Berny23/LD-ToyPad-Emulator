@@ -19,7 +19,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 //File where tag info will be saved
-const toytagFileName = './server/json/toytags.json';
+const toytagFileName = path.join(__dirname, 'server/json/toytags.json');
 
 var tp = new ld.ToyPadEmu()
 tp.registerDefaults()
@@ -63,9 +63,9 @@ function createCharacter(id, uid) {
 //This finds a character or vehicles name from the ID provided.
 function getNameFromID(id) {
 	if (id < 1000)
-		dbfilename = './server/json/charactermap.json';
+		dbfilename = path.join(__dirname, 'server/json/charactermap.json');
 	else
-		dbfilename = './server/json/tokenmap.json';
+		dbfilename = path.join(__dirname, 'server/json/tokenmap.json');
 	var name = "test";
 	const data = fs.readFileSync(dbfilename, 'utf8');
 	const databases = JSON.parse(data);
