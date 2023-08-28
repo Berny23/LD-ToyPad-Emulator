@@ -1,5 +1,5 @@
 /*
-	Copyright © 2023 Berny23, Cort1237 and many more
+	Copyright Â© 2023 Berny23, Cort1237 and many more
 	
 	This file is part of "Toy Pad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
@@ -159,119 +159,119 @@ function RGBToHex(r, g, b) {
 	if (b.length == 1)
 		b = "0" + b;
 	var hex = "#" + r + g + b;
-	
-	switch(hex){
-	//idle (full white)
-	case "#99420e":
-		hex = "#ffffff";
-		break;
-	
-	//rainbow sequence (title screen, some are used by keystones)
-	case "#ff0000": //red
-		break;
-	case "#ff6e00":
-		hex = "#ffff00"; //yellow
-		break;
-	case "#006e00":
-		hex = "#00ff00"; //green
-		break;
-	case "#006e18":
-		hex = "#00ffff"; //cyan
-		break;
-	case "#000018":
-		hex = "#0000ff"; //blue
-		break;
-	case "#ff0018":
-		hex = "#ff00ff"; //pink
-		break;
 
-	//wyldstyle scanner
-	case "#f00016":
-		hex = "#ff2de6";
-		break;
+	switch (hex) {
+		//idle (full white)
+		case "#99420e":
+			hex = "#ffffff";
+			break;
 
-	//batman stealth
-	case "#000018":
-		hex = "#0000ff";
-		break;
+		//rainbow sequence (title screen, some are used by keystones)
+		case "#ff0000": //red
+			break;
+		case "#ff6e00":
+			hex = "#ffff00"; //yellow
+			break;
+		case "#006e00":
+			hex = "#00ff00"; //green
+			break;
+		case "#006e18":
+			hex = "#00ffff"; //cyan
+			break;
+		case "#000018":
+			hex = "#0000ff"; //blue
+			break;
+		case "#ff0018":
+			hex = "#ff00ff"; //pink
+			break;
 
-	//shift keystone (dark colors for blink animation)
-	case "#002007":
-		hex = "#007575";
-		break;
-	case "#4c2000":
-		hex = "#757500";
-		break;
-	case "#4c0007":
-		hex = "#750075";
-		break;
+		//wyldstyle scanner
+		case "#f00016":
+			hex = "#ff2de6";
+			break;
 
-	//chroma keystone
+		//batman stealth
+		case "#000018":
+			hex = "#0000ff";
+			break;
 
-	case "#3f1b05":
-		hex = "#b0b0b0";
-		break;
-	case "#4c2007":
-		hex = "#757575";
-		break;
-	case "#3f1b00":
-		hex = "#b0b000";
-		break;
-	case "#3f0000":
-		hex = "#b00000";
-		break;
-	case "#000005":
-		hex = "#0000b0";
-		break;
-	case "#001b00":
-		hex = "#00b000";
-		break;
-	case "#ff2700":
-		hex = "#ffa200";
-		break;
-	case "#3f0900":
-		hex = "#b06f00";
-		break;
-	case "#44000d":
-		hex = "#d500ff";
-		break;
-	case "#110003":
-		hex = "#9300b0";
-		break;
+		//shift keystone (dark colors for blink animation)
+		case "#002007":
+			hex = "#007575";
+			break;
+		case "#4c2000":
+			hex = "#757500";
+			break;
+		case "#4c0007":
+			hex = "#750075";
+			break;
 
-	//element keystone
-	case "#000016":
-		hex = "#0000ff";
-		break;
-	case "#006700":
-		hex = "#00ff00";
-		break;
-	case "#f00000":
-		hex = "#ff0000";
-		break;
-	case "#000016":
-		hex = "#00ffff";
-		break;
+		//chroma keystone
 
-	//scale keystone
-	case "#ff1e0080":
-		hex = "#ffb900";
-		break;
-	case "#f06716":
-		hex = "#ffffff";
-		break;
+		case "#3f1b05":
+			hex = "#b0b0b0";
+			break;
+		case "#4c2007":
+			hex = "#757575";
+			break;
+		case "#3f1b00":
+			hex = "#b0b000";
+			break;
+		case "#3f0000":
+			hex = "#b00000";
+			break;
+		case "#000005":
+			hex = "#0000b0";
+			break;
+		case "#001b00":
+			hex = "#00b000";
+			break;
+		case "#ff2700":
+			hex = "#ffa200";
+			break;
+		case "#3f0900":
+			hex = "#b06f00";
+			break;
+		case "#44000d":
+			hex = "#d500ff";
+			break;
+		case "#110003":
+			hex = "#9300b0";
+			break;
 
-	//locate keystone (too many possible values to find by hand. need help here)
+		//element keystone
+		case "#000016":
+			hex = "#0000ff";
+			break;
+		case "#006700":
+			hex = "#00ff00";
+			break;
+		case "#f00000":
+			hex = "#ff0000";
+			break;
+		case "#000016":
+			hex = "#00ffff";
+			break;
 
-	//other
-	case "#ff6e18":
-		hex = "#ffffff";
-		break;
+		//scale keystone
+		case "#ff1e0080":
+			hex = "#ffb900";
+			break;
+		case "#f06716":
+			hex = "#ffffff";
+			break;
 
-	default:
-		break;
-}
-	
+		//locate keystone (too many possible values to find by hand. need help here)
+
+		//other
+		case "#ff6e18":
+			hex = "#ffffff";
+			break;
+
+		default:
+			break;
+	}
+
 	return hex;
 }
 
