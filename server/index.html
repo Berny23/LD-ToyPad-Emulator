@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 
 	Copyright © 2023 Berny23, Cort1237 and many more
 	
@@ -163,7 +163,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background-color: #e8eaf6;
+			background-color: #6e6e6e;
 			background-blend-mode: soft-light;
 			margin: 0 0.5em;
 		}
@@ -657,6 +657,7 @@
 				padindexs = [[2], [1, 4, 5], [3, 6, 7]];
 				pad = e[0];
 				color = e[1] + '80';
+				console.log(color);
 				pads = padindexs[pad - 1];
 				pads.forEach(element => {
 					pad = document.getElementById('toypad' + element);
