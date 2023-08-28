@@ -254,8 +254,8 @@ function RGBToHex(r, g, b) {
 			break;
 
 		//scale keystone
-		case "#ff1e0080":
-			hex = "#ffb900";
+		case "#ff1e00":
+			hex = "#ffa200";
 			break;
 		case "#f06716":
 			hex = "#ffffff";
