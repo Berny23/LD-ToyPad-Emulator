@@ -263,6 +263,11 @@ function RGBToHex(r, g, b) {
 
 		//locate keystone (too many possible values to find by hand. need help here)
 
+		//green (hack minigame)
+		case "#003700":
+			hex = "#00ff00";
+			break;
+
 		//other
 		case "#ff6e18":
 			hex = "#ffffff";
