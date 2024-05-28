@@ -209,7 +209,7 @@ To undo the changes from Zadig, you have to rollback the driver:
 
 In order to fix this, you will need to add a custom udev rule in your system so the software can comunicate with the game, the udev rule is in the root of the server folder. (thanks to wof for sharing the rule)
 
-To add the rule simply just move the `99-dimensions.rules` file to `/etc/udev/rules.d/` (a reboot may be required)
+To add the rule, simply just move the `99-dimensions.rules` file to `/etc/udev/rules.d/` (a reboot may be required)
 
 If moving the file is not allowed, just open a terminal inside the `rules.d` folder and run this command: `sudo nano 99-dimensions.rule`, open the rule file in the server root in a text editor, copy the contents and paste in the terminal then press Ctrl + X to save the file.
 
