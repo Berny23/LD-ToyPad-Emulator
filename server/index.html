@@ -738,7 +738,7 @@
 				var path = "images/" + itemData.id + ".png";
 				var url = $(location).attr("origin") + "/server/" + path;
 				if (fileExists(url)) {
-					content = "<img src=" + path + " alt=" + itemData.name + " style='width: 100%; height: 100%; object-fit: contain;'>";
+					content = "<img src=" + path + " alt=" + itemData.name + " style='width: 100%; height: 100%; object-fit: contain; pointer-events: none;'>";
 				}
 
 				return '<li class=item draggable=true data-name=' + item.name + ' data-type=' + item.type + ' data-id= ' + item.id + ' data-uid=' + item.uid + ' pad=' + item.pad +
