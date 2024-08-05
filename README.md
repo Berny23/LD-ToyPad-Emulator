@@ -134,7 +134,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    ```bash
    sudo apt update
    sudo apt install -y git libusb-1.0-0-dev libudev-dev
-   echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
+   [[ -f /boot/firmware/config.txt ]] && ( echo "dtoverlay=dwc2" | sudo tee -a /boot/firmware/config.txt ) || ( echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt )
    echo "dwc2" | sudo tee -a /etc/modules
    echo "libcomposite" | sudo tee -a /etc/modules
    echo "usb_f_rndis" | sudo tee -a /etc/modules
