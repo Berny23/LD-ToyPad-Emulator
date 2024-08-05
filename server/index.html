@@ -734,8 +734,23 @@
 					itemData = filterById(vehicles, item.id);
 				}
 
+				var content = "<h3>" + itemData.name + "</h3>";
+				var path = "images/" + itemData.id + ".png";
+				var url = $(location).attr("origin") + "/server/" + path;
+				if (fileExists(url)) {
+					content = "<img src=" + path + " alt=" + itemData.name + " style='width: 100%; height: 100%; object-fit: contain; pointer-events: none;'>";
+				}
+
 				return '<li class=item draggable=true data-name=' + item.name + ' data-type=' + item.type + ' data-id= ' + item.id + ' data-uid=' + item.uid + ' pad=' + item.pad +
-					' data-world="' + itemData.world + '" data-abilities="' + itemData.abilities + '"><h3>' + item.name + '</h3></li>';
+					' data-world="' + itemData.world + '" data-abilities="' + itemData.abilities + '">' + content + '</li>';
+			}
+
+			function fileExists(url) {
+				console.log(url);
+				var http = new XMLHttpRequest();
+				http.open('HEAD', url, false);
+				http.send();
+				return http.status!=404;
 			}
 
 			function updateToyPadPosition(uid, id, position, currentIndex, newIndex) {
