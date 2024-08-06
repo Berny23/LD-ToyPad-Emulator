@@ -736,7 +736,7 @@
 
 				var content = "<h3>" + itemData.name + "</h3>";
 				var path = "images/" + itemData.id + ".png";
-				var url = $(location).attr("origin") + "/server/" + path;
+				var url = $(location).attr("href") + "/../" + path;
 				if (fileExists(url)) {
 					content = "<img src=" + path + " alt=" + itemData.name + " style='width: 100%; height: 100%; object-fit: contain; pointer-events: none;'>";
 				}
@@ -746,7 +746,6 @@
 			}
 
 			function fileExists(url) {
-				console.log(url);
 				var http = new XMLHttpRequest();
 				http.open('HEAD', url, false);
 				http.send();
