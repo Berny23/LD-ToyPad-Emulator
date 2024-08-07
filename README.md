@@ -189,6 +189,13 @@ git checkout origin/HEAD && git checkout origin/HEAD package-lock.json
 npm install
 ````
 
+## Adding Images
+If you would like your tags to have custom images over them to personalize your experience, name your image (ID).png and place them in server/images inside the Toypad Emulator folder. If you want them to cover the entirety of the tag with no blank space, make sure your image is either 100x100 or can be scaled to that size. 
+
+Character IDs can be found [here](https://github.com/Berny23/LD-ToyPad-Emulator/blob/master/server/json/charactermap.json)
+
+Vehicle IDs can be found [here](https://github.com/Berny23/LD-ToyPad-Emulator/blob/master/server/json/tokenmap.json)
+
 ## Troubleshooting
 
 ### RPCS3 cannot detect the Toy Pad
