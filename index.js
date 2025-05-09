@@ -325,7 +325,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
   const ind = req.payload[0];
   const page = req.payload[1];
   const data = req.payload.slice(2);
-  const uid = getUIDFromIndex("2");
+  const uid = getUIDFromIndex(ind);
   console.log("REQUEST (CMD_WRITE): index:", ind, "page", page, "data", data);
 
   //The ID is stored in page 24
