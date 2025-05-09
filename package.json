@@ -5,7 +5,7 @@
   "repository": "https://github.com/Berny23/LD-ToyPad-Emulator",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Berny23",
   "license": "MIT",
