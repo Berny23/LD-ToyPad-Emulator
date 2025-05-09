@@ -20,12 +20,12 @@ const io = new Server(server);
 //File where tag info will be saved
 const toytagFileName = path.join(__dirname, "server/json/toytags.json");
 
-var tp = new ld.ToyPadEmu();
+const tp = new ld.ToyPadEmu();
 tp.registerDefaults();
 
 initalizeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
 
-var connection = false;
+let connection = false;
 
 //Create a token JSON object from provided vehicle data
 /* Vehicle Data Explained:
@@ -39,7 +39,7 @@ var connection = false;
 
 function createVehicle(id, upgrades, uid) {
   upgrades = upgrades || [0, 0];
-  var token = new Buffer(180);
+  const token = new Buffer(180);
   token.fill(0);
   token.uid = uid;
   //console.log(upgrades);
@@ -52,7 +52,7 @@ function createVehicle(id, upgrades, uid) {
 
 //Create a token JSON object from provided character data
 function createCharacter(id, uid) {
-  var token = new Buffer(180);
+  const token = new Buffer(180);
   token.fill(0); // Game really only cares about 0x26 being 0 and D4 returning an ID
   token.uid = uid;
   token.id = id;
@@ -64,7 +64,7 @@ function getNameFromID(id) {
   if (id < 1000)
     dbfilename = path.join(__dirname, "server/json/charactermap.json");
   else dbfilename = path.join(__dirname, "server/json/tokenmap.json");
-  var name = "test";
+  let name = "test";
   const data = fs.readFileSync(dbfilename, "utf8");
   const databases = JSON.parse(data);
   databases.forEach((db) => {
@@ -80,7 +80,7 @@ function getNameFromID(id) {
 function getJSONFromUID(uid) {
   const data = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(data);
-  var entry;
+  let entry;
   databases.forEach((db) => {
     if (db.uid == uid) entry = db;
   });
@@ -110,7 +110,7 @@ function updatePadIndex(uid, index) {
 function getUIDFromIndex(index) {
   const data = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(data);
-  var uid;
+  let uid;
   databases.forEach((db) => {
     if (index == db.index) {
       uid = db.uid;
@@ -164,7 +164,7 @@ function RGBToHex(r, g, b) {
   if (r.length == 1) r = "0" + r;
   if (g.length == 1) g = "0" + g;
   if (b.length == 1) b = "0" + b;
-  var hex = "#" + r + g + b;
+  const hex = "#" + r + g + b;
 
   switch (hex) {
     //idle (full white)
@@ -309,16 +309,16 @@ function getUIDAtPad(index) {
  * This data is copied to the JSON for future use.
  */
 tp.hook(tp.CMD_WRITE, (req, res) => {
-  var ind = req.payload[0];
-  var page = req.payload[1];
-  var data = req.payload.slice(2);
-  var uid = getUIDFromIndex("2");
+  const ind = req.payload[0];
+  const page = req.payload[1];
+  const data = req.payload.slice(2);
+  const uid = getUIDFromIndex("2");
   console.log("REQUEST (CMD_WRITE): index:", ind, "page", page, "data", data);
 
   //The ID is stored in page 24
   if (page == 24 || page == 36) {
     writeJSONData(uid, "id", data.readInt16LE(0));
-    var name = getNameFromID(data.readInt16LE(0));
+    const name = getNameFromID(data.readInt16LE(0));
     writeJSONData(uid, "name", name);
     writeJSONData(uid, "type", "vehicle");
     //writeVehicleData(uid, "uid", tp.randomUID())
@@ -332,7 +332,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
   }
 
   res.payload = new Buffer("00", "hex");
-  var token = tp._tokens.find((t) => t.index == ind);
+  const token = tp._tokens.find((t) => t.index == ind);
   if (token) {
     req.payload.copy(token.token, 4 * page, 2, 6);
   }
@@ -484,9 +484,9 @@ app.get("/", (request, response) => {
 //Create a new Character and save that data to toytags.json
 app.post("/character", (request, response) => {
   console.log("Creating character: " + request.body.id);
-  var uid = tp.randomUID();
-  var character = createCharacter(request.body.id, uid);
-  var name = getNameFromID(request.body.id, "character");
+  const uid = tp.randomUID();
+  const character = createCharacter(request.body.id, uid);
+  const name = getNameFromID(request.body.id, "character");
 
   console.log(
     "name: " + name,
@@ -532,12 +532,12 @@ app.post("/character", (request, response) => {
 //This is called when a token is placed or move onto a position on the toypad.
 app.post("/characterPlace", (request, response) => {
   console.log("Placing tag: " + request.body.id);
-  var entry = getJSONFromUID(request.body.uid);
+  const entry = getJSONFromUID(request.body.uid);
 
   //console.log(entry.type);
 
   if (entry.type == "character") {
-    var character = createCharacter(request.body.id, request.body.uid);
+    const character = createCharacter(request.body.id, request.body.uid);
     tp.place(
       character,
       request.body.position,
@@ -548,7 +548,7 @@ app.post("/characterPlace", (request, response) => {
     updatePadIndex(character.uid, request.body.index);
     response.send();
   } else {
-    var vehicle = createVehicle(
+    const vehicle = createVehicle(
       request.body.id,
       [entry.vehicleUpgradesP23, entry.vehicleUpgradesP25],
       request.body.uid
@@ -562,9 +562,9 @@ app.post("/characterPlace", (request, response) => {
 
 app.post("/vehicle", (request, response) => {
   console.log("Creating vehicle: " + request.body.id);
-  var uid = tp.randomUID();
-  var vehicle = createVehicle(request.body.id, [0xefffffff, 0xefffffff], uid);
-  var name = getNameFromID(request.body.id, "vehicle");
+  const uid = tp.randomUID();
+  const vehicle = createVehicle(request.body.id, [0xefffffff, 0xefffffff], uid);
+  const name = getNameFromID(request.body.id, "vehicle");
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
 
@@ -573,7 +573,7 @@ app.post("/vehicle", (request, response) => {
       console.log(err);
     } else {
       const tags = JSON.parse(data.toString());
-      var entry = {
+      const entry = {
         name: name,
         id: request.body.id,
         uid: vehicle.uid,
@@ -622,8 +622,8 @@ io.on("connection", (socket) => {
     console.log("IO Recieved: Deleting entry " + uid + " from JSON");
     const tags = fs.readFileSync(toytagFileName, "utf8");
     const databases = JSON.parse(tags);
-    var index = -1;
-    var i = 0;
+    let index = -1;
+    let i = 0;
     databases.forEach((db) => {
       if (uid == db.uid) {
         index = i;
