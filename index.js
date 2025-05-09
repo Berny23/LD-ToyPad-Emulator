@@ -149,7 +149,7 @@ function writeJSONData(uid, datatype, data) {
   }
 
   fs.writeFileSync(toytagFileName, JSON.stringify(dataset, null, 4));
-  console.log("Set " + datatype + " of " + uid + " to " + data);
+  console.log(`Updated [${datatype}] of [${uid}] to [${data}]`);
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
