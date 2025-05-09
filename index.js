@@ -470,14 +470,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "server")));
 
 //**Website requests**//
-app.get("/", (request, response) => {
-  response.sendFile(path.join(__dirname, "server/index.html"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "server/index.html"));
 });
 
 //Create a new Character and save that data to toytags.json
-app.post("/character", (request, response) => {
+app.post("/character", (req, res) => {
   const uid = tp.randomUID();
-  const id = request.body.id;
+  const id = req.body.id;
   console.log("Creating character: " + id);
   const character = createCharacter(id, uid);
   const name = getCharacterNameFromID(id);
@@ -519,8 +519,8 @@ app.post("/character", (request, response) => {
     }
   });
 
-  console.log("Character created: " + request.body.id);
-  response.send();
+  console.log("Character created: " + req.body.id);
+  res.send();
 });
 
 //This is called when a token is placed or move onto a position on the toypad.
