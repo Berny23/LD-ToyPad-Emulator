@@ -1,6 +1,6 @@
 /*
 	Copyright © 2023 Berny23, Cort1237 and many more
-	
+
 	This file is part of "Toy Pad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
 */
@@ -39,7 +39,7 @@ let connection = false;
 
 function createVehicle(id, upgrades, uid) {
   upgrades = upgrades || [0, 0];
-  const token = new Buffer(180);
+  const token = Buffer.alloc(180);
   token.fill(0);
   token.uid = uid;
   //console.log(upgrades);
@@ -52,7 +52,7 @@ function createVehicle(id, upgrades, uid) {
 
 //Create a token JSON object from provided character data
 function createCharacter(id, uid) {
-  const token = new Buffer(180);
+  const token = Buffer.alloc(180);
   token.fill(0); // Game really only cares about 0x26 being 0 and D4 returning an ID
   token.uid = uid;
   token.id = id;
@@ -61,6 +61,7 @@ function createCharacter(id, uid) {
 
 //This finds a character or vehicles name from the ID provided.
 function getNameFromID(id) {
+  let dbfilename;
   if (id < 1000)
     dbfilename = path.join(__dirname, "server/json/charactermap.json");
   else dbfilename = path.join(__dirname, "server/json/tokenmap.json");
@@ -331,7 +332,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
     io.emit("refreshTokens"); //Refreshes the html's tag gui.
   }
 
-  res.payload = new Buffer("00", "hex");
+  res.payload = Buffer.from([0x00]);
   const token = tp._tokens.find((t) => t.index == ind);
   if (token) {
     req.payload.copy(token.token, 4 * page, 2, 6);
