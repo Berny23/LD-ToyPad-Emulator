@@ -63,14 +63,9 @@ function createCharacter(id, uid) {
   return token;
 }
 
-//This finds a character or vehicles name from the ID provided.
-function getNameFromID(id) {
-  let dbfilename;
-  if (id < 1000) {
-    dbfilename = charactersMapPath;
-  } else dbfilename = tokenmapPath;
-
-  const data = fs.readFileSync(dbfilename, "utf8");
+//This function retrieves the name of a vehicle/gadget from an id
+function getTokenNameFromID(id) {
+  const data = fs.readFileSync(tokenmapPath, "utf8");
   const dataset = JSON.parse(data);
 
   for (let i = 0; i < dataset.length; i++) {
@@ -82,6 +77,28 @@ function getNameFromID(id) {
   }
 
   return "N/A";
+}
+//This function retrieves the name of a character  from an id
+function getCharacterNameFromID(id) {
+  const data = fs.readFileSync(charactersMapPath, "utf8");
+  const dataset = JSON.parse(data);
+
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
+
+    if (entry.id == id) {
+      return entry.name;
+    }
+  }
+
+  return "N/A";
+}
+//This function retrieves the name of a token by id
+function getAnyNameFromID(id) {
+  if (id < 1000) {
+    return getTokenNameFromID(id);
+  }
+  return getCharacterNameFromID(id);
 }
 
 //This finds and returns an JSON entry from toytags.json with the matching uid.
@@ -327,7 +344,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
   //The ID is stored in page 24
   if (page == 24 || page == 36) {
     writeJSONData(uid, "id", data.readInt16LE(0));
-    const name = getNameFromID(data.readInt16LE(0));
+    const name = getAnyNameFromID(data.readInt16LE(0));
     writeJSONData(uid, "name", name);
     writeJSONData(uid, "type", "vehicle");
     //writeVehicleData(uid, "uid", tp.randomUID())
@@ -492,10 +509,11 @@ app.get("/", (request, response) => {
 
 //Create a new Character and save that data to toytags.json
 app.post("/character", (request, response) => {
-  console.log("Creating character: " + request.body.id);
   const uid = tp.randomUID();
-  const character = createCharacter(request.body.id, uid);
-  const name = getNameFromID(request.body.id, "character");
+  const id = request.body.id;
+  console.log("Creating character: " + id);
+  const character = createCharacter(id, uid);
+  const name = getCharacterNameFromID(id);
 
   console.log(
     "name: " + name,
@@ -507,11 +525,11 @@ app.post("/character", (request, response) => {
     if (err) {
       console.log(err);
     } else {
-      const tags = JSON.parse(data.toString());
+      const tags = JSON.parse(data);
 
       tags.push({
         name: name,
-        id: character.id,
+        id: id,
         uid: character.uid,
         index: "-1",
         type: "character",
@@ -570,10 +588,11 @@ app.post("/characterPlace", (request, response) => {
 });
 
 app.post("/vehicle", (request, response) => {
-  console.log("Creating vehicle: " + request.body.id);
+  const id = request.body.id;
   const uid = tp.randomUID();
-  const vehicle = createVehicle(request.body.id, [0xefffffff, 0xefffffff], uid);
-  const name = getNameFromID(request.body.id, "vehicle");
+  console.log("Creating vehicle: " + request.body.id);
+  const vehicle = createVehicle(id, [0xefffffff, 0xefffffff], uid);
+  const name = getTokenNameFromID(id);
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
 
@@ -584,7 +603,7 @@ app.post("/vehicle", (request, response) => {
       const tags = JSON.parse(data.toString());
       const entry = {
         name: name,
-        id: request.body.id,
+        id: id,
         uid: vehicle.uid,
         index: "-1",
         type: "vehicle",
