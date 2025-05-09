@@ -58,19 +58,19 @@ $(function () {
       $("html, body").animate({ scrollTop: $(document).height() }, 500);
 
       // Store the starting pad number and index so we can determine when releasing the tag if it was released in the same space
-      ui.item.attr("previousPadNum", ui.item.closest(".box").attr("padNum"));
+      ui.item.attr("previous-pad-num", ui.item.closest(".box").attr("pad-num"));
       ui.item.attr(
         "previousPadIndex",
-        ui.item.closest(".box").attr("padIndex")
+        ui.item.closest(".box").attr("pad-index")
       );
     },
 
     stop: function (event, ui) {
       var parentBox = ui.item.closest(".box");
-      var previousPadNum = ui.item.attr("previousPadNum");
-      var newPadNum = parentBox.attr("padNum");
+      var previousPadNum = ui.item.attr("previous-pad-num");
+      var newPadNum = parentBox.attr("pad-num");
       var previousPadIndex = ui.item.attr("previousPadIndex");
-      var newPadIndex = parentBox.attr("padIndex");
+      var newPadIndex = parentBox.attr("pad-index");
 
       // If moving to the same space on the Toy Pad, remove and place in the current space
       if (
@@ -88,7 +88,7 @@ $(function () {
         );
       }
 
-      ui.item.removeAttr("previousPadNum");
+      ui.item.removeAttr("previous-pad-num");
       ui.item.removeAttr("previousPadIndex");
 
       applyFilters(); //Refilter in case anything was in the search bar.
@@ -107,7 +107,7 @@ $(function () {
       // 	setTimeout(function () { refreshToyBox(); }, 500)
       // }
       else if (
-        $this.attr("padNum") == undefined ||
+        $this.attr("pad-num") == undefined ||
         ($this.children("li").length > 1 && $this.attr("id") != "toybox-tokens")
       )
         $(ui.sender).sortable("cancel");
@@ -118,18 +118,18 @@ $(function () {
           contentType: "application/json",
           url: "/remove",
           data: JSON.stringify({
-            index: parseInt(ui.sender.attr("padIndex")),
+            index: parseInt(ui.sender.attr("pad-index")),
             uid: ui.item.attr("data-uid"),
           }),
         });
       }
       //If moving from the Toy Box, place tag in the game.
-      else if (ui.sender.attr("padNum") == -1) {
+      else if (ui.sender.attr("pad-num") == -1) {
         var content = {
           uid: ui.item.attr("data-uid"),
           id: ui.item.attr("data-id"),
-          position: $this.attr("padNum"),
-          index: $this.attr("padIndex"),
+          position: $this.attr("pad-num"),
+          index: $this.attr("pad-index"),
         };
         console.log(content);
         $.ajax({
@@ -144,9 +144,9 @@ $(function () {
         updateToyPadPosition(
           ui.item.attr("data-uid"),
           ui.item.attr("data-id"),
-          $this.attr("padNum"),
-          ui.sender.attr("padIndex"),
-          $this.attr("padIndex")
+          $this.attr("pad-num"),
+          ui.sender.attr("pad-index"),
+          $this.attr("pad-index")
         );
       }
     },
@@ -232,7 +232,7 @@ $(function () {
     padindexs = [1, 2, 3, 4, 5, 6, 7];
     padindexs.forEach((element) => {
       pad = document.getElementById("toypad" + element);
-      padnum = pad.padNum;
+      padnum = pad.pad - num;
       if (element == 2) var color = e[0];
       else if (element == 1 || element == 4 || element == 5) var color = e[1];
       else if (element == 3 || element == 6 || element == 7) var color = e[2];
