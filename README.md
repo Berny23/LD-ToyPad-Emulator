@@ -282,7 +282,7 @@ After that, run the command `hostname -I` in your virtual machine (or on your si
 
 - **DaPiMan** for helping with missing or misplaced vehicle IDs and other improvements.
 
-- **Luigimeansme** for adding/fixing character and vehicle abilities and other data improvements.
+- **Euniemeansme** for adding/fixing character and vehicle abilities and other data improvements.
 
 - **VladimirKuletski** for creating/updating CI workflows for automated testing via GitHub Actions.
 
