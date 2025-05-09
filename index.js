@@ -18,7 +18,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 //File where tag info will be saved
-const toytagFileName = path.join(__dirname, "server/json/toytags.json");
+const toytagFilePath = path.join(__dirname, "server/json/toytags.json");
 
 const tp = new ld.ToyPadEmu();
 tp.registerDefaults();
@@ -82,7 +82,7 @@ function getNameFromID(id) {
 
 //This finds and returns an JSON entry from toytags.json with the matching uid.
 function getJSONFromUID(uid) {
-  const data = fs.readFileSync(toytagFileName, "utf8");
+  const data = fs.readFileSync(toytagFilePath, "utf8");
   const dataset = JSON.parse(data);
 
   for (let i = 0; i < dataset.length; i++) {
@@ -98,7 +98,7 @@ function getJSONFromUID(uid) {
 //This updates the pad index of a tag in toytags.json, so that info can be accessed locally.
 function updatePadIndex(uid, index) {
   console.log("Planning to set UID: " + uid + " to index " + index);
-  const data = fs.readFileSync(toytagFileName, "utf8");
+  const data = fs.readFileSync(toytagFilePath, "utf8");
   const dataset = JSON.parse(data);
 
   for (let i = 0; i < dataset.length; i++) {
@@ -111,7 +111,7 @@ function updatePadIndex(uid, index) {
   }
 
   fs.writeFileSync(
-    toytagFileName,
+    toytagFilePath,
     JSON.stringify(dataset, null, 4),
     function () {
       console.log("Set UID: " + uid + " to index " + index);
@@ -121,7 +121,7 @@ function updatePadIndex(uid, index) {
 
 //This searches toytags.json and returns to UID of the entry with the matching index.
 function getUIDFromIndex(index) {
-  const data = fs.readFileSync(toytagFileName, "utf8");
+  const data = fs.readFileSync(toytagFilePath, "utf8");
   const dataset = JSON.parse(data);
   for (let i = 0; i < dataset.length; i++) {
     const entry = dataset[0];
@@ -136,7 +136,7 @@ function getUIDFromIndex(index) {
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
 function writeJSONData(uid, datatype, data) {
   console.log("Planning to set " + datatype + " of " + uid + " to " + data);
-  const tags = fs.readFileSync(toytagFileName, "utf8");
+  const tags = fs.readFileSync(toytagFilePath, "utf8");
   const dataset = JSON.parse(tags);
 
   for (let i = 0; i < dataset.length; i++) {
@@ -148,19 +148,19 @@ function writeJSONData(uid, datatype, data) {
     }
   }
 
-  fs.writeFileSync(toytagFileName, JSON.stringify(dataset, null, 4));
+  fs.writeFileSync(toytagFilePath, JSON.stringify(dataset, null, 4));
   console.log(`Updated [${datatype}] of [${uid}] to [${data}]`);
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
 function initalizeToyTagsJSON() {
-  const data = fs.readFileSync(toytagFileName, "utf8");
+  const data = fs.readFileSync(toytagFilePath, "utf8");
   const dataset = JSON.parse(data);
   dataset.forEach((db) => {
     db.index = "-1";
   });
   fs.writeFileSync(
-    toytagFileName,
+    toytagFilePath,
     JSON.stringify(dataset, null, 4),
     function () {
       console.log("Initalized toytags.JSON");
@@ -507,7 +507,7 @@ app.post("/character", (request, response) => {
     " id: " + character.id
   );
 
-  fs.readFile(toytagFileName, "utf8", (err, data) => {
+  fs.readFile(toytagFilePath, "utf8", (err, data) => {
     if (err) {
       console.log(err);
     } else {
@@ -524,7 +524,7 @@ app.post("/character", (request, response) => {
       });
 
       fs.writeFile(
-        toytagFileName,
+        toytagFilePath,
         JSON.stringify(tags, null, 4),
         "utf8",
         (err) => {
@@ -581,7 +581,7 @@ app.post("/vehicle", (request, response) => {
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
 
-  fs.readFile(toytagFileName, "utf8", (err, data) => {
+  fs.readFile(toytagFilePath, "utf8", (err, data) => {
     if (err) {
       console.log(err);
     } else {
@@ -600,7 +600,7 @@ app.post("/vehicle", (request, response) => {
       tags.push(entry);
 
       fs.writeFile(
-        toytagFileName,
+        toytagFilePath,
         JSON.stringify(tags, null, 4),
         "utf8",
         (err) => {
@@ -633,7 +633,7 @@ io.on("connection", (socket) => {
   //Listening for 'deleteToken' call from index.html
   socket.on("deleteToken", (uid) => {
     console.log("IO Recieved: Deleting entry " + uid + " from JSON");
-    const tags = fs.readFileSync(toytagFileName, "utf8");
+    const tags = fs.readFileSync(toytagFilePath, "utf8");
     const dataset = JSON.parse(tags);
     let index = -1;
 
@@ -650,7 +650,7 @@ io.on("connection", (socket) => {
     if (index > -1) {
       dataset.splice(index, 1);
     }
-    fs.writeFileSync(toytagFileName, JSON.stringify(dataset, null, 4));
+    fs.writeFileSync(toytagFilePath, JSON.stringify(dataset, null, 4));
 
     if (index > -1) {
       console.log("Token not found");
