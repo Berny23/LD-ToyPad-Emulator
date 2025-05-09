@@ -27,7 +27,7 @@ const charactersMapPath = path.join(
 const tp = new ld.ToyPadEmu();
 tp.registerDefaults();
 
-initalizeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
+initializeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
 
 let isConnectedToGame = false;
 
@@ -187,7 +187,7 @@ function writeJSONBundle(uid, bundle) {
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
-function initalizeToyTagsJSON() {
+function initializeToyTagsJSON() {
   const data = fs.readFileSync(toytagsPath, "utf8");
   const dataset = JSON.parse(data);
   dataset.forEach((db) => {
@@ -212,7 +212,6 @@ function RGBToHex(r, g, b) {
     //idle (full white)
     case "#99420e":
       return "#ffffff";
-      break;
 
     //rainbow sequence (title screen, some are used by keystones)
     //case "#ff0000": //red
@@ -488,7 +487,6 @@ tp.hook(tp.CMD_WAKE, (req, res) => {
 });
 
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, "server")));
 
 //**Website requests**//
@@ -675,7 +673,7 @@ io.on("connection", (socket) => {
 
   socket.on("syncToyPad", (pad) => {
     console.log("<<Syncing tags, one moment...>>");
-    initalizeToyTagsJSON();
+    initializeToyTagsJSON();
     for (let i = 1; i <= 7; i++) {
       const uid = getUIDAtPad(i);
       if (uid != -1) {
