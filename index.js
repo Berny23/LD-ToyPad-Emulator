@@ -141,7 +141,7 @@ function getUIDFromIndex(index) {
   const data = fs.readFileSync(toytagsPath, "utf8");
   const dataset = JSON.parse(data);
   for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[0];
+    const entry = dataset[i];
 
     if (entry.index == index) {
       return entry.uid;
