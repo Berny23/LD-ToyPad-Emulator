@@ -62,30 +62,37 @@ function createCharacter(id, uid) {
 //This finds a character or vehicles name from the ID provided.
 function getNameFromID(id) {
   let dbfilename;
-  if (id < 1000)
+  if (id < 1000) {
     dbfilename = path.join(__dirname, "server/json/charactermap.json");
-  else dbfilename = path.join(__dirname, "server/json/tokenmap.json");
-  let name = "test";
+  } else dbfilename = path.join(__dirname, "server/json/tokenmap.json");
+
   const data = fs.readFileSync(dbfilename, "utf8");
   const databases = JSON.parse(data);
-  databases.forEach((db) => {
-    if (id == db.id) {
-      name = db.name;
-    }
-  });
 
-  return name;
+  for (let i = 0; i < databases.length; i++) {
+    const db = databases[i];
+
+    if (db.id == id) {
+      return db.name;
+    }
+  }
+
+  return "test";
 }
 
 //This finds and returns an JSON entry from toytags.json with the matching uid.
 function getJSONFromUID(uid) {
   const data = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(data);
-  let entry;
-  databases.forEach((db) => {
-    if (db.uid == uid) entry = db;
-  });
-  return entry;
+
+  for (let i = 0; i < databases.length; i++) {
+    const db = databases[i];
+
+    if (db.uid == uid) {
+      return db;
+    }
+  }
+  return undefined;
 }
 
 //This updates the pad index of a tag in toytags.json, so that info can be accessed locally.
@@ -93,11 +100,16 @@ function updatePadIndex(uid, index) {
   console.log("Planning to set UID: " + uid + " to index " + index);
   const data = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(data);
-  databases.forEach((db) => {
-    if (uid == db.uid) {
+
+  for (let i = 0; i < databases.length; i++) {
+    const db = databases[i];
+
+    if (db.uid == uid) {
       db.index = index;
+      break;
     }
-  });
+  }
+
   fs.writeFileSync(
     toytagFileName,
     JSON.stringify(databases, null, 4),
@@ -111,13 +123,14 @@ function updatePadIndex(uid, index) {
 function getUIDFromIndex(index) {
   const data = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(data);
-  let uid;
-  databases.forEach((db) => {
-    if (index == db.index) {
-      uid = db.uid;
+  for (let i = 0; i < databases.length; i++) {
+    const db = databases[0];
+
+    if (db.index == index) {
+      return db.uid;
     }
-  });
-  return uid;
+  }
+  return undefined;
 }
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
@@ -125,19 +138,18 @@ function writeJSONData(uid, datatype, data) {
   console.log("Planning to set " + datatype + " of " + uid + " to " + data);
   const tags = fs.readFileSync(toytagFileName, "utf8");
   const databases = JSON.parse(tags);
-  databases.forEach((db) => {
-    if (uid == db.uid) {
+
+  for (let i = 0; i < databases.length; i++) {
+    const db = databases[i];
+
+    if (db.uid == uid) {
       db[datatype] = data;
-      return;
+      break;
     }
-  });
-  fs.writeFileSync(
-    toytagFileName,
-    JSON.stringify(databases, null, 4),
-    function () {
-      console.log("Set " + datatype + " of " + uid + " to " + data);
-    }
-  );
+  }
+
+  fs.writeFileSync(toytagFileName, JSON.stringify(databases, null, 4));
+  console.log("Set " + datatype + " of " + uid + " to " + data);
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
@@ -624,26 +636,27 @@ io.on("connection", (socket) => {
     const tags = fs.readFileSync(toytagFileName, "utf8");
     const databases = JSON.parse(tags);
     let index = -1;
-    let i = 0;
-    databases.forEach((db) => {
-      if (uid == db.uid) {
+
+    for (let i = 0; i < databases.length; i++) {
+      const db = databases[i];
+
+      if (db.uid == uid) {
         index = i;
-        return;
+        break;
       }
-      i++;
-    });
+    }
+
     console.log("Entry to delete: ", index);
     if (index > -1) {
       databases.splice(index, 1);
     }
-    fs.writeFileSync(
-      toytagFileName,
-      JSON.stringify(databases, null, 4),
-      function () {
-        if (index > -1) console.log("Token not found");
-        else console.log("Deleted ", uid, " from JSON");
-      }
-    );
+    fs.writeFileSync(toytagFileName, JSON.stringify(databases, null, 4));
+
+    if (index > -1) {
+      console.log("Token not found");
+    } else {
+      console.log("Deleted ", uid, " from JSON");
+    }
     io.emit("refreshTokens");
   });
 
