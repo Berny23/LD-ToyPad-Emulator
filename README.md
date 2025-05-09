@@ -106,7 +106,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 2. Run the emulator server with this command if you are in the correct folder (otherwise run `cd    LD-ToyPad-Emulator` first):
 
    ```bash
-   node run start
+   npm run start
    ```
 
 3. Type `http://debian` in a browser to use the emulator.
@@ -182,7 +182,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 1. Run the emulator server with this command if you are in the correct folder (otherwise run `cd LD-ToyPad-Emulator` first):
 
    ```bash
-   node run start
+   npm run start
    ```
 
 2. Type **your single board computer's IP address** in a browser to use the emulator.
