@@ -40,7 +40,7 @@ let connection = false;
 function createVehicle(id, upgrades, uid) {
   upgrades = upgrades || [0, 0];
   const token = Buffer.alloc(180);
-  token.fill(0);
+
   token.uid = uid;
   //console.log(upgrades);
   token.writeUInt32LE(upgrades[0], 0x23 * 4);
@@ -52,8 +52,8 @@ function createVehicle(id, upgrades, uid) {
 
 //Create a token JSON object from provided character data
 function createCharacter(id, uid) {
-  const token = Buffer.alloc(180);
-  token.fill(0); // Game really only cares about 0x26 being 0 and D4 returning an ID
+  const token = Buffer.alloc(180); // Game really only cares about 0x26 being 0 and D4 returning an ID
+
   token.uid = uid;
   token.id = id;
   return token;
