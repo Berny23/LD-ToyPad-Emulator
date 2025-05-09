@@ -190,126 +190,96 @@ function RGBToHex(r, g, b) {
   if (r.length == 1) r = "0" + r;
   if (g.length == 1) g = "0" + g;
   if (b.length == 1) b = "0" + b;
-  const hex = "#" + r + g + b;
+  let hex = "#" + r + g + b;
 
   switch (hex) {
     //idle (full white)
     case "#99420e":
-      hex = "#ffffff";
+      return "#ffffff";
       break;
 
     //rainbow sequence (title screen, some are used by keystones)
-    case "#ff0000": //red
-      break;
+    //case "#ff0000": //red
+    //break;
     case "#ff6e00":
-      hex = "#ffff00"; //yellow
-      break;
+      return "#ffff00"; //yellow
     case "#006e00":
-      hex = "#00ff00"; //green
-      break;
+      return "#00ff00"; //green
     case "#006e18":
-      hex = "#00ffff"; //cyan
-      break;
+      return "#00ffff"; //cyan
     case "#000018":
-      hex = "#0000ff"; //blue
-      break;
+      return "#0000ff"; //blue
     case "#ff0018":
-      hex = "#ff00ff"; //pink
-      break;
+      return "#ff00ff"; //pink
 
     //wyldstyle scanner
     case "#f00016":
-      hex = "#ff2de6";
-      break;
+      return "#ff2de6";
 
     //batman stealth
     case "#000018":
-      hex = "#0000ff";
-      break;
+      return "#0000ff";
 
     //shift keystone (dark colors for blink animation)
     case "#002007":
-      hex = "#007575";
-      break;
+      return "#007575";
     case "#4c2000":
-      hex = "#757500";
-      break;
+      return "#757500";
     case "#4c0007":
-      hex = "#750075";
-      break;
+      return "#750075";
 
     //chroma keystone
 
     case "#3f1b05":
-      hex = "#b0b0b0";
-      break;
+      return "#b0b0b0";
     case "#4c2007":
-      hex = "#757575";
-      break;
+      return "#757575";
     case "#3f1b00":
-      hex = "#b0b000";
-      break;
+      return "#b0b000";
     case "#3f0000":
-      hex = "#b00000";
-      break;
+      return "#b00000";
     case "#000005":
-      hex = "#0000b0";
-      break;
+      return "#0000b0";
     case "#001b00":
-      hex = "#00b000";
-      break;
+      return "#00b000";
     case "#ff2700":
-      hex = "#ffa200";
-      break;
+      return "#ffa200";
     case "#3f0900":
-      hex = "#b06f00";
-      break;
+      return "#b06f00";
     case "#44000d":
-      hex = "#d500ff";
-      break;
+      return "#d500ff";
     case "#110003":
-      hex = "#9300b0";
-      break;
+      return "#9300b0";
 
     //element keystone
     case "#000016":
-      hex = "#0000ff";
-      break;
+      return "#0000ff";
     case "#006700":
-      hex = "#00ff00";
-      break;
-    case "#f00000":
-      hex = "#ff0000";
-      break;
+      return "#00ff00";
+    //case "#f00000":
+    //return "#ff0000";
     case "#000016":
-      hex = "#00ffff";
-      break;
+      return "#00ffff";
 
     //scale keystone
     case "#ff1e00":
-      hex = "#ffa200";
-      break;
+      return "#ffa200";
     case "#f06716":
-      hex = "#ffffff";
-      break;
+      return "#ffffff";
 
     //locate keystone (too many possible values to find by hand. need help here)
 
     //green (hack minigame)
     case "#003700":
-      hex = "#00ff00";
-      break;
+      return "#00ff00";
 
     //other
     case "#ff6e18":
-      hex = "#ffffff";
-      break;
+      return "#ffffff";
 
     default:
-      break;
+      return hex;
   }
-
-  return hex;
 }
 
 function getUIDAtPad(index) {
