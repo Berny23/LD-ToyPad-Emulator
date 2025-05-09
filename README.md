@@ -124,7 +124,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 #### Prerequisites
 
 - **Raspberry Pi Zero W** ($10) or **Raspberry Pi 4 B** (with `USB/Power Splitter for Raspberry Pi` from Ali or `USB-C/PWR Splitter` from pishop.us) or similar single board computer with Network support
-  - **NOTE**: Will NOT work with Rapsberry Pi: 2, 3, 3A, 3A+, 3B, 3B+. These models lack the ability to become a usb gadget.
+  - **NOTE**: Will NOT work with Raspberry Pi: 2, 3, 3A, 3A+, 3B, 3B+. These models lack the ability to become a USB gadget.
 - **USB Type-A to micro-USB 2.0 Type-B cable** that supports data transmission (e. g. your phone's charging cable)
 - 2 GB+ Micro SD card
 - Internet connection on your PC and single board computer
@@ -187,7 +187,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 2. Type **your single board computer's IP address** in a browser to use the emulator.
 
-   If you want to turn it off, just press `Ctrl + C` in the cmd window, then use the command `sudo shutdown now` to safely power off the device.
+   If you want to turn it off, just press `Ctrl + C` in the terminal window, then use the command `sudo shutdown now` to safely power off the device.
 
 ## Update
 
