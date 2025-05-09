@@ -8,7 +8,6 @@
 const ld = require("node-ld");
 const fs = require("fs");
 const path = require("path");
-const { DH_CHECK_P_NOT_PRIME } = require("constants");
 
 //Setup Webserver
 const express = require("express");
