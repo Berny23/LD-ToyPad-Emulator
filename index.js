@@ -524,7 +524,7 @@ app.post("/character", (req, res) => {
 });
 
 //This is called when a token is placed or move onto a position on the toypad.
-app.post("/characterPlace", (request, response) => {
+app.post("/place", (request, response) => {
   console.log("Placing tag: " + request.body.id);
   const entry = getJSONFromUID(request.body.uid);
 
