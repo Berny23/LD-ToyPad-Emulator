@@ -67,13 +67,13 @@ function getNameFromID(id) {
   } else dbfilename = path.join(__dirname, "server/json/tokenmap.json");
 
   const data = fs.readFileSync(dbfilename, "utf8");
-  const databases = JSON.parse(data);
+  const dataset = JSON.parse(data);
 
-  for (let i = 0; i < databases.length; i++) {
-    const db = databases[i];
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
 
-    if (db.id == id) {
-      return db.name;
+    if (entry.id == id) {
+      return entry.name;
     }
   }
 
@@ -83,13 +83,13 @@ function getNameFromID(id) {
 //This finds and returns an JSON entry from toytags.json with the matching uid.
 function getJSONFromUID(uid) {
   const data = fs.readFileSync(toytagFileName, "utf8");
-  const databases = JSON.parse(data);
+  const dataset = JSON.parse(data);
 
-  for (let i = 0; i < databases.length; i++) {
-    const db = databases[i];
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
 
-    if (db.uid == uid) {
-      return db;
+    if (entry.uid == uid) {
+      return entry;
     }
   }
   return undefined;
@@ -99,20 +99,20 @@ function getJSONFromUID(uid) {
 function updatePadIndex(uid, index) {
   console.log("Planning to set UID: " + uid + " to index " + index);
   const data = fs.readFileSync(toytagFileName, "utf8");
-  const databases = JSON.parse(data);
+  const dataset = JSON.parse(data);
 
-  for (let i = 0; i < databases.length; i++) {
-    const db = databases[i];
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
 
-    if (db.uid == uid) {
-      db.index = index;
+    if (entry.uid == uid) {
+      entry.index = index;
       break;
     }
   }
 
   fs.writeFileSync(
     toytagFileName,
-    JSON.stringify(databases, null, 4),
+    JSON.stringify(dataset, null, 4),
     function () {
       console.log("Set UID: " + uid + " to index " + index);
     }
@@ -122,12 +122,12 @@ function updatePadIndex(uid, index) {
 //This searches toytags.json and returns to UID of the entry with the matching index.
 function getUIDFromIndex(index) {
   const data = fs.readFileSync(toytagFileName, "utf8");
-  const databases = JSON.parse(data);
-  for (let i = 0; i < databases.length; i++) {
-    const db = databases[0];
+  const dataset = JSON.parse(data);
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[0];
 
-    if (db.index == index) {
-      return db.uid;
+    if (entry.index == index) {
+      return entry.uid;
     }
   }
   return undefined;
@@ -137,31 +137,31 @@ function getUIDFromIndex(index) {
 function writeJSONData(uid, datatype, data) {
   console.log("Planning to set " + datatype + " of " + uid + " to " + data);
   const tags = fs.readFileSync(toytagFileName, "utf8");
-  const databases = JSON.parse(tags);
+  const dataset = JSON.parse(tags);
 
-  for (let i = 0; i < databases.length; i++) {
-    const db = databases[i];
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
 
-    if (db.uid == uid) {
-      db[datatype] = data;
+    if (entry.uid == uid) {
+      entry[datatype] = data;
       break;
     }
   }
 
-  fs.writeFileSync(toytagFileName, JSON.stringify(databases, null, 4));
+  fs.writeFileSync(toytagFileName, JSON.stringify(dataset, null, 4));
   console.log("Set " + datatype + " of " + uid + " to " + data);
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
 function initalizeToyTagsJSON() {
   const data = fs.readFileSync(toytagFileName, "utf8");
-  const databases = JSON.parse(data);
-  databases.forEach((db) => {
+  const dataset = JSON.parse(data);
+  dataset.forEach((db) => {
     db.index = "-1";
   });
   fs.writeFileSync(
     toytagFileName,
-    JSON.stringify(databases, null, 4),
+    JSON.stringify(dataset, null, 4),
     function () {
       console.log("Initalized toytags.JSON");
       io.emit("refreshTokens");
@@ -634,13 +634,13 @@ io.on("connection", (socket) => {
   socket.on("deleteToken", (uid) => {
     console.log("IO Recieved: Deleting entry " + uid + " from JSON");
     const tags = fs.readFileSync(toytagFileName, "utf8");
-    const databases = JSON.parse(tags);
+    const dataset = JSON.parse(tags);
     let index = -1;
 
-    for (let i = 0; i < databases.length; i++) {
-      const db = databases[i];
+    for (let i = 0; i < dataset.length; i++) {
+      const entry = dataset[i];
 
-      if (db.uid == uid) {
+      if (entry.uid == uid) {
         index = i;
         break;
       }
@@ -648,9 +648,9 @@ io.on("connection", (socket) => {
 
     console.log("Entry to delete: ", index);
     if (index > -1) {
-      databases.splice(index, 1);
+      dataset.splice(index, 1);
     }
-    fs.writeFileSync(toytagFileName, JSON.stringify(databases, null, 4));
+    fs.writeFileSync(toytagFileName, JSON.stringify(dataset, null, 4));
 
     if (index > -1) {
       console.log("Token not found");
