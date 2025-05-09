@@ -131,9 +131,8 @@ function updatePadIndex(uid, index) {
     }
   }
 
-  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4), function () {
-    console.log("Set UID: " + uid + " to index " + index);
-  });
+  fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4));
+  console.log("Set UID: " + uid + " to index " + index);
 }
 
 //This searches toytags.json and returns to UID of the entry with the matching index.
@@ -632,15 +631,19 @@ io.on("connection", (socket) => {
     console.log("Entry to delete: ", index);
     if (index > -1) {
       dataset.splice(index, 1);
+      console.log("Token was not found.");
+      return;
     }
-    fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
 
-    if (index > -1) {
-      console.log("Token not found");
-    } else {
-      console.log("Deleted ", uid, " from JSON");
-    }
-    io.emit("refreshTokens");
+    fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4), (err) => {
+      if (err) {
+        console.log("Failed to write updated data to toytags.json: " + err);
+        return;
+      }
+
+      io.emit("refreshTokens");
+      console.log(`Succesfully deleted ${uid} from toytags.json `);
+    });
   });
 
   socket.on("connectionStatus", () => {
