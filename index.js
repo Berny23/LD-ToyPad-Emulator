@@ -148,8 +148,8 @@ function getUIDFromIndex(index) {
 }
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
-function writeJSONData(uid, datatype, data) {
-  console.log("Planning to set " + datatype + " of " + uid + " to " + data);
+function writeJSONData(uid, datatype, value) {
+  console.log("Planning to set " + datatype + " of " + uid + " to " + value);
   const tags = fs.readFileSync(toytagsPath, "utf8");
   const dataset = JSON.parse(tags);
 
@@ -157,13 +157,33 @@ function writeJSONData(uid, datatype, data) {
     const entry = dataset[i];
 
     if (entry.uid == uid) {
-      entry[datatype] = data;
+      entry[datatype] = value;
       break;
     }
   }
 
   fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
-  console.log(`Updated [${datatype}] of [${uid}] to [${data}]`);
+  console.log(`Updated [${datatype}] of [${uid}] to [${value}]`);
+}
+
+function writeJSONBundle(uid, bundle) {
+  console.log(`Planning to write bundle of length ${bundle.length} to ${uid}`);
+  const tags = fs.readFileSync(toytagsPath, "utf8");
+  const dataset = JSON.parse(tags);
+
+  for (let i = 0; i < dataset.length; i++) {
+    const entry = dataset[i];
+
+    if (entry.uid == uid) {
+      bundle.forEach((data) => {
+        entry[data.key] = data.value;
+      });
+      break;
+    }
+  }
+
+  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
+  console.log(`Wrote bundle to toytags.json`);
 }
 
 //This sets all saved index values to '-1' (meaning unplaced).
@@ -308,10 +328,14 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
 
   //The ID is stored in page 24
   if (page == 24 || page == 36) {
-    writeJSONData(uid, "id", data.readInt16LE(0));
-    const name = getAnyNameFromID(data.readInt16LE(0));
-    writeJSONData(uid, "name", name);
-    writeJSONData(uid, "type", "vehicle");
+    const id = data.readInt16LE(0);
+    const name = getAnyNameFromID(id);
+
+    writeJSONBundle(uid, [
+      { key: "id", value: id },
+      { key: "name", value: name },
+      { key: "type", value: "vehicle" },
+    ]);
     //writeVehicleData(uid, "uid", tp.randomUID())
   }
   //Vehicle uprades are stored in Pages 23 & 25
