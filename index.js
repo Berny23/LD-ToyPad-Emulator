@@ -176,10 +176,9 @@ function initalizeToyTagsJSON() {
   dataset.forEach((db) => {
     db.index = "-1";
   });
-  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4), function () {
-    console.log("Initalized toytags.JSON");
-    io.emit("refreshTokens");
-  });
+  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
+  console.log("Initialized toytags.JSON");
+  io.emit("refreshTokens");
 }
 
 function RGBToHex(r, g, b) {
