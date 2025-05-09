@@ -10,12 +10,12 @@
   "author": "Berny23",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^5.1.0",
     "node-ld": "https://github.com/Berny23/node-ld.git",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "bufferutil": "^4.0.1",
-    "utf-8-validate": "^5.0.2"
+    "bufferutil": "^4.0.9",
+    "utf-8-validate": "^6.0.5"
   }
 }
