@@ -283,9 +283,8 @@ function RGBToHex(r, g, b) {
 }
 
 function getUIDAtPad(index) {
-  token = tp._tokens.find((t) => t.index == index);
-  if (token != null) return token.uid;
-  else return -1;
+  const token = tp._tokens.find((t) => t.index === index);
+  return token ? token.uid : -1;
 }
 
 //When the game calls 'CMD_WRITE', writes the given data to the toytag in the top position.
@@ -655,7 +654,7 @@ io.on("connection", (socket) => {
     console.log("<<Syncing tags, one moment...>>");
     initalizeToyTagsJSON();
     for (let i = 1; i <= 7; i++) {
-      uid = getUIDAtPad(i);
+      const uid = getUIDAtPad(i);
       if (uid != -1) {
         //console.log(uid, "is at pad #", i);
         writeJSONData(uid, "index", i);
