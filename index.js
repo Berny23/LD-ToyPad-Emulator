@@ -77,7 +77,7 @@ function getNameFromID(id) {
     }
   }
 
-  return "test";
+  return "N/A";
 }
 
 //This finds and returns an JSON entry from toytags.json with the matching uid.
