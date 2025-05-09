@@ -41,8 +41,7 @@ let isConnectedToGame = false;
  * Pages 23 & 25 are the upgrade data
  */
 
-function createVehicle(id, upgrades, uid) {
-  upgrades = upgrades || [0, 0];
+function createVehicle(id, uid, upgrades = [0, 0]) {
   const token = Buffer.alloc(180);
 
   token.uid = uid;
@@ -542,11 +541,10 @@ app.post("/place", (request, response) => {
     updatePadIndex(character.uid, request.body.index);
     response.send();
   } else {
-    const vehicle = createVehicle(
-      request.body.id,
-      [entry.vehicleUpgradesP23, entry.vehicleUpgradesP25],
-      request.body.uid
-    );
+    const vehicle = createVehicle(request.body.id, request.body.uid, [
+      entry.vehicleUpgradesP23,
+      entry.vehicleUpgradesP25,
+    ]);
     tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
     console.log("Vehicle tag: " + request.body.id);
     updatePadIndex(vehicle.uid, request.body.index);
@@ -558,7 +556,7 @@ app.post("/vehicle", (request, response) => {
   const id = request.body.id;
   const uid = tp.randomUID();
   console.log("Creating vehicle: " + request.body.id);
-  const vehicle = createVehicle(id, [0xefffffff, 0xefffffff], uid);
+  const vehicle = createVehicle(id, uid, [0xefffffff, 0xefffffff]);
   const name = getTokenNameFromID(id);
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
