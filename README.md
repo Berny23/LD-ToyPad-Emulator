@@ -92,7 +92,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
    nvm install 11
    sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
-   npm install --global node-gyp@11.2.0
+   npm install --global node-gyp@8.4.1
    npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 
    cd LD-ToyPad-Emulator
@@ -106,7 +106,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 2. Run the emulator server with this command if you are in the correct folder (otherwise run `cd    LD-ToyPad-Emulator` first):
 
    ```bash
-   npm run start
+   node run start
    ```
 
 3. Type `http://debian` in a browser to use the emulator.
@@ -170,7 +170,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
    nvm install 11
    sudo setcap cap_net_bind_service=+ep `readlink -f \`which node\``
-   npm install --global node-gyp@11.2.0
+   npm install --global node-gyp@8.4.1
    npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 
    cd LD-ToyPad-Emulator
@@ -182,7 +182,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 1. Run the emulator server with this command if you are in the correct folder (otherwise run `cd LD-ToyPad-Emulator` first):
 
    ```bash
-   npm run start
+   node run start
    ```
 
 2. Type **your single board computer's IP address** in a browser to use the emulator.
