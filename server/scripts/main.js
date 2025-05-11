@@ -354,7 +354,7 @@ $(function () {
         $.ajax({
           method: "POST",
           contentType: "application/json",
-          url: "/characterPlace",
+          url: "/place",
           data: JSON.stringify({
             uid: uid,
             id: id,
