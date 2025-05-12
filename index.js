@@ -648,12 +648,12 @@ io.on("connection", (socket) => {
     }
 
     console.log("Entry to delete: ", index);
-    if (index > -1) {
-      dataset.splice(index, 1);
-      console.log("Token was not found.");
+    if (index === -1) {
+      console.log("Token 404.");
       return;
     }
-
+	  
+    dataset.splice(index, 1);
     fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4), (err) => {
       if (err) {
         console.log("Failed to write updated data to toytags.json: " + err);
