@@ -283,7 +283,7 @@ $(function () {
     }).done(function () {
       $.each(tags, function (i, item) {
         console.log("ID: " + item.id + " UID: " + item.uid);
-        if (item.name != "N/A" && item.index == "-1") {
+        if (item.name != "N/A" && item.index == -1) {
           $("#toybox-tokens").append(createItemHtml(item));
         } else if (item.index != "-1") {
           $("#toypad" + item.index).append(createItemHtml(item));

@@ -1,3 +1,7 @@
+import { Socket } from "socket.io";
+import fs from "fs";
+import path from "path";
+import { Request, Response } from "express";
 /*
 	Copyright © 2023 Berny23, Cort1237 and many more
 
@@ -6,8 +10,6 @@
 */
 
 const ld = require("node-ld");
-const fs = require("fs");
-const path = require("path");
 
 //Setup Webserver
 const express = require("express");
@@ -15,10 +17,21 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const {
+  getEntryFromUID,
+  getUIDFromIndex,
+  unplaceAll,
+  addEntry,
+  updatePadIndex,
+  updateKey,
+  updateKeys,
+  deleteByUID,
+} = require("./toytags");
 const io = new Server(server);
 
+let isConnectedToGame = false;
+
 //File where tag info will be saved
-const toytagsPath = path.join(__dirname, "server/json/toytags.json");
 const tokenmapPath = path.join(__dirname, "server/json/tokenmap.json");
 const charactersMapPath = path.join(
   __dirname,
@@ -29,8 +42,22 @@ tp.registerDefaults();
 
 initializeToyTagsJSON(); //Run in case there were any leftovers from a previous run.
 
-let isConnectedToGame = false;
+tp.hook(tp.CMD_WRITE, handleWriteCommand);
 
+//Colors
+tp.hook(tp.CMD_COL, handleColorCommand);
+tp.hook(tp.CMD_FADE, handleFadeCommand);
+
+///NOT IMPLEMENTED///
+tp.hook(tp.CMD_FLASH, handleFlashCommand);
+tp.hook(tp.CMD_FADRD, handleFadeRandomCommand);
+tp.hook(tp.CMD_FADAL, handleFadeAllCommand);
+tp.hook(tp.CMD_FLSAL, handleFlashAllCommand);
+tp.hook(tp.CMD_COLALL, handleColorAllCommand);
+
+///DEBUG PURPOSES///
+tp.hook(tp.CMD_GETCOL, handleGetColorCommand);
+tp.hook(tp.CMD_WAKE, handleWakeCommand);
 //Create a token JSON object from provided vehicle data
 /* Vehicle Data Explained:
  * All data is transfered through a series of buffers. The data from these buffers needs to written to specific points (pages) in the token's
@@ -41,20 +68,24 @@ let isConnectedToGame = false;
  * Pages 23 & 25 are the upgrade data
  */
 
-function createVehicle(id, uid, upgrades = [0, 0]) {
-  const token = Buffer.alloc(180);
+function createVehicle(
+  id: number,
+  uid: string,
+  upgrades = [0, 0]
+): VehicleBuffer {
+  const token: any = Buffer.alloc(180);
   token.uid = uid;
-  //console.log(upgrades);
+
   token.writeUInt32LE(upgrades[0], 0x8c); //0x23 * 4
   token.writeUInt16LE(id, 0x90); //0x24 * 4
   token.writeUInt32LE(upgrades[1], 0x94); //0x25 * 4
-  token.writeUInt16BE(1, 0x98); //0x26 * 4 //Page 26 is used for verification of somekind.
+  token.writeUInt16BE(1, 0x98); //0x26 * 4 Page 26 is used for verification of somekind.
   return token;
 }
 
 //Create a token JSON object from provided character data
-function createCharacter(id, uid) {
-  const token = Buffer.alloc(180); // Game really only cares about 0x26 being 0 and D4 returning an ID
+function createCharacter(id: number, uid: string): CharacterBuffer {
+  const token: any = Buffer.alloc(180); // Game really only cares about 0x26 being 0 and D4 returning an ID
 
   token.uid = uid;
   token.id = id;
@@ -62,7 +93,7 @@ function createCharacter(id, uid) {
 }
 
 //This function retrieves the name of a vehicle/gadget from an id
-function getTokenNameFromID(id) {
+function getTokenNameFromID(id: number) {
   const data = fs.readFileSync(tokenmapPath, "utf8");
   const dataset = JSON.parse(data);
 
@@ -77,7 +108,7 @@ function getTokenNameFromID(id) {
   return "N/A";
 }
 //This function retrieves the name of a character  from an id
-function getCharacterNameFromID(id) {
+function getCharacterNameFromID(id: number) {
   const data = fs.readFileSync(charactersMapPath, "utf8");
   const dataset = JSON.parse(data);
 
@@ -92,121 +123,40 @@ function getCharacterNameFromID(id) {
   return "N/A";
 }
 //This function retrieves the name of a token by id
-function getAnyNameFromID(id) {
+function getAnyNameFromID(id: number) {
   if (id < 1000) {
     return getTokenNameFromID(id);
   }
   return getCharacterNameFromID(id);
 }
 
-//This finds and returns an JSON entry from toytags.json with the matching uid.
-function getJSONFromUID(uid) {
-  const data = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(data);
-
-  for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
-
-    if (entry.uid == uid) {
-      return entry;
-    }
-  }
-  return undefined;
-}
-
-//This updates the pad index of a tag in toytags.json, so that info can be accessed locally.
-function updatePadIndex(uid, index) {
-  console.log("Planning to set UID: " + uid + " to index " + index);
-  const data = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(data);
-
-  for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
-
-    if (entry.uid == uid) {
-      entry.index = index;
-      break;
-    }
-  }
-
-  fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4));
-  console.log("Set UID: " + uid + " to index " + index);
-}
-
-//This searches toytags.json and returns to UID of the entry with the matching index.
-function getUIDFromIndex(index) {
-  const data = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(data);
-  for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
-
-    if (entry.index == index) {
-      return entry.uid;
-    }
-  }
-  return undefined;
-}
-
-//This updates the provided datatype, of the entry with the matching uid, with the provided data.
-function writeJSONData(uid, datatype, value) {
-  console.log("Planning to set " + datatype + " of " + uid + " to " + value);
-  const tags = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(tags);
-
-  for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
-
-    if (entry.uid == uid) {
-      entry[datatype] = value;
-      break;
-    }
-  }
-
-  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
-  console.log(`Updated [${datatype}] of [${uid}] to [${value}]`);
-}
-
-function writeJSONBundle(uid, bundle) {
-  console.log(`Planning to write bundle of length ${bundle.length} to ${uid}`);
-  const tags = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(tags);
-
-  for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
-
-    if (entry.uid == uid) {
-      bundle.forEach((data) => {
-        entry[data.key] = data.value;
-      });
-      break;
-    }
-  }
-
-  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
-  console.log(`Wrote bundle to toytags.json`);
-}
-
 //This sets all saved index values to '-1' (meaning unplaced).
 function initializeToyTagsJSON() {
-  const data = fs.readFileSync(toytagsPath, "utf8");
-  const dataset = JSON.parse(data);
-  dataset.forEach((db) => {
-    db.index = "-1";
-  });
-  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
+  unplaceAll();
   console.log("Initialized toytags.JSON");
-  io.emit("refreshTokens");
+  io.emit(Emits.Refresh);
 }
 
-function RGBToHex(r, g, b) {
-  r = r.toString(16);
-  g = g.toString(16);
-  b = b.toString(16);
+function TwoCharacterHex(component: number) {
+  return component.toString(16).padStart(2, "0");
+}
+function RGBToHex(
+  r: number,
+  g: number,
+  b: number,
+  applyFilter: boolean = true
+) {
+  const components = {
+    red: TwoCharacterHex(r),
+    green: TwoCharacterHex(g),
+    blue: TwoCharacterHex(b),
+  };
 
-  if (r.length == 1) r = "0" + r;
-  if (g.length == 1) g = "0" + g;
-  if (b.length == 1) b = "0" + b;
-  let hex = "#" + r + g + b;
+  const hex = `#${components.red}${components.green}${components.blue}`;
+
+  if (!applyFilter) {
+    return hex;
+  }
 
   switch (hex) {
     //idle (full white)
@@ -222,6 +172,7 @@ function RGBToHex(r, g, b) {
       return "#00ff00"; //green
     case "#006e18":
       return "#00ffff"; //cyan
+    //also batman stealth
     case "#000018":
       return "#0000ff"; //blue
     case "#ff0018":
@@ -230,10 +181,6 @@ function RGBToHex(r, g, b) {
     //wyldstyle scanner
     case "#f00016":
       return "#ff2de6";
-
-    //batman stealth
-    case "#000018":
-      return "#0000ff";
 
     //shift keystone (dark colors for blink animation)
     case "#002007":
@@ -271,8 +218,8 @@ function RGBToHex(r, g, b) {
       return "#0000ff";
     case "#006700":
       return "#00ff00";
-    //case "#f00000":
-    //return "#ff0000";
+    case "#f00000":
+      return "#ff0000";
     case "#000016":
       return "#00ffff";
 
@@ -297,11 +244,10 @@ function RGBToHex(r, g, b) {
   }
 }
 
-function getUIDAtPad(index) {
-  const token = tp._tokens.find((t) => t.index === index);
+function getUIDAtPad(index: number) {
+  const token = tp._tokens.find((t: any) => t.index === index); //TODO: Implement interface
   return token ? token.uid : -1;
 }
-
 //When the game calls 'CMD_WRITE', writes the given data to the toytag in the top position.
 /* Writing Tags Explained:
  * A write occurs in three seperate function calls, and will repreat until either the write is canceled in game,
@@ -314,11 +260,11 @@ function getUIDAtPad(index) {
  * page 24 - ID
  * page 23 - Vehicle Upgrade Pt 1
  * page 26 - Vehicle Upgrades Pt 2
- * **When writing the pages requested for the write are sometimes ofset by 12, not sure why.
- *
+ * **When writing the pages requested for the write are sometimes offset by 12, not sure why.
+ * //TODO: Find out why they are sometimes offset by 12
  * This data is copied to the JSON for future use.
  */
-tp.hook(tp.CMD_WRITE, (req, res) => {
+function handleWriteCommand(req: any, res: any) {
   const ind = req.payload[0];
   const page = req.payload[1];
   const data = req.payload.slice(2);
@@ -330,7 +276,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
     const id = data.readInt16LE(0);
     const name = getAnyNameFromID(id);
 
-    writeJSONBundle(uid, [
+    updateKeys(uid, [
       { key: "id", value: id },
       { key: "name", value: name },
       { key: "type", value: "vehicle" },
@@ -339,21 +285,19 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
   }
   //Vehicle uprades are stored in Pages 23 & 25
   else if (page == 23 || page == 35)
-    writeJSONData(uid, "vehicleUpgradesP23", data.readUInt32LE(0));
+    updateKey(uid, "vehicleUpgradesP23", data.readUInt32LE(0));
   else if (page == 25 || page == 37) {
-    writeJSONData(uid, "vehicleUpgradesP25", data.readUInt32LE(0));
-    io.emit("refreshTokens"); //Refreshes the html's tag gui.
+    updateKey(uid, "vehicleUpgradesP25", data.readUInt32LE(0));
+    io.emit(Emits.Refresh); //Refreshes the html's tag gui.
   }
 
   res.payload = Buffer.from([0x00]);
-  const token = tp._tokens.find((t) => t.index == ind);
+  const token = tp._tokens.find((t: any) => t.index == ind);
   if (token) {
     req.payload.copy(token.token, 4 * page, 2, 6);
   }
-});
-
-//Colors
-tp.hook(tp.CMD_COL, (req, res) => {
+}
+function handleColorCommand(req: any, res: any) {
   console.log("    => CMD_COL");
   console.log("    => pad:", req.payload[0]);
   console.log("    => red:", req.payload[1]);
@@ -361,20 +305,18 @@ tp.hook(tp.CMD_COL, (req, res) => {
   console.log("    => blue:", req.payload[3]);
   const pad_number = req.payload[0];
   const pad_color = RGBToHex(req.payload[1], req.payload[2], req.payload[3]);
-  if (pad_number == 0) io.emit("Color All", [pad_color, pad_color, pad_color]);
-  else io.emit("Color One", [pad_number, pad_color]);
-});
-
-tp.hook(tp.CMD_FADE, (req, res) => {
+  if (pad_number == 0)
+    io.emit(Emits.ColorAll, [pad_color, pad_color, pad_color]);
+  else io.emit(Emits.ColorOne, [pad_number, pad_color]);
+}
+function handleFadeCommand(req: any, res: any) {
   const pad_number = req.payload[0];
   const pad_speed = req.payload[1];
   const pad_cycles = req.payload[2];
   const pad_color = RGBToHex(req.payload[3], req.payload[4], req.payload[5]);
-  io.emit("Fade One", [pad_number, pad_speed, pad_cycles, pad_color]);
-});
-
-///NOT IMPLEMENTED///
-tp.hook(tp.CMD_FLASH, (req, res) => {
+  io.emit(Emits.FadeOne, [pad_number, pad_speed, pad_cycles, pad_color]);
+}
+function handleFlashCommand(req: any, res: any) {
   console.log("    => CMD_FLASH");
   console.log("    => pad:", req.payload[0]);
   console.log("    => color duration:", req.payload[1]);
@@ -383,16 +325,14 @@ tp.hook(tp.CMD_FLASH, (req, res) => {
   console.log("    => red:", req.payload[4]);
   console.log("    => green:", req.payload[5]);
   console.log("    => blue:", req.payload[6]);
-});
+}
 
-///NOT IMPLEMENTED///
-tp.hook(tp.CMD_FADRD, (req, res) => {
+function handleFadeRandomCommand(req: any, res: any) {
   console.log("    => CMD_FADRD - pad:", req.payload[0]);
   console.log("    => speed:", req.payload[1]);
   console.log("    => cycles:", req.payload[2]);
-});
-
-tp.hook(tp.CMD_FADAL, (req, res) => {
+}
+function handleFadeAllCommand(req: any, res: any) {
   const top_pad_speed = req.payload[1];
   const top_pad_cycles = req.payload[2];
   const top_pad_color = RGBToHex(
@@ -415,7 +355,7 @@ tp.hook(tp.CMD_FADAL, (req, res) => {
     req.payload[17]
   );
 
-  io.emit("Fade All", [
+  io.emit(Emits.FadeAll, [
     top_pad_speed,
     top_pad_cycles,
     top_pad_color,
@@ -426,14 +366,8 @@ tp.hook(tp.CMD_FADAL, (req, res) => {
     right_pad_cycles,
     right_pad_color,
   ]);
-  // setTimeout(function(){io.emit("Fade All",
-  // 					[top_pad_speed, top_pad_cycles, 'white',
-  // 					 left_pad_speed, left_pad_cycles, 'white',
-  // 					 right_pad_speed, right_pad_cycles, 'white'])}, 2500);
-});
-
-///NOT IMPLEMENTED///
-tp.hook(tp.CMD_FLSAL, (req, res) => {
+}
+function handleFlashAllCommand(req: any, res: any) {
   console.log("    => CMD_FLSAL - top pad color duration:", req.payload[1]);
   console.log("    => top pad white duration:", req.payload[2]);
   console.log("    => top pad cycles:", req.payload[3]);
@@ -452,9 +386,8 @@ tp.hook(tp.CMD_FLSAL, (req, res) => {
   console.log("    => right pad red:", req.payload[18]);
   console.log("    => right pad green:", req.payload[19]);
   console.log("    => right pad blue:", req.payload[20]);
-});
-
-tp.hook(tp.CMD_COLALL, (req, res) => {
+}
+function handleColorAllCommand(req: any, res: any) {
   console.log("    => CMD_COLAL");
   const top_pad_color = RGBToHex(
     req.payload[1],
@@ -472,30 +405,28 @@ tp.hook(tp.CMD_COLALL, (req, res) => {
     req.payload[11]
   );
 
-  io.emit("Color All", [top_pad_color, left_pad_color, right_pad_color]);
-});
-
-///DEBUG PURPOSES///
-tp.hook(tp.CMD_GETCOL, (req, res) => {
+  io.emit(Emits.ColorAll, [top_pad_color, left_pad_color, right_pad_color]);
+}
+function handleGetColorCommand(req: any, res: any) {
   console.log("    => CMD_GETCOL");
   console.log("    => pad:", req.payload[0]);
-});
-
-tp.hook(tp.CMD_WAKE, (req, res) => {
+}
+function handleWakeCommand(req: any, res: any) {
   isConnectedToGame = true;
-  io.emit("Connection True");
-});
+  io.emit(Emits.ConnectionAffirmation);
+}
 
+//** Express **/
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "server")));
+app.use(express.static(path.join(__dirname, "../", "public")));
 
 //**Website requests**//
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "server/index.html"));
 });
 
 //Create a new Character and save that data to toytags.json
-app.post("/character", (req, res) => {
+app.post("/character", (req: Request, res: Response) => {
   const uid = tp.randomUID();
   const id = req.body.id;
   console.log("Creating character: " + id);
@@ -508,182 +439,110 @@ app.post("/character", (req, res) => {
     " id: " + character.id
   );
 
-  fs.readFile(toytagsPath, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const tags = JSON.parse(data);
+  const entry: Toytag = {
+    name: name,
+    id: id,
+    uid: character.uid,
+    index: -1,
+    type: Tagtypes.Character,
+    vehicleUpgradesP23: 0,
+    vehicleUpgradesP25: 0,
+  };
 
-      tags.push({
-        name: name,
-        id: id,
-        uid: character.uid,
-        index: "-1",
-        type: "character",
-        vehicleUpgradesP23: 0,
-        vehicleUpgradesP25: 0,
-      });
-
-      fs.writeFile(
-        toytagsPath,
-        JSON.stringify(tags, null, 4),
-        "utf8",
-        (err) => {
-          if (err) {
-            console.log(`Error writing file: ${err}`);
-          } else {
-            console.log(`File is written successfully!`);
-          }
-        }
-      );
-    }
-  });
+  addEntry(entry);
 
   console.log("Character created: " + req.body.id);
-  res.send();
+  res.status(200).send();
 });
 
 //This is called when a token is placed or move onto a position on the toypad.
-app.post("/place", (request, response) => {
-  console.log("Placing tag: " + request.body.id);
-  const entry = getJSONFromUID(request.body.uid);
+app.post("/place", (req: Request, res: Response) => {
+  const id = req.body.id;
+  const uid = req.body.uid;
+  const index = req.body.index;
+  const position = req.body.position;
+  const entry = getEntryFromUID(uid);
 
-  //console.log(entry.type);
-
+  let token;
   if (entry.type == "character") {
-    const character = createCharacter(request.body.id, request.body.uid);
-    tp.place(
-      character,
-      request.body.position,
-      request.body.index,
-      character.uid
-    );
-    console.log("Character tag: " + request.body.id);
-    updatePadIndex(character.uid, request.body.index);
-    response.send();
+    token = createCharacter(id, uid);
   } else {
-    const vehicle = createVehicle(request.body.id, request.body.uid, [
+    token = createVehicle(id, uid, [
       entry.vehicleUpgradesP23,
       entry.vehicleUpgradesP25,
     ]);
-    tp.place(vehicle, request.body.position, request.body.index, vehicle.uid);
-    console.log("Vehicle tag: " + request.body.id);
-    updatePadIndex(vehicle.uid, request.body.index);
-    response.send();
   }
+  tp.place(token, position, index, token.uid);
+  updatePadIndex(token.uid, index);
+  res.send();
 });
 
-app.post("/vehicle", (request, response) => {
-  const id = request.body.id;
+app.post("/vehicle", (req: Request, res: Response) => {
+  const id = req.body.id;
   const uid = tp.randomUID();
-  console.log("Creating vehicle: " + request.body.id);
   const vehicle = createVehicle(id, uid, [0xefffffff, 0xefffffff]);
   const name = getTokenNameFromID(id);
+  console.log("Creating vehicle: " + req.body.id);
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
 
-  fs.readFile(toytagsPath, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const tags = JSON.parse(data.toString());
-      const entry = {
-        name: name,
-        id: id,
-        uid: vehicle.uid,
-        index: "-1",
-        type: "vehicle",
-        vehicleUpgradesP23: 0xefffffff,
-        vehicleUpgradesP25: 0xefffffff,
-      };
+  const entry: Toytag = {
+    name: name,
+    id: id,
+    uid: vehicle.uid,
+    index: -1,
+    type: Tagtypes.Vehicle,
+    vehicleUpgradesP23: 0xefffffff,
+    vehicleUpgradesP25: 0xefffffff,
+  };
 
-      console.log(entry);
-      tags.push(entry);
-
-      fs.writeFile(
-        toytagsPath,
-        JSON.stringify(tags, null, 4),
-        "utf8",
-        (err) => {
-          if (err) {
-            console.log(`Error writing file: ${err}`);
-          } else {
-            console.log(`File is written successfully!`);
-          }
-        }
-      );
-    }
-  });
-  console.log("Vehicle placed: " + request.body.id);
-  response.send(uid);
+  addEntry(entry);
+  console.log("Vehicle placed: " + req.body.id);
+  res.send(uid);
 });
 
 //This is called when a token needs to be removed from the pad.
-app.delete("/remove", (request, response) => {
-  console.log("Removing item: " + request.body.index);
-  // console.log('DEBUG: pad-from-token: ', tp._tokens.filter(v => v.index == request.body.index)[0].pad);
-  tp.remove(request.body.index);
-  console.log("Item removed: " + request.body.index);
-  updatePadIndex(request.body.uid, "-1");
-  response.send(true);
+app.delete("/remove", (req: Request, res: Response) => {
+  const index = req.body.index;
+  const uid = req.body.uid;
+  console.log("Removing item: " + index);
+  tp.remove(index);
+  console.log("Item removed: " + index);
+  updatePadIndex(uid, -1);
+  res.send(true);
 });
 
 //**IO CALLS**//
-//This setups the IO connection between index.js and index.html.
-io.on("connection", (socket) => {
-  //Listening for 'deleteToken' call from index.html
-  socket.on("deleteToken", (uid) => {
+//This setups the IO connection between frontend and server
+io.on("connection", (socket: Socket) => {
+  //Listening for 'deleteToken' call from frontend
+  socket.on("deleteToken", (uid: string) => {
     console.log("IO Recieved: Deleting entry " + uid + " from JSON");
-    const tags = fs.readFileSync(toytagsPath, "utf8");
-    const dataset = JSON.parse(tags);
-    let index = -1;
-
-    for (let i = 0; i < dataset.length; i++) {
-      const entry = dataset[i];
-
-      if (entry.uid == uid) {
-        index = i;
-        break;
-      }
-    }
-
-    console.log("Entry to delete: ", index);
-    if (index > -1) {
-      dataset.splice(index, 1);
-      console.log("Token was not found.");
-      return;
-    }
-
-    fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4), (err) => {
-      if (err) {
-        console.log("Failed to write updated data to toytags.json: " + err);
-        return;
-      }
-
-      io.emit("refreshTokens");
-      console.log(`Succesfully deleted ${uid} from toytags.json `);
-    });
+    deleteByUID(uid);
+    io.emit(Emits.Refresh);
   });
 
   socket.on("connectionStatus", () => {
     if (isConnectedToGame == true) {
-      io.emit("Connection True");
+      io.emit(Emits.ConnectionAffirmation);
     }
   });
 
-  socket.on("syncToyPad", (pad) => {
+  socket.on("syncToyPad", () => {
     console.log("<<Syncing tags, one moment...>>");
     initializeToyTagsJSON();
     for (let i = 1; i <= 7; i++) {
       const uid = getUIDAtPad(i);
       if (uid != -1) {
         //console.log(uid, "is at pad #", i);
-        writeJSONData(uid, "index", i);
+        updateKey(uid, "index", i);
       }
     }
-    io.emit("refreshTokens");
+    io.sockets.emit(Emits.Refresh);
     console.log("<<Tags are synced!>>");
   });
 });
 
 server.listen(80, () => console.log("Server running on port 80"));
+
+export default app;
