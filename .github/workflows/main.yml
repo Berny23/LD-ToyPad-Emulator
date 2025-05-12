@@ -25,6 +25,7 @@ jobs:
       - run: npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
       - run: npm install
       - run: npm ci
+      - run: tsc
       # - run: npm run build --if-present
       # - run: npm test
 
