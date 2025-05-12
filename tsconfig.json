@@ -3,6 +3,7 @@
     "target": "ES2024",
     "module": "CommonJS",
     "lib": ["DOM", "ES2024"],
+    "baseUrl": "./",
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",

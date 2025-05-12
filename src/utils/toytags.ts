@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const toytagsPath = path.join(__dirname, "server/json/toytags.json");
+const toytagsPath = path.join("public/json/toytags.json");
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
 export function updateKey(

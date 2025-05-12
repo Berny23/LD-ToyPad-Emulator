@@ -1,11 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const charactersMapPath = path.join(
-  __dirname,
-  "server/json/charactersmap.json"
-);
-const tokenmapPath = path.join(__dirname, "server/json/tokenmap.json");
+const charactersMapPath = path.join("public/json/charactersmap.json");
+const tokenmapPath = path.join("public/json/tokenmap.json");
 
 /* Vehicle Data Explained:
  * All data is transfered through a series of buffers. The data from these buffers needs to written to specific points (pages) in the token's
