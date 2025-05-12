@@ -1,4 +1,4 @@
-enum Emits {
+export enum Emits {
   Refresh = "refreshTokens",
   ColorAll = "Color All",
   ColorOne = "Color One",

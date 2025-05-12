@@ -1,4 +1,5 @@
 import { io, setConnectionStatus, tp } from "./bridge";
+import { Emits } from "./enums/Emits";
 import { RGBToHex } from "./utils/conversion";
 import { getAnyNameFromID } from "./utils/tagUtils";
 import { select, updateKey, updateKeys } from "./utils/toytags";

@@ -3,6 +3,7 @@ import { Socket } from "socket.io";
 import { isConnectedToGame, tp } from "./bridge";
 import { deleteEntry, updateKey } from "./utils/toytags";
 import { InitializeToyTagsJSON } from ".";
+import { Emits } from "./enums/Emits";
 
 export function setupSocket(server: Server) {
   const io = new Server(server);
