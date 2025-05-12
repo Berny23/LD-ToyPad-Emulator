@@ -22,7 +22,7 @@ const toytagsPath = path.join(__dirname, "server/json/toytags.json");
 const tokenmapPath = path.join(__dirname, "server/json/tokenmap.json");
 const charactersMapPath = path.join(
   __dirname,
-  "server/json/charactersmap.json"
+  "server/json/charactermap.json"
 );
 const tp = new ld.ToyPadEmu();
 tp.registerDefaults();
