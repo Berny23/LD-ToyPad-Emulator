@@ -113,29 +113,33 @@ $(function () {
         $(ui.sender).sortable("cancel");
       //If moving to the Toy Pox, remove tag from the game.
       else if ($this.attr("id") == "toybox-tokens") {
+        const uid = ui.item.attr("data-uid");
+        const url = `/tokens/${uid}/place`;
         $.ajax({
           method: "DELETE",
           contentType: "application/json",
-          url: "/remove",
+          url: url,
           data: JSON.stringify({
             index: parseInt(ui.sender.attr("pad-index")),
-            uid: ui.item.attr("data-uid"),
           }),
         });
       }
       //If moving from the Toy Box, place tag in the game.
       else if (ui.sender.attr("pad-num") == -1) {
-        var content = {
-          uid: ui.item.attr("data-uid"),
+        const uid = ui.item.attr("data-uid");
+        const url = `/tokens/${uid}/place`;
+
+        const content = {
           id: ui.item.attr("data-id"),
           position: $this.attr("pad-num"),
           index: $this.attr("pad-index"),
         };
         console.log(content);
+
         $.ajax({
-          method: "POST",
+          method: "PATCH",
           contentType: "application/json",
-          url: "/place",
+          url: url,
           data: JSON.stringify(content),
         });
       }
@@ -343,20 +347,20 @@ $(function () {
   }
 
   function updateToyPadPosition(uid, id, position, currentIndex, newIndex) {
-    console.log(currentIndex);
+    const url = `/tokens/${uid}/place`;
     $.ajax({
       method: "DELETE",
       contentType: "application/json",
-      url: "/remove",
-      data: JSON.stringify({ index: parseInt(currentIndex), uid: uid }),
+      url: url,
+      data: JSON.stringify({ index: parseInt(currentIndex) }),
     }).done(function () {
       setTimeout(function () {
+        const url = `/tokens/${uid}/place`;
         $.ajax({
-          method: "POST",
+          method: "PATCH",
           contentType: "application/json",
-          url: "/place",
+          url: url,
           data: JSON.stringify({
-            uid: uid,
             id: id,
             position: position,
             index: newIndex,
@@ -545,7 +549,7 @@ $(function () {
     $.ajax({
       method: "POST",
       contentType: "application/json",
-      url: "/character",
+      url: "/tokens/character",
       data: JSON.stringify({ id: filterByName(characters, name).id }),
     }).done(function () {
       var now = Date.now();
@@ -567,7 +571,7 @@ $(function () {
     $.ajax({
       method: "POST",
       contentType: "application/json",
-      url: "/vehicle",
+      url: "/tokens/vehicle",
       data: JSON.stringify({ id: id }),
     }).done(function () {
       var now = Date.now();
