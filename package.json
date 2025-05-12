@@ -3,9 +3,9 @@
   "version": "1.4.1",
   "description": "Toy Pad Emulator for Lego Dimensions",
   "repository": "https://github.com/Berny23/LD-ToyPad-Emulator",
-  "main": "build/app.js",
+  "main": "build/index.js",
   "scripts": {
-    "start": "node build/app.js",
+    "start": "node build/index.js",
     "build": "tsc"
   },
   "author": "Berny23",
