@@ -2,7 +2,7 @@
 <!--
 
 	Copyright © 2023 Berny23, Cort1237 and many more
-	
+
 	This file is part of "Toy Pad Emulator for Lego Dimensions" which is released under the "MIT" license.
 	See file "LICENSE" or go to "https://choosealicense.com/licenses/mit" for full license details.
 
@@ -14,11 +14,11 @@
     <title>Toy Pad Emulator for Lego Dimensions | v1.4.1</title>
     <link rel="stylesheet" href="stylesheets/main.css" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
+    <script src="jQuery/jquery-3.6.0.min.js"></script>
+    <script src="jQuery/jquery-ui.js"></script>
+    <script src="jQuery/jquery.ui.touch-punch.min.js"></script>
+    <script src="jQuery/jquery.color-2.2.0.min.js"></script>
+    <script src="scripts/main.js" type="module"></script>
   </head>
 
   <body>
@@ -144,7 +144,6 @@
           </p>
 
           <div id="toypad" class="container">
-            <h1>The Toy Pad</h1>
             <div>
               <div class="drop-targets">
                 <div
@@ -207,24 +206,13 @@
         </div>
       </div>
 
-      <p id="footer">
+      <footer>
         Copyright © 2023 Berny23, Cort1237 and many more | <b>v1.4.1</b> | This
         software is licensed under the
         <a href="https://choosealicense.com/licenses/mit">MIT</a> license. The
         source code is available on
         <a href="https://github.com/Berny23/LD-ToyPad-Emulator">GitHub</a>.
-      </p>
+      </footer>
     </div>
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="jquery.ui.touch-punch.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script
-      src="https://code.jquery.com/color/jquery.color-2.2.0.min.js"
-      integrity="sha256-aSe2ZC5QeunlL/w/7PsVKmV+fa0eDbmybn/ptsKHR6I="
-      crossorigin="anonymous"
-    ></script>
-    <script src="scripts/main.js"></script>
   </body>
 </html>
