@@ -78,7 +78,7 @@ export function RGBToHex(
       return "#00ff00";
     case "#f00000":
       return "#ff0000";
-    //case "#000016": //TODO: DUPLICATE
+    //case "#000016": //TODO: DUPLICATE WITH DIFFRENT RESULT
     //return "#00ffff";
 
     //scale keystone

@@ -11,10 +11,10 @@ import { io, setIO, tp } from "./bridge";
 import { setupSocket } from "./io";
 import { hook } from "./hooks";
 import { Emits } from "./enums/Emits";
-const server = http.createServer(app);
-
 tp.registerDefaults();
-setIO(setupSocket(server));
+const s = setupSocket();
+const server = http.createServer(app);
+setIO(s);
 hook(); //Listen to commands from game
 
 InitializeToyTagsJSON();
@@ -26,4 +26,5 @@ export function InitializeToyTagsJSON() {
   io.emit(Emits.Refresh);
 }
 
+//For now, this only checks main releases
 server.listen(80, () => console.log("Server running on port 80"));

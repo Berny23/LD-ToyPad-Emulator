@@ -2,7 +2,7 @@ interface Toytag {
   name: string;
   id: number;
   uid: string;
-  index: number | String; //TODO: This should only be an integer
+  index: number;
   type: Tagtypes;
   vehicleUpgradesP23?: number;
   vehicleUpgradesP25?: number;

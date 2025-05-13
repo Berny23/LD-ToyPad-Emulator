@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const charactersMapPath = path.join("public/json/charactersmap.json");
+const characterMapPath = path.join("public/json/charactermap.json");
 const tokenmapPath = path.join("public/json/tokenmap.json");
 
 /* Vehicle Data Explained:
@@ -53,7 +53,7 @@ export function getTokenNameFromID(id: number) {
 }
 //This function retrieves the name of a character  from an id
 export function getCharacterNameFromID(id: number) {
-  const data = fs.readFileSync(charactersMapPath, "utf8");
+  const data = fs.readFileSync(characterMapPath, "utf8");
   const dataset = JSON.parse(data);
 
   for (let i = 0; i < dataset.length; i++) {

@@ -54,7 +54,7 @@ export function unplaceAll() {
   const data = internal_get();
 
   data.forEach((entry: Toytag) => {
-    entry.index = "-1";
+    entry.index = -1;
   });
 
   internal_write(data);
