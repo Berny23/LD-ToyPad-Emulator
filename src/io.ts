@@ -1,4 +1,4 @@
-import IO, { Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { isConnectedToGame, tp } from "./bridge";
 import { deleteEntry, updateKey } from "./utils/toytags";
 import { InitializeToyTagsJSON } from ".";

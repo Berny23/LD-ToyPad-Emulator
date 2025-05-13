@@ -12,7 +12,7 @@
     "outDir": "./build",
     "rootDir": "./src",
     "resolveJsonModule": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true
   },

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { tp } from "../bridge";
-import { addEntry, updateKey } from "../utils/toytags";
+import { addEntry } from "../utils/toytags";
 import { createVehicle, getTokenNameFromID } from "../utils/tagUtils";
 
 const router = express.Router();

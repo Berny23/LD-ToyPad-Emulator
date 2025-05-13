@@ -1,6 +1,6 @@
-import { Server } from "http";
+import ld from "node-ld";
 
-const ld = require("node-ld");
+import { Server } from "http";
 export const tp = new ld.ToyPadEmu();
 export let io: Server;
 export let isConnectedToGame = false;

@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 const toytagsPath = path.join("public/json/toytags.json");
 
@@ -95,10 +95,10 @@ function internal_get() {
 
   return JSON.parse(rawData);
 }
-function internal_write(data: Toytag) {
-  if (typeof data !== "object") {
-    data = JSON.parse(data);
-  } else if (typeof data !== "string") return;
+function internal_write(data: Toytag | string) {
+  if (typeof data === "object") {
+    data = JSON.stringify(data);
+  }
 
   fs.writeFileSync(toytagsPath, data);
 }

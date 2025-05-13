@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
 import { select, updateKey } from "../utils/toytags";
 import { tp } from "../bridge";
 import { createCharacter, createVehicle } from "../utils/tagUtils";
