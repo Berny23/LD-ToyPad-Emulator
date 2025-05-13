@@ -11,8 +11,9 @@ export function updateKey(
 ) {
   const data = internal_get();
 
+  let entry;
   for (let i = 0; i < data.length; i++) {
-    const entry = data[i];
+    entry = data[i];
 
     if (entry.uid == uid) {
       entry[datatype] = value;
@@ -25,12 +26,13 @@ export function updateKey(
 
 export function updateKeys(
   uid: string,
-  bundle: { key: string; value: string }[]
+  bundle: { key: keyof Toytag; value: Toytag[keyof Toytag] }[]
 ) {
   const data = internal_get();
 
+  let entry: Toytag;
   for (let i = 0; i < data.length; i++) {
-    const entry = data[i];
+    entry = data[i];
 
     if (entry.uid == uid) {
       bundle.forEach((data) => {
@@ -90,12 +92,12 @@ export function select(
   return null;
 }
 //** Internal private calls */
-function internal_get() {
+function internal_get(): Toytag[] {
   const rawData = fs.readFileSync(toytagsPath, "utf8");
 
   return JSON.parse(rawData);
 }
-function internal_write(data: Toytag | string) {
+function internal_write(data: Toytag[] | string) {
   if (typeof data === "object") {
     data = JSON.stringify(data);
   }
