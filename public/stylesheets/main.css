@@ -93,7 +93,7 @@ button:active {
 }
 
 .container {
-    background-color: #59595a;
+    background-color: rgb(239, 239, 239);
     box-shadow: 0 4px 8px 0 #00000033, 0 6px 20px 0 #00000030;
     padding: 1em;
     border-radius: 0.5rem;
