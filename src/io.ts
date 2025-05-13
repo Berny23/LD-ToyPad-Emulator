@@ -3,10 +3,10 @@ import { isConnectedToGame, tp } from "./bridge";
 import { deleteEntry, updateKey } from "./utils/toytags";
 import { InitializeToyTagsJSON } from ".";
 import { Emits } from "./enums/Emits";
-import app from "./app";
+import { Server } from "http";
 
-export function setupSocket() {
-  const io = require("socket.io")(app);
+export function setupSocket(http: Server) {
+  const io = require("socket.io")(http);
   io.on("connection", (socket: Socket) => {
     socket.on("deleteToken", (uid: string) => {
       console.log("IO Recieved: Deleting entry " + uid + " from JSON");

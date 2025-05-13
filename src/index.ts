@@ -12,9 +12,10 @@ import { setupSocket } from "./io";
 import { hook } from "./hooks";
 import { Emits } from "./enums/Emits";
 tp.registerDefaults();
-const s = setupSocket();
 const server = http.createServer(app);
+const s = setupSocket(server);
 setIO(s);
+
 hook(); //Listen to commands from game
 
 InitializeToyTagsJSON();
