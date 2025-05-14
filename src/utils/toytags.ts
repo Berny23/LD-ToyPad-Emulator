@@ -4,10 +4,10 @@ import path from "path";
 const toytagsPath = path.join("public/json/toytags.json");
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
-export function updateKey(
+export function updateKey<K extends keyof Toytag>(
   uid: string,
-  datatype: keyof Toytag,
-  value: Toytag[keyof Toytag]
+  datatype: K,
+  value: Toytag[K]
 ) {
   const data = internal_get();
 
@@ -24,23 +24,26 @@ export function updateKey(
   internal_write(data);
 }
 
-export function updateKeys(
+export function updateKeys<K extends keyof Toytag>(
   uid: string,
-  bundle: { key: keyof Toytag; value: Toytag[keyof Toytag] }[]
+  bundle: { [Key in K]: Toytag[Key] }[]
 ) {
   const data = internal_get();
 
-  let entry: Toytag;
+  let entry: Toytag | undefined;
   for (let i = 0; i < data.length; i++) {
-    entry = data[i];
-
-    if (entry.uid == uid) {
-      bundle.forEach((data) => {
-        entry[data.key] = data.value;
-      });
+    if (data[i].uid === uid) {
+      entry = data[i];
       break;
     }
   }
+
+  if (!entry) return;
+
+  bundle.forEach((item) => {
+    const key = Object.keys(item)[0] as K;
+    entry[key] = item[key];
+  });
 
   internal_write(data);
 }
