@@ -1,11 +1,11 @@
-import express, { Request } from "express";
+import express, { Request, Response } from "express";
 import { select, updateKey } from "../utils/toytags";
 import { tp } from "../bridge";
 import { createCharacter, createVehicle } from "../utils/tagUtils";
 
 const router = express.Router();
 
-router.patch("/", (req: Request, res: any) => {
+router.patch("/", (req: Request, res: Response) => {
   const uid = req.params.uid;
   const id = req.body.id;
   const index = req.body.index;
@@ -13,7 +13,8 @@ router.patch("/", (req: Request, res: any) => {
   const entry = select("uid", uid);
 
   if (!entry) {
-    return res.status(404).send("Token not found.");
+    res.status(404).send();
+    return;
   }
 
   let token;
@@ -21,7 +22,8 @@ router.patch("/", (req: Request, res: any) => {
     token = createCharacter(id, uid);
   } else {
     if (!entry.vehicleUpgradesP23 || !entry.vehicleUpgradesP25) {
-      return res.status(500).send("Vehicle upgrades missing.");
+      res.status(500).send();
+      return;
     }
     token = createVehicle(id, uid, [
       entry.vehicleUpgradesP23,
