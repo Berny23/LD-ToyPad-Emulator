@@ -129,9 +129,9 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 - 2 GB+ Micro SD card
 - Internet connection on your PC and single board computer
 
-#### Guide
+#### Raspberry Pi Zero W Guide
 
-1. If you're using a Raspberry Pi Zero W, flash Raspberry Pi OS Lite to your SD card using [the Raspberry Pi Imager tool](https://www.raspberrypi.org/software/) and follow [this](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) as well as [this](https://www.raspberrypi.org/documentation/remote-access/ssh/README.md) instruction for headless installation.
+1. If you're using a Raspberry Pi Zero W, flash Raspberry Pi OS (Legacy, 32-bit, Bullseye) Lite to your SD card using [the Raspberry Pi Imager tool](https://www.raspberrypi.org/software/) and follow [this](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) as well as [this](https://www.raspberrypi.org/documentation/remote-access/ssh/README.md) instruction for headless installation.
 
 2. Connect your device to your PC via USB cable (don't use the port on the edge of the Pi Zero!).
 
@@ -146,8 +146,9 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    echo "usb_f_rndis" | sudo tee -a /etc/modules
 
    git config pull.rebase false
-   git clone https://github.com/Berny23/LD-ToyPad-Emulator.git
-   cd LD-ToyPad-Emulator
+   git clone --no-checkout https://github.com/Berny23/LD-ToyPad-Emulator.git
+   cd LD-ToyPad-Emulator/
+   git checkout 9f60e2538f43225f7b917bd300be6284d1db51cb
 
    printf '\necho "$UDC" > UDC\nsleep 2;\nchmod a+rw /dev/hidg0' >> usb_setup_script.sh
 
