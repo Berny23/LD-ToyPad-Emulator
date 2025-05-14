@@ -175,7 +175,7 @@ button:active {
     border-radius: 100%;
     width: var(--middle-box-width);
     height: var(--middle-box-width);
-    bottom: calc(var(--middle-box-width) / 3);
+    bottom: calc(var(--middle-box-width) / 2.5);
     position: absolute;
     margin: auto;
     left: 50%;
@@ -361,4 +361,12 @@ button:active {
     #toybox-column {
         width: calc(100% - 80px);
     }
+}
+
+#half-box {
+    width: calc(var(--box-width) / 2);
+}
+
+#toypad3 {
+    margin-left: 2px;
 }
