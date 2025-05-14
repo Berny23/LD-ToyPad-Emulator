@@ -15,6 +15,7 @@ router.get("/:img", (req: Request, res: Response) => {
   }
 
   const allImages = fs.readdirSync(folder);
+  console.log(allImages);
   const foundImage = allImages.find((imgPath) => {
     const name = path.basename(imgPath, path.extname(imgPath)).toLowerCase();
     const ext = path.extname(imgPath).toLowerCase();
