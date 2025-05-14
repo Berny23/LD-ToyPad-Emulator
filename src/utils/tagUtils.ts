@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import { CharacterBuffer } from "src/interfaces/CharacterBuffer";
+import { VehicleBuffer } from "src/interfaces/VehicleBuffer";
 
 const characterMapPath = path.join("public/json/charactermap.json");
 const tokenmapPath = path.join("public/json/tokenmap.json");

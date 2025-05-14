@@ -1,4 +1,4 @@
-interface CharacterBuffer extends Buffer {
+export interface CharacterBuffer extends Buffer {
   uid: string;
   id: number;
 }

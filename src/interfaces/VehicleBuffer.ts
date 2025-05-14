@@ -1,4 +1,4 @@
-interface VehicleBuffer extends Buffer {
+export interface VehicleBuffer extends Buffer {
   uid: string;
   id: number;
 }

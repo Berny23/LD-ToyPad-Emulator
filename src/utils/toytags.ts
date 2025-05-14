@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { Toytag } from "src/interfaces/Toytag";
 
 const toytagsPath = path.join("public/json/toytags.json");
 
