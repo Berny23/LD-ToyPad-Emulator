@@ -54,9 +54,9 @@ function handleWriteCommand(req: any, res: any) {
     const name = getAnyNameFromID(id);
 
     updateKeys(uid, [
-      { key: "id", value: id },
-      { key: "name", value: name },
-      { key: "type", value: "vehicle" },
+      ["id", id],
+      ["name", name],
+      ["type", Tagtypes.Vehicle],
     ]);
     //writeVehicleData(uid, "uid", tp.randomUID())
   }
