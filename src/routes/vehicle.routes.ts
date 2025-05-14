@@ -3,7 +3,7 @@ import { tp } from "../bridge";
 import { addEntry } from "../utils/toytags";
 import { createVehicle, getTokenNameFromID } from "../utils/tagUtils";
 import { Toytag } from "../interfaces/Toytag";
-import { Tagtypes } from "../enums/TagTypes";
+import Tagtypes from "../enums/Tagtypes";
 
 const router = express.Router();
 

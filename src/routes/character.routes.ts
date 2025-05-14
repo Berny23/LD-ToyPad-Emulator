@@ -3,7 +3,7 @@ import { createCharacter, getCharacterNameFromID } from "../utils/tagUtils";
 import { tp } from "../bridge";
 import { addEntry } from "../utils/toytags";
 import { Toytag } from "../interfaces/Toytag";
-import { Tagtypes } from "../enums/TagTypes";
+import Tagtypes from "../enums/Tagtypes";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import { io, setConnectionStatus, tp } from "./bridge";
-import { Emits } from "./enums/Emits";
-import { Tagtypes } from "./enums/TagTypes";
+import Emits from "./enums/Emits";
+import Tagtypes from "./enums/Tagtypes";
 import { RGBToHex } from "./utils/conversion";
 import { getAnyNameFromID } from "./utils/tagUtils";
 import { select, updateKey, updateKeys } from "./utils/toytags";
