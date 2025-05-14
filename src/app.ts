@@ -11,11 +11,10 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../", "public")));
 
-app.get("/images/:img", imageRoutes);
-
-app.patch("/tokens/:uid/place", placementRoutes);
-app.post("/tokens/character", characterRoutes);
-app.post("/tokens/vehicle", vehicleRoutes);
-app.delete("/tokens/:uid", tokenRoutes);
+app.use("/images/:img", imageRoutes);
+app.use("/tokens/:uid/place", placementRoutes);
+app.use("/tokens/character", characterRoutes);
+app.use("/tokens/vehicle", vehicleRoutes);
+app.use("/tokens/:uid", tokenRoutes);
 
 export default app;
