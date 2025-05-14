@@ -26,7 +26,7 @@ export function updateKey<K extends keyof Toytag>(
 
 export function updateKeys<K extends keyof Toytag>(
   uid: string,
-  bundle: { [Key in K]: Toytag[Key] }[]
+  bundle: [K, Toytag[K]][]
 ) {
   const data = internal_get();
 
@@ -40,9 +40,8 @@ export function updateKeys<K extends keyof Toytag>(
 
   if (!entry) return;
 
-  bundle.forEach((item) => {
-    const key = Object.keys(item)[0] as K;
-    entry[key] = item[key];
+  bundle.forEach(([key, value]) => {
+    entry[key] = value;
   });
 
   internal_write(data);
