@@ -41,8 +41,9 @@ export function getTokenNameFromID(id: number) {
   const data = fs.readFileSync(tokenmapPath, "utf8");
   const dataset = JSON.parse(data);
 
+  let entry;
   for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
+    entry = dataset[i];
 
     if (entry.id == id) {
       return entry.name;
@@ -56,8 +57,9 @@ export function getCharacterNameFromID(id: number) {
   const data = fs.readFileSync(characterMapPath, "utf8");
   const dataset = JSON.parse(data);
 
+  let entry;
   for (let i = 0; i < dataset.length; i++) {
-    const entry = dataset[i];
+    entry = dataset[i];
 
     if (entry.id == id) {
       return entry.name;

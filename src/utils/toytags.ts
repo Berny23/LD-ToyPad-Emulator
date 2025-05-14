@@ -4,15 +4,16 @@ import path from "path";
 const toytagsPath = path.join("public/json/toytags.json");
 
 //This updates the provided datatype, of the entry with the matching uid, with the provided data.
-export function updateKey(
+export function updateKey<K extends keyof Toytag>(
   uid: string,
-  datatype: keyof Toytag,
-  value: Toytag[keyof Toytag]
+  datatype: K,
+  value: Toytag[K]
 ) {
   const data = internal_get();
 
+  let entry;
   for (let i = 0; i < data.length; i++) {
-    const entry = data[i];
+    entry = data[i];
 
     if (entry.uid == uid) {
       entry[datatype] = value;
@@ -23,22 +24,25 @@ export function updateKey(
   internal_write(data);
 }
 
-export function updateKeys(
+export function updateKeys<K extends keyof Toytag>(
   uid: string,
-  bundle: { key: string; value: string }[]
+  bundle: [K, Toytag[K]][]
 ) {
   const data = internal_get();
 
+  let entry: Toytag | undefined;
   for (let i = 0; i < data.length; i++) {
-    const entry = data[i];
-
-    if (entry.uid == uid) {
-      bundle.forEach((data) => {
-        entry[data.key] = data.value;
-      });
+    if (data[i].uid === uid) {
+      entry = data[i];
       break;
     }
   }
+
+  if (!entry) return;
+
+  bundle.forEach(([key, value]) => {
+    entry[key] = value;
+  });
 
   internal_write(data);
 }
@@ -90,12 +94,12 @@ export function select(
   return null;
 }
 //** Internal private calls */
-function internal_get() {
+function internal_get(): Toytag[] {
   const rawData = fs.readFileSync(toytagsPath, "utf8");
 
   return JSON.parse(rawData);
 }
-function internal_write(data: Toytag | string) {
+function internal_write(data: Toytag[] | string) {
   if (typeof data === "object") {
     data = JSON.stringify(data);
   }

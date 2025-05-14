@@ -1,37 +1,25 @@
-$(function () {
+import io from "/socket.io/socket.io.js";
+
+const socket = io();
+
+const currentMousePos = { x: -1, y: -1 };
+
+const characters = await LoadCharactermap();
+const vehicles = await LoadTokenmap();
+
+//Events
+document.addEventListener("DOMContentLoaded", OnDOMContentLoaded);
+document.addEventListener("mousemove", OnMouseMouse);
+
+//Function
+
+function OnDOMContentLoaded() {
   // Pre-load character and vehicle data, since it is required for the operation of the page and there are multiple places it is used
-  var characters;
-  var vehicles;
-
-  $.ajax({
-    dataType: "json",
-    url: "json/charactermap.json",
-    async: false,
-    success: function (data) {
-      characters = data;
-    },
-  });
-
-  $.ajax({
-    dataType: "json",
-    url: "json/tokenmap.json",
-    async: false,
-    success: function (data) {
-      vehicles = data;
-    },
-  });
 
   setupFilterInputs();
 
-  var socket = io();
   socket.emit("connectionStatus");
   socket.emit("syncToyPad");
-
-  var currentMousePos = { x: -1, y: -1 };
-  $(document).mousemove(function (event) {
-    currentMousePos.x = event.pageX;
-    currentMousePos.y = event.pageY;
-  });
 
   //**Drag & Drop Functions**
   $("#remove-tokens").sortable({
@@ -530,7 +518,7 @@ $(function () {
   }
 
   function removeArticles(string) {
-    words = string.split(" ");
+    const words = string.split(" ");
     if (words.length <= 1) {
       return string;
     }
@@ -615,18 +603,31 @@ $(function () {
     applyFilters();
   });
 
-  $("#tag-world-filter").click(function () {
-    $("#tag-world-filter").val("");
-    applyFilters();
-  });
-
-  $("#tag-ability-filter").click(function () {
-    $("#tag-ability-filter").val("");
-    applyFilters();
-  });
-
-  $("#clear-filters").click(function () {
-    clearFilterInputs();
-    clearFilters();
-  });
-});
+  document
+    .getElementById("tag-world-filter")
+    .addEventListener("click", OnFilterClick);
+  document
+    .getElementById("tag-ability-filter")
+    .addEventListener("click", OnFilterClick);
+  document
+    .getElementById("clear-filters")
+    .addEventListener("click", OnClearFiltersClick);
+}
+function OnClearFiltersClick() {
+  clearFilterInputs();
+  clearFilters();
+}
+function OnFilterClick() {
+  this.value = "";
+  applyFilters();
+}
+async function LoadCharactermap() {
+  return await (await fetch("json/charactermap.json")).json();
+}
+async function LoadTokenmap() {
+  return await (await fetch("json/tokenmap.json")).json();
+}
+function OnMouseMouse(e) {
+  currentMousePos.x = e.pageX;
+  currentMousePos.y = e.pageY;
+}

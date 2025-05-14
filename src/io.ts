@@ -25,8 +25,9 @@ export function setupSocket(http: Server) {
     socket.on("syncToyPad", () => {
       console.log("<<Syncing tags, one moment...>>");
       InitializeToyTagsJSON();
+      let uid;
       for (let i = 1; i <= 7; i++) {
-        const uid = getUIDAtPad(i);
+        uid = getUIDAtPad(i);
         if (uid != -1) {
           updateKey(uid, "index", i);
         }
