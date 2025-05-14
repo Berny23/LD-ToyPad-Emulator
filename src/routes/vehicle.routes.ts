@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import { tp } from "../bridge";
 import { addEntry } from "../utils/toytags";
 import { createVehicle, getTokenNameFromID } from "../utils/tagUtils";
-import { Toytag } from "src/interfaces/Toytag";
-import { Tagtypes } from "src/enums/TagTypes";
+import { Toytag } from "../interfaces/Toytag";
+import { Tagtypes } from "../enums/TagTypes";
 
 const router = express.Router();
 
