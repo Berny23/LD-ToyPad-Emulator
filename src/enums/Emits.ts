@@ -1,4 +1,4 @@
-export enum Emits {
+enum Emits {
   Refresh = "refreshTokens",
   ColorAll = "Color All",
   ColorOne = "Color One",
@@ -7,3 +7,5 @@ export enum Emits {
   ConnectionAffirmation = "Connection True",
   ConnectionDenial = "Connection False",
 }
+
+export default Emits;

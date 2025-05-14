@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import { isConnectedToGame, tp } from "./bridge";
 import { deleteEntry, updateKey } from "./utils/toytags";
 import { InitializeToyTagsJSON } from ".";
-import { Emits } from "./enums/Emits";
+import Emits from "./enums/Emits";
 import { Server } from "http";
 
 export function setupSocket(http: Server) {

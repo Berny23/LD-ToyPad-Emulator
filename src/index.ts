@@ -10,7 +10,7 @@ import { unplaceAll } from "./utils/toytags";
 import { io, setIO, tp } from "./bridge";
 import { setupSocket } from "./io";
 import { hook } from "./hooks";
-import { Emits } from "./enums/Emits";
+import Emits from "./enums/Emits";
 tp.registerDefaults();
 const server = http.createServer(app);
 const s = setupSocket(server);

@@ -1,5 +1,6 @@
 import { io, setConnectionStatus, tp } from "./bridge";
-import { Emits } from "./enums/Emits";
+import Emits from "./enums/Emits";
+import Tagtypes from "./enums/Tagtypes";
 import { RGBToHex } from "./utils/conversion";
 import { getAnyNameFromID } from "./utils/tagUtils";
 import { select, updateKey, updateKeys } from "./utils/toytags";
@@ -54,9 +55,9 @@ function handleWriteCommand(req: any, res: any) {
     const name = getAnyNameFromID(id);
 
     updateKeys(uid, [
-      { key: "id", value: id },
-      { key: "name", value: name },
-      { key: "type", value: "vehicle" },
+      ["id", id],
+      ["name", name],
+      ["type", Tagtypes.Vehicle],
     ]);
     //writeVehicleData(uid, "uid", tp.randomUID())
   }
