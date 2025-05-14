@@ -295,7 +295,7 @@ function OnDOMContentLoaded() {
     }
 
     var content = "<h3>" + itemData.name + "</h3>";
-    var path = "images/" + itemData.id + ".png";
+    var path = "images/" + itemData.id;
     var url = $(location).attr("href") + "/../" + path;
     if (fileExists(url)) {
       content =
