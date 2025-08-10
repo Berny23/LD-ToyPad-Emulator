@@ -129,7 +129,7 @@ function updatePadIndex(uid, index) {
     }
   }
 
-  fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4));
+  fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
   console.log("Set UID: " + uid + " to index " + index);
 }
 
