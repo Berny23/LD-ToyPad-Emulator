@@ -686,4 +686,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(80, () => console.log("Server running on port 80"));
+
+const EXPRESS_PORT = 80;
+server.listen(EXPRESS_PORT, () => console.log(`Server running on port ${EXPRESS_PORT}`));
