@@ -131,15 +131,11 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 #### Raspberry Pi Zero W Guide
 
-1. If you're using a Raspberry Pi Zero W, flash Raspberry Pi OS (Legacy, 32-bit, Bullseye) Lite to your SD card using [the Raspberry Pi Imager tool](https://www.raspberrypi.org/software/). Before proceeding with the installation, click Edit Settings. In the General tab, set a username and password (e.g., Username: pi, Password: raspberry), and configure the Wi-Fi SSID and password. In the Services tab, check "Enable SSH".
+1. If you're using a Raspberry Pi Zero W, flash Raspberry Pi OS (Legacy, 32-bit, Bullseye) Lite to your SD card using [the Raspberry Pi Imager tool](https://www.raspberrypi.org/software/) and follow [this](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) as well as [this](https://www.raspberrypi.org/documentation/remote-access/ssh/README.md) instruction for headless installation.
 
-2. After burning the SD card, use a text editor to open the config.txt file in the SD card’s `bootfs` partition. Scroll to the bottom and add `dtoverlay=dwc2` as the last line, then save the file. Next, open cmdline.txt and, after `rootwait` (the last word on the first line), add a space followed by `modules-load=dwc2,g_ether`.
+2. Connect your device to your PC via USB cable (don't use the port on the edge of the Pi Zero!).
 
-3. Connect your device to your PC via USB cable (plug in the USB cable from your computer to the "USB" connector port on the Pi Zero, not the PWR connector).
-   
-4. Now you can then SSH in to `raspberrypi.local`
-
-5. Run the following commands (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).):
+3. Use SSH to run the following commands (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).):
 
    ```bash
    sudo apt update
@@ -161,11 +157,11 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    (sudo crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | sudo crontab -
    ```
 
-6. Reboot you device with this command:
+4. Reboot you device with this command:
    ```bash
    sudo shutdown -r now
    ```
-7. Connect via SSH again and run the following commands:
+5. Connect via SSH again and run the following commands:
 
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
@@ -187,7 +183,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 1. Run the emulator server with this command if you are in the correct folder (otherwise run `cd LD-ToyPad-Emulator` first):
 
    ```bash
-   node index.js
+   npm run start
    ```
 
 2. Type **your single board computer's IP address** in a browser to use the emulator.
