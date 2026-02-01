@@ -132,7 +132,6 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 #### Installation
 
 1. Flash a Raspberry Pi OS Lite (preferrably 64-bit) on your SD Card.
-
    - Raspberry Pi Zero: since Docker stopped supporting the Pi Zero the latest version you should use is Bookworm. Using podman will work (tested with Trixie), though we cannot provide any support for issues with the operating system.
 
    - This guide uses podman, but you can also use docker, you just need to make sure that you have it installed.
@@ -158,10 +157,6 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
    ```
 
    If this command fails please see [Cannot pull image](#cannot-pull-image).
-
-   If you have any issues using podman, you can try and use docker instead, see [Podman build issue](#podman-doesnt-build-image).
-
-   Especially on the RPi Zero the build can take a very long time (20+ minutes). If pulling the base images succeeds and the build proceeds to higher stages (i.e. RUN npm install) you probably just need to be patient!
 
 6. Once the container is successfully build run start the container:
 
@@ -212,7 +207,7 @@ Vehicle IDs can be found [here](https://github.com/Berny23/LD-ToyPad-Emulator/bl
 
 ## Troubleshooting
 
-### RPCS3 cannot detect the Toy Pad
+### RPCS3 cannot detect the Toy Pad,
 
 **This solution works only for RPCS3 and will break the Toy Pad detection with every other emulator!**
 

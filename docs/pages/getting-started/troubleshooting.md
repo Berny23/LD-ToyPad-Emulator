@@ -6,7 +6,11 @@ This troubleshooting guide might be outdated and incomplete
 
 ## RPCS3 cannot detect the Toy Pad
 
-**This solution works only for RPCS3 and will break the Toy Pad detection with every other emulator!**
+### Windows solution
+
+::: warning
+This solution works only for RPCS3 and will break the Toy Pad detection with every other emulator!
+:::
 
 Download and run [Zadig](https://zadig.akeo.ie).
 
@@ -20,7 +24,7 @@ To undo the changes from Zadig, you have to rollback the driver:
 2. Double-click `LEGO READER V2.10`.
 3. Switch to the `Driver` tab, click `Previous Driver`, select the first option and click yes.
 
-**Solution for Linux systems**
+### Linux solution
 
 In order to fix this, you will need to add a custom udev rule in your system, so the software can communicate with the game. The udev rule is in the root of the server folder. (thanks to wof for sharing the rule).
 
