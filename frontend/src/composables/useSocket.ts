@@ -123,7 +123,7 @@ export default function useSocket() {
       const pad = e[0] - 1
       const color = normalizeColor(e[1])
 
-      for (const index in groups[pad] ?? []) {
+      for (const index of groups[pad] ?? []) {
         padColors.value[index] = {
           color,
           transition: 'background-color 250ms ease-out'
