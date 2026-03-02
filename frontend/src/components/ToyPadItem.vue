@@ -45,6 +45,11 @@
   // TODO FUNCTIONALITY TO SWITCH ELEMENTS BETWEEN PADS
   const handleAdd = async (element: ToyTag) => {
     console.log('try adding tag', element, 'to pad', index)
+    // Source - https://stackoverflow.com/a/39914235
+    // Posted by Dan Dascalescu, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-03-02, License - CC BY-SA 4.0
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
     const oldIndex = element.index
     element.index = index
     let anyNotRemoved = false
@@ -54,6 +59,7 @@
       }
       console.log(x)
       const removed = await toyTagEndpoint.removeToyTag(x.uid, x.index)
+      sleep(500)
       if (removed) {
         x.index = -1
       }
@@ -74,6 +80,7 @@
     // TODO BACKEND RETURNS CURR INDEX AS STRING
     if (oldIndex != -1) {
       const removed = await toyTagEndpoint.removeToyTag(element.uid, oldIndex)
+      sleep(500)
       if (!removed) {
         element.index = oldIndex
         return
