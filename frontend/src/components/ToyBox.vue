@@ -144,7 +144,7 @@
         <draggable
           class="toybox-grid"
           :delay="100"
-          delay-on-touch-only
+          :delay-on-touch-only="true"
           group="toytag"
           item-key="id"
           :list="toDisplay"

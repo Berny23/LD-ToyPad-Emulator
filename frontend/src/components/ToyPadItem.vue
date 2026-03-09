@@ -2,7 +2,7 @@
   <Draggable
     class="pad"
     :delay="100"
-    delay-on-touch-only
+    :delay-on-touch-only="true"
     :disabled="!connected"
     group="toytag"
     item-key="id"
