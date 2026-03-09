@@ -1,0 +1,40 @@
+{
+  "title": "Toy Pad Emulator for Lego Dimensions",
+  "game_not_connected": "No connection to the game. This message will disappear once a connection to the game is established",
+  "settings": {
+    "languages": {
+      "en": "English"
+    }
+  },
+  "toy_tags_refresh": {
+    "title": "Tags refreshed successfully",
+    "loader": "Please wait ... refreshing tags may take a moment"
+  },
+  "create_toy_dialog": {
+    "title": "Create a toy",
+    "create_character": "Select characters to create",
+    "world": "World: {world}",
+    "others": "+ {others} more",
+    "create_vehicle": "Select vehicles to create",
+    "select_all": "Select all",
+    "save": "Create {num} toys",
+    "created": "{characters} characters and {vehicles} vehicles created"
+  },
+  "toybox": {
+    "create_toy": "Create",
+    "filter": {
+      "show": "Filter",
+      "clear": "Clear filter",
+      "title": "Filter by...",
+      "name": "Name",
+      "world": "World",
+      "world_overflow": "@:create_toy_dialog.others",
+      "abilities": "Abilities",
+      "abilities_overflow": "@:create_toy_dialog.others"
+    }
+  },
+  "sync_info": {
+    "title": "If you encounter a token that is not responding, move it to the toy box and then back to the Toy Pad.",
+    "btn": "Click here to Sync"
+  }
+}

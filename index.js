@@ -188,7 +188,7 @@ function initializeToyTagsJSON() {
   const data = fs.readFileSync(toytagsPath, "utf8");
   const dataset = JSON.parse(data);
   dataset.forEach((db) => {
-    db.index = "-1";
+    db.index = -1;
   });
   fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
   console.log("Initialized toytags.JSON");
@@ -487,11 +487,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "server")));
 
 //**Website requests**//
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "server/index.html"));
-});
+});*/
 
 //Create a new Character and save that data to toytags.json
+// TODO INTRODUCE A ROUTE WHERE WE CAN BATCH PROCESS CREATION REQUESTS
 app.post("/character", (req, res) => {
   const uid = tp.randomUID();
   const id = req.body.id;
@@ -515,7 +516,7 @@ app.post("/character", (req, res) => {
         name: name,
         id: id,
         uid: character.uid,
-        index: "-1",
+        index: -1,
         type: "character",
         vehicleUpgradesP23: 0,
         vehicleUpgradesP25: 0,
@@ -681,6 +682,10 @@ io.on("connection", (socket) => {
     io.emit("refreshTokens");
     console.log("<<Tags are synced!>>");
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "server", "index.html"));
 });
 
 const EXPRESS_PORT = 80;
