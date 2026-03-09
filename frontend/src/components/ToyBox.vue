@@ -287,7 +287,7 @@
     height: 300px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
+    grid-template-columns: repeat(auto-fit, 6em);
     gap: 0.3em;
     padding: 0.5em;
     overflow: auto;
