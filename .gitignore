@@ -1,1 +1,4 @@
 node_modules
+frontend/dev-dist
+frontend/dist
+docs/pages/.vitepress/cache

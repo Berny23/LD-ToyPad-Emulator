@@ -126,7 +126,7 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 - **Raspberry Pi Zero W** ($10) or **Raspberry Pi 4 B** (with `USB/Power Splitter for Raspberry Pi` from Ali or `USB-C/PWR Splitter` from pishop.us) or similar single board computer with Network support
   - **NOTE**: Will NOT work with Raspberry Pi: 2, 3, 3A, 3A+, 3B, 3B+. These models lack the ability to become a USB gadget.
 - **USB Type-A to micro-USB 2.0 Type-B cable** that supports data transmission (e. g. your phone's charging cable)
-- 2 GB+ Micro SD card
+- 8 GB+ Micro SD card (the official recommendation from [raspberrypi.com](https://www.raspberrypi.com/documentation/computers/getting-started.html#recommended-sd-cards) recommends 16 GB though)
 - Internet connection on your PC and single board computer
 
 #### Installation
@@ -137,9 +137,9 @@ Allows you to connect an emulated Toy Pad to your PC or video-game console.
 
 3. Use SSH to run the following command (Don't know the IP address? Try [this IP scanner](https://www.advanced-ip-scanner.com/).) - this will prepare your Raspberry Pi to work as a USB gadget:
 
-```bash
-curl -sSL https://raw.githubusercontent.com/Berny23/LD-ToyPad-Emulator/master/pi_setup.sh | bash
-```
+   ```bash
+   curl -sSL https://raw.githubusercontent.com/Berny23/LD-ToyPad-Emulator/master/pi_setup.sh | bash
+   ```
 
 4. Reboot you device with this command:
 
@@ -156,19 +156,20 @@ podman pull \
   .
 ```
 
-NOTE: Run `uname -a` to see your own processor architecture, like e. g. *arm64*. Check the [Package Registry](https://github.com/Berny23/LD-ToyPad-Emulator/pkgs/container/ld-toypad-emulator) (in the tab *OS/Arch*) to find out what platform names are supported.
+NOTE: Run `uname -a` to see your own processor architecture, like e. g. _arm64_. Check the [Package Registry](https://github.com/Berny23/LD-ToyPad-Emulator/pkgs/container/ld-toypad-emulator) (in the tab _OS/Arch_) to find out what platform names are supported.
 
 6. Once the container is successfully build run start the container:
 
-```bash
-podman create \
-  --name ld-toypad-emulator \
-  -p 8080:80 \
-  --device /dev/hidg0:/dev/hidg0 \
-  # Optional: mount a host folder for persistent images
-  # -v /path/to/images:/app/server/images:Z  \
-  ld-toypad-emulator:latest
-```
+   ```bash
+   podman create \
+   --name ld-toypad-emulator \
+   -p 8080:80 \
+   --device /dev/hidg0:/dev/hidg0 \
+   -v /path/to/images:/app/server/images:Z  \
+   ghcr.io/berny23/ld-toypad-emulator:latest
+   ```
+
+   NOTE: the images folder can be used to supply custom images for your toytags. If you don't plan to use custom images you can omit the mount (but then you will need to recreate the container if you ever decide to use custom images). Just mounting an empty folder is fine as well.
 
 #### Usage
 
@@ -178,26 +179,27 @@ podman create \
    podman start ld-toypad-emulator
    ```
 
+   NOTE: as podman is running as your currently logged in ssh user, you cannot disconnect from the ssh session. This is a design feature of podman. The solution therefore is to enable [lingering](https://wiki.archlinux.org/title/Systemd/User#Automatic_start-up_of_systemd_user_instances).
+
 2. Type **your single board computer's IP address** in a browser to use the emulator.
 
    If you want to turn it off, just stop the container (`podman stop ld-tyopad-emulator`) in the terminal window, then use the command `sudo shutdown now` to safely power off the device.
 
 ## Update
 
-To update this software, just get the latest changes by running the following commands while inside the `LD-ToyPad-Emulator` folder:
+Run the following commands:
 
 ```bash
-git pull
 podman stop ld-toypad-emulator # only if the container is currently running
 podman rm ld-toypad-emulator
-podman image rm localhost/ld-toypad-emulator:latest
+podman image rm ghcr.io/berny23/ld-toypad-emulator:latest
 ```
 
-Then rebuild and recreate the container starting from step 5 above.
+Then repeat the above steps starting from step 5.
 
 ## Adding Images
 
-If you would like your tags to have custom images over them to personalize your experience, name your image (ID).png and place them in server/images inside the Toypad Emulator folder. If you want them to cover the entirety of the tag with no blank space, make sure your image is either 100x100 or can be scaled to that size.
+If you would like your tags to have custom images over them to personalize your experience, name your image (ID).png and place them in server/images (or your mounted folder if you used the docker installation method) inside the Toypad Emulator folder. If you want them to cover the entirety of the tag with no blank space, make sure your image is either 100x100 or can be scaled to that size.
 
 Character IDs can be found [here](https://github.com/Berny23/LD-ToyPad-Emulator/blob/master/server/json/charactermap.json)
 
@@ -205,7 +207,7 @@ Vehicle IDs can be found [here](https://github.com/Berny23/LD-ToyPad-Emulator/bl
 
 ## Troubleshooting
 
-### RPCS3 cannot detect the Toy Pad
+### RPCS3 cannot detect the Toy Pad,
 
 **This solution works only for RPCS3 and will break the Toy Pad detection with every other emulator!**
 
@@ -267,6 +269,30 @@ Then try using the device again.
 If you're using a virtual machine, make sure you've applied the solution specific to your software first ([VirtualBox](#webpage-not-reachable-oracle-virtualbox) or [VMware](#webpage-not-reachable-vmware))!
 
 After that, run the command `hostname -I` in your virtual machine (or on your single board computer) and type the IP address that looks like `192.168.X.X` in your webbrowser.
+
+### Cannot pull image
+
+Retry pulling the image using this command:
+
+```
+podman pull ghcr.io/berny23/ld-toypad-emulator:latest
+```
+
+Be sure to substitute in your architecture. Raspberry Pi OS 64bit uses the arm64 architecture as platform, Raspberry Pi OS 32bit uses linux/arm/v7 as platform, the Raspberry Pi Zero uses linux/arm/v6 as platform, and x86_64 based machines will use linux/amd64 as platform.
+
+## Development setup
+
+### Backend
+
+TODO
+
+### Frontend
+
+1. Clone the repository
+2. Change directory to `LD-Toypad-Emulator\frontend`
+3. Run `npm install`
+4. In `vite.config.mts` point the proxy server to the IP you run the server on.
+5. Run the frontend using `npm run dev`
 
 ## Acknowledgements
 

@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "formulahendry.auto-complete-tag",
+    "simonhe.common-intellisense",
+    "dbaeumer.vscode-eslint",
+    "lokalise.i18n-ally",
+    "ms-vscode.vscode-typescript-next",
+    "esbenp.prettier-vscode",
+    "vue.volar",
+    "sdras.vue-vscode-snippets",
+    "antfu.iconify"
+  ]
+}

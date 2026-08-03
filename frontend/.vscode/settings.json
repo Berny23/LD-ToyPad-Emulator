@@ -1,0 +1,8 @@
+{
+    "i18n-ally.localesPaths": [
+        "src/locales"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "notebook.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+}

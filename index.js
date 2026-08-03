@@ -41,7 +41,7 @@ let isConnectedToGame = false;
 function createVehicle(id, uid, upgrades = [0, 0]) {
   const token = Buffer.alloc(180);
   token.uid = uid;
-  
+
   token.writeUInt32LE(upgrades[0], 0x8c); //0x23 * 4
   token.writeUInt16LE(id, 0x90); //0x24 * 4
   token.writeUInt32LE(upgrades[1], 0x94); //0x25 * 4
@@ -87,9 +87,9 @@ function getCharacterNameFromID(id) {
 //This function retrieves the name of a token by id
 function getAnyNameFromID(id) {
   if (id < 1000) {
-    return getTokenNameFromID(id);
+    return getCharacterNameFromID(id);
   }
-  return getCharacterNameFromID(id);
+  return getTokenNameFromID(id);
 }
 
 //This finds and returns an JSON entry from toytags.json with the matching uid.
@@ -174,7 +174,7 @@ function initializeToyTagsJSON() {
   const data = fs.readFileSync(toytagsPath, "utf8");
   const dataset = JSON.parse(data);
   dataset.forEach((db) => {
-    db.index = "-1";
+    db.index = -1;
   });
   fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
   console.log("Initialized toytags.JSON");
@@ -313,7 +313,7 @@ tp.hook(tp.CMD_WRITE, (req, res) => {
   }
   //Vehicle uprades are stored in Pages 23 & 25
   else if (page == 23 || page == 35)
-    writeJSONData(uid, "vehicleUpgradesP23", data.readUInt32LE(0));
+    writeJSONData(uid, "vehicleUpgradesP23", s);
   else if (page == 25 || page == 37) {
     writeJSONData(uid, "vehicleUpgradesP25", data.readUInt32LE(0));
     io.emit("refreshTokens"); //Refreshes the html's tag gui.
@@ -372,21 +372,21 @@ tp.hook(tp.CMD_FADAL, (req, res) => {
   const top_pad_color = RGBToHex(
     req.payload[3],
     req.payload[4],
-    req.payload[5]
+    req.payload[5],
   );
   const left_pad_speed = req.payload[7];
   const left_pad_cycles = req.payload[8];
   const left_pad_color = RGBToHex(
     req.payload[9],
     req.payload[10],
-    req.payload[11]
+    req.payload[11],
   );
   const right_pad_speed = req.payload[13];
   const right_pad_cycles = req.payload[14];
   const right_pad_color = RGBToHex(
     req.payload[15],
     req.payload[16],
-    req.payload[17]
+    req.payload[17],
   );
 
   io.emit("Fade All", [
@@ -429,17 +429,17 @@ tp.hook(tp.CMD_COLALL, (req, res) => {
   const top_pad_color = RGBToHex(
     req.payload[1],
     req.payload[2],
-    req.payload[3]
+    req.payload[3],
   );
   const left_pad_color = RGBToHex(
     req.payload[5],
     req.payload[6],
-    req.payload[7]
+    req.payload[7],
   );
   const right_pad_color = RGBToHex(
     req.payload[9],
     req.payload[10],
-    req.payload[11]
+    req.payload[11],
   );
 
   io.emit("Color All", [top_pad_color, left_pad_color, right_pad_color]);
@@ -460,11 +460,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "server")));
 
 //**Website requests**//
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "server/index.html"));
-});
+});*/
 
 //Create a new Character and save that data to toytags.json
+// TODO INTRODUCE A ROUTE WHERE WE CAN BATCH PROCESS CREATION REQUESTS
 app.post("/character", (req, res) => {
   const uid = tp.randomUID();
   const id = req.body.id;
@@ -475,39 +476,38 @@ app.post("/character", (req, res) => {
   console.log(
     "name: " + name,
     " uid: " + character.uid,
-    " id: " + character.id
+    " id: " + character.id,
   );
 
-  fs.readFile(toytagsPath, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const tags = JSON.parse(data);
+  let tags;
+  try {
+    const data = fs.readFileSync(toytagsPath, "utf8");
+    tags = JSON.parse(data);
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: "Failed to read toytags.json", detail: err.message });
+  }
 
-      tags.push({
-        name: name,
-        id: id,
-        uid: character.uid,
-        index: "-1",
-        type: "character",
-        vehicleUpgradesP23: 0,
-        vehicleUpgradesP25: 0,
-      });
-
-      fs.writeFile(
-        toytagsPath,
-        JSON.stringify(tags, null, 4),
-        "utf8",
-        (err) => {
-          if (err) {
-            console.log(`Error writing file: ${err}`);
-          } else {
-            console.log(`File is written successfully!`);
-          }
-        }
-      );
-    }
+  tags.push({
+    name: name,
+    id: id,
+    uid: character.uid,
+    index: -1,
+    type: "character",
+    vehicleUpgradesP23: 0,
+    vehicleUpgradesP25: 0,
   });
+
+  try {
+    fs.writeFileSync(toytagsPath, JSON.stringify(tags, null, 4), "utf8");
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: "Failed to write toytags.json", detail: err.message });
+  }
 
   console.log("Character created: " + req.body.id);
   res.send();
@@ -524,7 +524,7 @@ app.post("/place", (request, response) => {
       character,
       request.body.position,
       request.body.index,
-      character.uid
+      character.uid,
     );
     console.log("Character tag: " + request.body.id);
     updatePadIndex(character.uid, request.body.index);
@@ -550,38 +550,36 @@ app.post("/vehicle", (request, response) => {
 
   console.log("name: " + name, " uid: " + vehicle.uid, " id: " + vehicle.id);
 
-  fs.readFile(toytagsPath, "utf8", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const tags = JSON.parse(data.toString());
-      const entry = {
-        name: name,
-        id: id,
-        uid: vehicle.uid,
-        index: "-1",
-        type: "vehicle",
-        vehicleUpgradesP23: 0xefffffff,
-        vehicleUpgradesP25: 0xefffffff,
-      };
+  let tags;
+  try {
+    const data = fs.readFileSync(toytagsPath, "utf8");
+    tags = JSON.parse(data);
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: "Failed to read toytags.json", detail: err.message });
+  }
 
-      console.log(entry);
-      tags.push(entry);
-
-      fs.writeFile(
-        toytagsPath,
-        JSON.stringify(tags, null, 4),
-        "utf8",
-        (err) => {
-          if (err) {
-            console.log(`Error writing file: ${err}`);
-          } else {
-            console.log(`File is written successfully!`);
-          }
-        }
-      );
-    }
+  tags.push({
+    name: name,
+    id: id,
+    uid: vehicle.uid,
+    index: "-1",
+    type: "vehicle",
+    vehicleUpgradesP23: 0xefffffff,
+    vehicleUpgradesP25: 0xefffffff,
   });
+
+  try {
+    fs.writeFileSync(toytagsPath, JSON.stringify(tags, null, 4), "utf8");
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ error: "Failed to write toytags.json", detail: err.message });
+  }
+
   console.log("Vehicle placed: " + request.body.id);
   response.send(uid);
 });
@@ -612,15 +610,13 @@ io.on("connection", (socket) => {
     }
 
     dataset.splice(index, 1);
-    fs.writeFile(toytagsPath, JSON.stringify(dataset, null, 4), (err) => {
-      if (err) {
-        console.log("Failed to write updated data to toytags.json: " + err);
-        return;
-      }
-
+    try {
+      fs.writeFileSync(toytagsPath, JSON.stringify(dataset, null, 4));
       io.emit("refreshTokens");
-      console.log(`Succesfully deleted ${uid} from toytags.json `);
-    });
+      console.log(`Succesfully deleted ${uid} from toytags.json`);
+    } catch (err) {
+      console.log("Failed to write updated data to toytags.json: " + err);
+    }
   });
 
   socket.on("connectionStatus", () => {
@@ -643,7 +639,11 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "server", "index.html"));
+});
+
 const EXPRESS_PORT = 80;
 server.listen(EXPRESS_PORT, () =>
-  console.log(`Server running on port ${EXPRESS_PORT}`)
+  console.log(`Server running on port ${EXPRESS_PORT}`),
 );
